@@ -572,9 +572,9 @@ class QUICStream implements ReadableWritablePair<Uint8Array, Uint8Array> {
       try {
         await readableP;
       } catch (e) {
-        // Abort this if `this.read` already processed `fin`
-        if (e === abortReadablePReason) return;
-        throw e;
+        // If readableP was rejected then we just want to end early here,
+        // anything rejecting it should already have errored the stream.
+        return;
       }
     }
     let result: [number, boolean] | null;
