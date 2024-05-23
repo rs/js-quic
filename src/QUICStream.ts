@@ -420,12 +420,7 @@ class QUICStream implements ReadableWritablePair<Uint8Array, Uint8Array> {
           );
           // This is idempotent and won't error even if it is already stopped
           this.readableController.error(reason);
-          // This rejects the readableP if it exists
-          // The pull method may be blocked by `await readableP`
-          // When rejected, it will throw up the exception
-          // However because the stream is errored, then
-          // the exception has no effect, and any reads of this stream
-          // will simply return `{ value: undefined, done: true }`
+          // This rejects the readableP if it exists to release it from it's blocked state
           this.rejectReadableP?.(reason);
           this.dispatchEvent(
             new events.EventQUICStreamError({
@@ -600,10 +595,7 @@ class QUICStream implements ReadableWritablePair<Uint8Array, Uint8Array> {
             detail: e_,
           }),
         );
-        // The pull doesn't need to throw it upwards, the controller.error
-        // already ensures errored state, and any read operation will end up
-        // throwing, but we do it here to be symmetric with write.
-        throw reason;
+        return;
       } else {
         const e_ = new errors.ErrorQUICStreamInternal(
           'Failed `streamRecv` on the readable stream',
@@ -687,7 +679,7 @@ class QUICStream implements ReadableWritablePair<Uint8Array, Uint8Array> {
               detail: e_,
             }),
           );
-          throw reason;
+          return;
         } else {
           const e_ = new errors.ErrorQUICStreamInternal(
             'Local stream writable could not `streamSend`',
@@ -750,7 +742,7 @@ class QUICStream implements ReadableWritablePair<Uint8Array, Uint8Array> {
         );
         // This fails the `close`, however no matter what
         // the writable stream is in a closed state.
-        throw reason;
+        return;
       } else {
         // This could happen due to `InvalidStreamState`
         const e_ = new errors.ErrorQUICStreamInternal(
