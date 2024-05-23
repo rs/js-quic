@@ -171,7 +171,7 @@ build:windows:
   needs: []
   allow_failure: true
   tags:
-    - windows
+    - saas-windows-medium-amd64
   variables:
     # Only x64 architecture is needed
     npm_config_arch: "x64"
