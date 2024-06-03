@@ -10,6 +10,7 @@ import type {
   StreamReasonToCode,
 } from './types';
 import type { Header } from './native/types';
+import nodesEvents from 'events';
 import Logger from '@matrixai/logger';
 import { AbstractEvent, EventAll } from '@matrixai/events';
 import {
@@ -62,6 +63,8 @@ class QUICServer {
   protected _closed: boolean = false;
   protected _closedP: Promise<void>;
   protected resolveClosedP: () => void;
+  // Used to abort any starting connections when the server stops
+  protected stopAbortController: AbortController | undefined;
 
   /**
    * Handles `EventQUICServerError`.
@@ -370,6 +373,10 @@ class QUICServer {
     reuseAddr?: boolean;
     ipv6Only?: boolean;
   } = {}) {
+    this.stopAbortController = new AbortController();
+    // Since we have a one-to-many relationship with clients and connections,
+    // we want to up the warning limit on the stopAbortController
+    nodesEvents.setMaxListeners(100000, this.stopAbortController.signal);
     let address: string;
     if (!this.isSocketShared) {
       address = utils.buildAddress(host, port);
@@ -444,6 +451,11 @@ class QUICServer {
     // Stop answering new connections
     this.socket.unsetServer();
     const connectionsDestroyP: Array<Promise<void>> = [];
+    // If force then signal for any starting connections to abort
+    if (force) {
+      this.stopAbortController?.abort(new errors.ErrorQUICServerStopping());
+    }
+    this.stopAbortController = undefined;
     for (const connection of this.socket.connectionMap.serverConnections.values()) {
       connectionsDestroyP.push(
         connection.stop({
@@ -628,7 +640,10 @@ class QUICServer {
           data,
           remoteInfo,
         },
-        { timer: this.minIdleTimeout },
+        {
+          timer: this.minIdleTimeout,
+          signal: this.stopAbortController?.signal,
+        },
       );
     } catch (e) {
       connection.removeEventListener(
