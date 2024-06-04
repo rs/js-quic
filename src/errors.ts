@@ -93,6 +93,10 @@ class ErrorQUICServerInternal<T> extends ErrorQUICServer<T> {
   static description = 'QUIC Server internal error';
 }
 
+class ErrorQUICServerStopping<T> extends ErrorQUICServer<T> {
+  static description = 'QUIC Server is stopping';
+}
+
 class ErrorQUICConnection<T> extends ErrorQUIC<T> {
   static description = 'QUIC Connection error';
 }
@@ -306,6 +310,7 @@ export {
   ErrorQUICServerSocketNotRunning,
   ErrorQUICServerNewConnection,
   ErrorQUICServerInternal,
+  ErrorQUICServerStopping,
   ErrorQUICConnection,
   ErrorQUICConnectionStopping,
   ErrorQUICConnectionNotRunning,
