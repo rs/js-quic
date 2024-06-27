@@ -10,7 +10,6 @@ import type {
   StreamReasonToCode,
 } from './types';
 import type { Header } from './native/types';
-import nodesEvents from 'events';
 import Logger from '@matrixai/logger';
 import { AbstractEvent, EventAll } from '@matrixai/events';
 import {
@@ -376,7 +375,7 @@ class QUICServer {
     this.stopAbortController = new AbortController();
     // Since we have a one-to-many relationship with clients and connections,
     // we want to up the warning limit on the stopAbortController
-    nodesEvents.setMaxListeners(100000, this.stopAbortController.signal);
+    utils.setMaxListeners(this.stopAbortController.signal);
     let address: string;
     if (!this.isSocketShared) {
       address = utils.buildAddress(host, port);

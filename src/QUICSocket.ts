@@ -1,7 +1,6 @@
 import type QUICServer from './QUICServer';
 import type { Host, Hostname, Port, ResolveHostname } from './types';
 import type { Header } from './native/types';
-import nodesEvents from 'events';
 import dgram from 'dgram';
 import Logger from '@matrixai/logger';
 import { StartStop, ready, running } from '@matrixai/async-init/dist/StartStop';
@@ -251,7 +250,7 @@ class QUICSocket {
   } = {}): Promise<void> {
     // Since we have a one-to-many relationship with clients and connections,
     // we want to up the warning limit on the EventTarget
-    nodesEvents.setMaxListeners(100000, this[_eventTarget]);
+    utils.setMaxListeners(this[_eventTarget]);
     let address = utils.buildAddress(host, port);
     this.logger.info(`Start ${this.constructor.name} on ${address}`);
     // Resolves the host which could be a hostname and acquire the type.

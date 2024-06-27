@@ -10,6 +10,7 @@ import type {
   StreamId,
 } from './types';
 import dns from 'dns';
+import events from 'events';
 import { IPv4, IPv6, Validator } from 'ip-num';
 import QUICConnectionId from './QUICConnectionId';
 import * as errors from './errors';
@@ -554,6 +555,20 @@ function isStreamReset(e: Error): number | false {
   }
 }
 
+/**
+ * Increases the total number of registered event handlers before a node warning is emitted.
+ * In most cases this is not needed but in the case where you have one event emitter for multiple handlers you'll need
+ * to increase the limit.
+ * @param target - The specific `EventTarget` or `EventEmitter` to increase the warning for.
+ * @param limit - The limit before the warning is emitted, defaults to 100000.
+ */
+function setMaxListeners(
+  target: EventTarget | NodeJS.EventEmitter,
+  limit: number = 100000,
+) {
+  events.setMaxListeners(limit, target);
+}
+
 export {
   textEncoder,
   textDecoder,
@@ -592,4 +607,5 @@ export {
   isStreamUnidirectional,
   isStreamStopped,
   isStreamReset,
+  setMaxListeners,
 };
