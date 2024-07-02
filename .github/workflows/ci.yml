@@ -207,6 +207,9 @@ jobs:
     concurrency:
       group: integration-merge
       cancel-in-progress: true
+    permissions:
+      contents: write
+      packages: read
     needs: [build-pull, build-platforms]
     if: github.ref == 'refs/heads/staging'
     steps:
