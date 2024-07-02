@@ -151,7 +151,6 @@ jobs:
         with:
           name: builds-${{ matrix.platform }}
           path: ./builds
-      - run: rm -f ./.npmrc
 
   build-prerelease:
     name: "Build / Pre-release"
