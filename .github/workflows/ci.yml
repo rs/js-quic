@@ -207,15 +207,13 @@ jobs:
     concurrency:
       group: integration-merge
       cancel-in-progress: true
-    permissions:
-      contents: write
-      packages: read
     needs: [build-pull, build-platforms]
     if: github.ref == 'refs/heads/staging'
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.GH_TOKEN }}
       - name: Merge into master
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
