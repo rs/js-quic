@@ -513,6 +513,9 @@ class QUICClient {
         // Thrown due to invalid arguments on Win but also for network dropouts on all platforms
         // Falls through
         case 'ENETUNREACH':
+        // Thrown when no route to the host is available.
+        // Falls through
+        case 'EHOSTUNREACH':
           {
             this.dispatchEvent(
               new events.EventQUICClientErrorSend(
