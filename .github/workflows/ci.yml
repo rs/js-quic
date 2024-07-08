@@ -21,13 +21,16 @@ jobs:
   check-test:
     name: "Check / Test"
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/matrixai/github-runner
     steps:
       - uses: actions/checkout@v4
       - name: Run tests
         run: |
-          npm install
+          nix develop .#ci --command bash -c $'
           npm run prebuild --verbose
           npm test -- --ci --coverage
+          '
       - uses: actions/upload-artifact@v4
         with:
           name: coverage-report
