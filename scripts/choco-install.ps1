@@ -8,7 +8,7 @@ function Save-ChocoPackage {
   Remove-Item "$env:ChocolateyInstall\lib\$PackageName\package" -Recurse
   Remove-Item "$env:ChocolateyInstall\lib\$PackageName\[Content_Types].xml"
   New-Item -Path "${PSScriptRoot}\..\tmp\chocolatey\$PackageName" -ItemType "directory" -ErrorAction:SilentlyContinue
-  choco pack "$env:ChocolateyInstall\lib\$PackageName\$PackageName.nuspec" --outdir "${PSScriptRoot}\..\tmp\chocolatey\$PackageName"
+  choco pack "$env:ChocolateyInstall\lib\$PackageName\$PackageName.nuspec" --outdir "${PSScriptRoot}\..\tmp\chocolatey\$PackageName" --no-progress
 }
 
 # Check for existence of required environment variables
@@ -19,11 +19,11 @@ if ( $null -eq $env:ChocolateyInstall ) {
 
 # Add the cached packages with source priority 1 (Chocolatey community is 0)
 New-Item -Path "${PSScriptRoot}\..\tmp\chocolatey" -ItemType "directory" -ErrorAction:SilentlyContinue
-choco source add --name="cache" --source="${PSScriptRoot}\..\tmp\chocolatey" --priority=1
+choco source add --name="cache" --source="${PSScriptRoot}\..\tmp\chocolatey" --priority=1 --no-progress
 
 # Install nodejs v20.5.1 (will use cache if exists)
 $nodejs = "nodejs"
-choco install "$nodejs" --version="20.5.1" --require-checksums -y
+choco install "$nodejs" --version="20.5.1" --require-checksums -y --no-progress
 # Internalise nodejs to cache if doesn't exist
 if ( -not (Test-Path -Path "${PSScriptRoot}\..\tmp\chocolatey\$nodejs\$nodejs.20.5.1.nupkg" -PathType Leaf) ) {
   Save-ChocoPackage -PackageName $nodejs
@@ -31,7 +31,7 @@ if ( -not (Test-Path -Path "${PSScriptRoot}\..\tmp\chocolatey\$nodejs\$nodejs.20
 
 # Install rust v1.68.0 (will use cache if exists)
 $rust = "rust-ms"
-choco install "$rust" --version="1.68.0" --require-checksums -y
+choco install "$rust" --version="1.68.0" --require-checksums -y --no-progress
 # Internalise rust to cache if doesn't exist
 if ( -not (Test-Path -Path "${PSScriptRoot}\..\tmp\chocolatey\$rust\$rust.1.68.0.nupkg" -PathType Leaf) ) {
   Save-ChocoPackage -PackageName $rust
@@ -39,7 +39,7 @@ if ( -not (Test-Path -Path "${PSScriptRoot}\..\tmp\chocolatey\$rust\$rust.1.68.0
 
 # Install llvm v16.0.3 (will use cache if exists)
 $llvm = "llvm"
-choco install "$llvm" --version="16.0.3" --require-checksums -y
+choco install "$llvm" --version="16.0.3" --require-checksums -y --no-progress
 # Internalise rust to cache if doesn't exist
 if ( -not (Test-Path -Path "${PSScriptRoot}\..\tmp\chocolatey\$llvm\$llvm.16.0.3.nupkg" -PathType Leaf) ) {
   Save-ChocoPackage -PackageName $llvm
@@ -47,7 +47,7 @@ if ( -not (Test-Path -Path "${PSScriptRoot}\..\tmp\chocolatey\$llvm\$llvm.16.0.3
 
 # Install nasm v2.16.01.20221231 (will use cache if exists)
 $nasm = "nasm"
-choco install "$nasm" --version="2.16.01.20221231" --require-checksums -y
+choco install "$nasm" --version="2.16.01.20221231" --require-checksums -y --no-progress
 # Internalise rust to cache if doesn't exist
 if ( -not (Test-Path -Path "${PSScriptRoot}\..\tmp\chocolatey\$nasm\$nasm.2.16.01.20221231.nupkg" -PathType Leaf) ) {
   Save-ChocoPackage -PackageName $nasm
@@ -55,7 +55,7 @@ if ( -not (Test-Path -Path "${PSScriptRoot}\..\tmp\chocolatey\$nasm\$nasm.2.16.0
 
 # Install Windows SDK v10.0.22621.2 (will use cache if exists)
 $windowsSdk = "windows-sdk-11-version-22h2-all"
-choco install $windowsSdk --version="10.0.22621.2" --require-checksums -y
+choco install $windowsSdk --version="10.0.22621.2" --require-checksums -y --no-progress
 # Internalise rust to cache if doesn't exist
 if ( -not (Test-Path -Path "${PSScriptRoot}\..\tmp\chocolatey\$windowsSdk\$windowsSdk.10.0.22621.2.nupkg" -PathType Leaf) ) {
   Save-ChocoPackage -PackageName $windowsSdk
