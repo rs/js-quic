@@ -64,7 +64,7 @@ jobs:
     concurrency:
       group: integration-merge
       cancel-in-progress: true
-    needs: build-pull
+    needs: [check-lint, check-test, build-pull]
     if: github.ref == 'refs/heads/staging'
     steps:
       - uses: actions/checkout@v4
