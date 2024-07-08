@@ -1,4 +1,4 @@
-name: CI
+name: Release
 
 on:
   push:
@@ -20,13 +20,16 @@ jobs:
   check-test:
     name: "Check / Test"
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/matrixai/github-runner
     steps:
       - uses: actions/checkout@v4
       - name: Run tests
         run: |
-          npm install
+          nix develop .#ci --command bash -c $'
           npm run prebuild --verbose
           npm test -- --ci --coverage
+          '
       - uses: actions/upload-artifact@v4
         with:
           name: coverage-report
@@ -35,12 +38,15 @@ jobs:
   build-dist:
     name: "Build / Dist"
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/matrixai/github-runner
     needs: [check-lint, check-test]
     steps:
       - uses: actions/checkout@v4
       - run: |
-          npm install
+          nix develop .#ci --command bash -c $'
           npm run build --ignore-scripts --verbose
+          '
       - uses: actions/upload-artifact@v4
         with:
           name: dist
