@@ -120,8 +120,8 @@ jobs:
         run: ${{ matrix.script }}
       - uses: actions/upload-artifact@v4
         with:
-          name: builds-${{ matrix.platform }}
-          path: ./builds
+          name: prebuild-${{ matrix.platform }}
+          path: ./prebuild
 
   build-prerelease:
     name: "Build / Pre-release"
@@ -137,8 +137,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          pattern: builds*
-          path: builds
+          pattern: prebuild*
+          path: prebuild
           merge-multiple: true
       - name: Run pre-release
         env:
@@ -185,8 +185,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          pattern: builds*
-          path: builds
+          pattern: prebuild*
+          path: prebuild
           merge-multiple: true
       - name: Run release
         env:
