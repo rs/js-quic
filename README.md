@@ -16,7 +16,7 @@ npm install --save @matrixai/quic
 
 ## Usage
 
-See the example executables in `/src/bin`.
+See the example usage in [tests](tests).
 
 ## Development
 
@@ -38,6 +38,27 @@ npm run lint
 # automatically fix the source
 npm run lintfix
 ```
+
+### Docs Generation
+
+```sh
+npm run docs
+```
+
+See the docs at: https://matrixai.github.io/js-quic/
+
+### Publishing
+
+```sh
+# npm login
+npm version patch # major/minor/patch
+npm run build
+npm publish --access public
+git push
+git push --tags
+```
+
+## How it works
 
 ### Quiche
 
@@ -113,15 +134,15 @@ When using the encapsulated way, the `QUICSocket` is separated between client an
 
 When using the injected way, the `QUICSocket` is shared between client and server.
 
-![](/images/quic_structure_encapsulated.svg)
+![image](/images/quic_structure_encapsulated.svg)
 
 If you are building a peer to peer network, you must use the injected way. This is the only way to ensure that hole-punching works because both the client and server for any given peer must share the same UDP socket and thus share the `QUICSocket`. When done in this way, the `QUICSocket` lifecycle is managed outside of both the `QUICClient` and `QUICServer`.
 
-![](/images/quic_structure_injected.svg)
+![image](/images/quic_structure_injected.svg)
 
 This also means both `QUICClient` and `QUICServer` must share the same connection map.  In order to allow the `QUICSocket` to dispatch data into the correct connection, the connection map is constructed in the `QUICSocket`, however setting and unsetting connections is managed by `QUICClient` and `QUICServer`.
 
-## Dataflow
+### Dataflow
 
 The data flow of the QUIC system is a bidirectional graph.
 
@@ -129,7 +150,7 @@ Data received from the outside world is received on the UDP socket. It is parsed
 
 Data sent to the outside world is written to a `WritableStream` interface of a `QUICStream`. This data is buffered up in the underlying Quiche stream. A send procedure is triggered on the associated `QUICConnection` which takes all the buffered data to be sent for that connection, and sends it to the `QUICSocket`, which then sends it to the underlying UDP socket.
 
-![](/images/quic_dataflow.svg)
+![image](/images/quic_dataflow.svg)
 
 Buffering occurs at the connection level and at the stream level. Each connection has a global buffer for all streams, and each stream has its own buffer. Note that connection buffering and stream buffering all occur within the Quiche library. The web streams `ReadableStream` and `WritableStream` do not do any buffering at all.
 
@@ -139,7 +160,7 @@ The connection negotiation process involves several exchanges of QUIC packets be
 
 The primary reason to do this is for both sides to determine their respective connection IDs.
 
-![](/images/quic_connection_negotiation.svg)
+![image](/images/quic_connection_negotiation.svg)
 
 ### Push & Pull
 
@@ -156,49 +177,7 @@ Keeping track of how the system works is therefore quite complex and must follow
 * Pull methods - these are either synchronous or asynchronous methods that may throw exceptions.
 * Push handlers - these are event handlers that can initiate pull methods, if these pull handlers throw exceptions, these exceptions must be caught, and expected runtime exceptions are to be converted to error events, all other exceptions will be considered to be software bugs and will be bubbled up to the program boundary as unhandled exceptions or unhandled promise rejections. Generally the only exceptions that are expected runtime exceptions are those that arise from perform IO with the operating system.
 
-## Benchmarks
+## License
 
-```sh
-npm run bench
-```
+js-quic is licensed under Apache-2.0, you may read the terms of the license [here](LICENSE).
 
-View benchmarks here: https://github.com/MatrixAI/js-quic/blob/master/benches/results with https://raw.githack.com/
-
-### Docs Generation
-
-```sh
-npm run docs
-```
-
-See the docs at: https://matrixai.github.io/js-quic/
-
-### Publishing
-
-Publishing is handled automatically by the staging pipeline.
-
-Prerelease:
-
-```sh
-# npm login
-npm version prepatch --preid alpha # premajor/preminor/prepatch
-git push --follow-tags
-```
-
-Release:
-
-```sh
-# npm login
-npm version patch # major/minor/patch
-git push --follow-tags
-```
-
-Manually:
-
-```sh
-# npm login
-npm version patch # major/minor/patch
-npm run build
-npm publish --access public
-git push
-git push --tags
-```
