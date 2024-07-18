@@ -40,6 +40,7 @@ class QUICClient {
    * @param opts
    * @param opts.host - target host where wildcards are resolved to point locally.
    * @param opts.port - target port
+   * @param opts.serverName - The expected name of the server you are connecting to, defaults to host.
    * @param opts.localHost - defaults to `::` (dual-stack)
    * @param opts.localPort - defaults 0
    * @param opts.socket - optional shared QUICSocket
@@ -63,6 +64,7 @@ class QUICClient {
     opts: {
       host: string;
       port: number;
+      serverName?: string;
       localHost?: string;
       localPort?: number;
       crypto: QUICClientCrypto;
@@ -80,6 +82,7 @@ class QUICClient {
     opts: {
       host: string;
       port: number;
+      serverName?: string;
       socket: QUICSocket;
       crypto: QUICClientCrypto;
       config?: QUICClientConfigInput;
@@ -96,6 +99,7 @@ class QUICClient {
     {
       host,
       port,
+      serverName,
       localHost = '::',
       localPort = 0,
       socket,
@@ -110,6 +114,7 @@ class QUICClient {
     }: {
       host: string;
       port: number;
+      serverName?: string;
       localHost?: string;
       localPort?: number;
       socket?: QUICSocket;
@@ -186,7 +191,7 @@ class QUICClient {
       connection = new QUICConnection({
         type: 'client',
         scid,
-        serverName: host,
+        serverName: serverName ?? host,
         socket,
         remoteInfo: {
           host: host_,
