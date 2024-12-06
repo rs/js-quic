@@ -562,6 +562,8 @@ class QUICStream implements ReadableWritablePair<Uint8Array, Uint8Array> {
         resolveP: resolveReadableP,
         rejectP: rejectReadableP,
       } = utils.promise();
+      // Prevent promise rejection leak
+      void readableP.catch(() => {});
       this.resolveReadableP = resolveReadableP;
       this.rejectReadableP = rejectReadableP;
       try {
@@ -704,6 +706,8 @@ class QUICStream implements ReadableWritablePair<Uint8Array, Uint8Array> {
           resolveP: resolveWritableP,
           rejectP: rejectWritableP,
         } = utils.promise();
+        // Prevent promise rejection leak
+        void writableP.catch(() => {});
         this.resolveWritableP = resolveWritableP;
         this.rejectWritableP = rejectWritableP;
         await writableP;

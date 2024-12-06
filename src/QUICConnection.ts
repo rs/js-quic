@@ -395,6 +395,8 @@ class QUICConnection {
       resolveP: resolveSecureEstablishedP,
       rejectP: rejectSecureEstablishedP,
     } = utils.promise();
+    // Prevent promise rejection leak
+    secureEstablishedP.catch(() => {});
     this.secureEstablishedP = secureEstablishedP;
     this.resolveSecureEstablishedP = () => {
       // This is an idempotent mutation
@@ -517,6 +519,8 @@ class QUICConnection {
     }
     ctx.signal.throwIfAborted();
     const { p: abortP, rejectP: rejectAbortP } = utils.promise<never>();
+    // Prevent promise rejection leak
+    void abortP.catch(() => {});
     const abortHandler = () => {
       rejectAbortP(ctx.signal.reason);
     };

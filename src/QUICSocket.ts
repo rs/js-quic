@@ -269,6 +269,8 @@ class QUICSocket {
     this.socketClose = utils.promisify(this.socket.close).bind(this.socket);
     this.socketSend = utils.promisify(this.socket.send).bind(this.socket);
     const { p: errorP, rejectP: rejectErrorP } = utils.promise();
+    // Prevent promise rejection leak
+    void errorP.catch(() => {});
     this.socket.once('error', rejectErrorP);
     // This resolves DNS via `getaddrinfo` under the hood.
     // It which respects the hosts file.
