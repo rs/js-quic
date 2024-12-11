@@ -287,6 +287,10 @@ class ErrorQUICStreamInternal<T> extends ErrorQUICStream<T> {
   static description = 'QUIC Stream internal error';
 }
 
+class ErrorQUICStreamLimit<T> extends ErrorQUICStream<T> {
+  static description = 'QUIC Stream limit has been reached';
+}
+
 export {
   ErrorQUIC,
   ErrorQUICHostInvalid,
@@ -331,4 +335,5 @@ export {
   ErrorQUICStreamPeerRead,
   ErrorQUICStreamPeerWrite,
   ErrorQUICStreamInternal,
+  ErrorQUICStreamLimit,
 };

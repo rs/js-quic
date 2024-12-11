@@ -295,8 +295,18 @@ class QUICStream implements ReadableWritablePair<Uint8Array, Uint8Array> {
         // We would get the `StreamStopped` exception here. If so, we can
         // ignore.
         if (utils.isStreamStopped(e) === false) {
+          if (e.message === 'StreamLimit') {
+            const limit =
+              this.type === 'bidi'
+                ? config.initialMaxStreamsBidi
+                : config.initialMaxStreamsUni;
+            throw new errors.ErrorQUICStreamLimit(
+              `Stream limit of ${limit} has been reached`,
+              { cause: e },
+            );
+          }
           throw new errors.ErrorQUICStreamInternal(
-            'Failed to prime local stream state with a 0-length message',
+            `Failed to prime local stream state with a 0-length message: ${e.message}`,
             { cause: e },
           );
         }

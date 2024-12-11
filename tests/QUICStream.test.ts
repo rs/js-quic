@@ -2112,4 +2112,138 @@ describe(QUICStream.name, () => {
     await client.destroy({ force: true });
     await server.stop({ force: true });
   });
+  test('should throw stream limit error when limit is reached', async () => {
+    const streamsNum = 10;
+    const connectionEventProm =
+      utils.promise<events.EventQUICServerConnection>();
+    const tlsConfig = await generateTLSConfig(defaultType);
+    const server = new QUICServer({
+      crypto: {
+        key,
+        ops: serverCrypto,
+      },
+      logger: logger.getChild(QUICServer.name),
+      config: {
+        initialMaxStreamsBidi: 5,
+        key: tlsConfig.leafKeyPairPEM.privateKey,
+        cert: tlsConfig.leafCertPEM,
+        verifyPeer: false,
+      },
+    });
+    socketCleanMethods.extractSocket(server);
+    server.addEventListener(
+      events.EventQUICServerConnection.name,
+      (e: events.EventQUICServerConnection) => connectionEventProm.resolveP(e),
+    );
+    await server.start({
+      host: localhost,
+    });
+    const client = await QUICClient.createQUICClient({
+      host: localhost,
+      port: server.port,
+      localHost: localhost,
+      crypto: {
+        ops: clientCrypto,
+      },
+      logger: logger.getChild(QUICClient.name),
+      config: {
+        initialMaxStreamsBidi: 5,
+        verifyPeer: false,
+      },
+    });
+    socketCleanMethods.extractSocket(client);
+    const conn = (await connectionEventProm.p).detail;
+    // Do the test
+    let streamCount = 0;
+    const streamCreationProm = utils.promise();
+    conn.addEventListener(events.EventQUICConnectionStream.name, () => {
+      streamCount += 1;
+      if (streamCount >= streamsNum) streamCreationProm.resolveP();
+    });
+    // Let's make a new streams.
+    const message = Buffer.from('Hello!');
+    const streamsP = (async () => {
+      for (let i = 0; i < streamsNum; i++) {
+        const stream = client.connection.newStream();
+        const writer = stream.writable.getWriter();
+        await writer.write(message);
+        await writer.close();
+      }
+    })();
+    await expect(streamsP).rejects.toThrow(errors.ErrorQUICStreamLimit);
+    await client.destroy({ force: true });
+    await server.stop({ force: true });
+  });
+  test('ended streams do not contribute to limit', async () => {
+    const streamsNum = 10;
+    const connectionEventProm =
+      utils.promise<events.EventQUICServerConnection>();
+    const tlsConfig = await generateTLSConfig(defaultType);
+    const server = new QUICServer({
+      crypto: {
+        key,
+        ops: serverCrypto,
+      },
+      logger: logger.getChild(QUICServer.name),
+      config: {
+        initialMaxStreamsBidi: 5,
+        key: tlsConfig.leafKeyPairPEM.privateKey,
+        cert: tlsConfig.leafCertPEM,
+        verifyPeer: false,
+      },
+    });
+    socketCleanMethods.extractSocket(server);
+    server.addEventListener(
+      events.EventQUICServerConnection.name,
+      (e: events.EventQUICServerConnection) => connectionEventProm.resolveP(e),
+    );
+    await server.start({
+      host: localhost,
+    });
+    const client = await QUICClient.createQUICClient({
+      host: localhost,
+      port: server.port,
+      localHost: localhost,
+      crypto: {
+        ops: clientCrypto,
+      },
+      logger: logger.getChild(QUICClient.name),
+      config: {
+        initialMaxStreamsBidi: 5,
+        verifyPeer: false,
+      },
+    });
+    socketCleanMethods.extractSocket(client);
+    const conn = (await connectionEventProm.p).detail;
+    // Do the test
+    let streamCount = 0;
+    const streamCreationProm = utils.promise();
+    conn.addEventListener(
+      events.EventQUICConnectionStream.name,
+      (evt: events.EventQUICConnectionStream) => {
+        const stream = evt.detail;
+        void stream.readable.pipeTo(stream.writable).catch(() => {});
+        streamCount += 1;
+        if (streamCount >= streamsNum) streamCreationProm.resolveP();
+      },
+    );
+    // Let's make a new streams.
+    const message = Buffer.from('Hello!');
+    const streamsP = (async () => {
+      for (let i = 0; i < streamsNum; i++) {
+        const stream = client.connection.newStream();
+        const writer = stream.writable.getWriter();
+        await writer.write(message);
+        await writer.close();
+        for await (const _ of stream.readable) {
+          // Just consume
+        }
+      }
+    })();
+    await expect(streamsP).resolves.toBe(undefined);
+    await streamCreationProm.p;
+    expect(streamCount).toBe(streamsNum);
+    await client.destroy({ force: true });
+    await server.stop({ force: true });
+  });
 });
