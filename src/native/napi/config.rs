@@ -10,7 +10,6 @@ pub enum CongestionControlAlgorithm {
   Reno = 0,
   CUBIC = 1,
   BBR = 2,
-  BBR2 = 3,
 }
 
 impl From<CongestionControlAlgorithm> for quiche::CongestionControlAlgorithm {
@@ -19,7 +18,6 @@ impl From<CongestionControlAlgorithm> for quiche::CongestionControlAlgorithm {
       CongestionControlAlgorithm::Reno => quiche::CongestionControlAlgorithm::Reno,
       CongestionControlAlgorithm::CUBIC => quiche::CongestionControlAlgorithm::CUBIC,
       CongestionControlAlgorithm::BBR => quiche::CongestionControlAlgorithm::BBR,
-      CongestionControlAlgorithm::BBR2 => quiche::CongestionControlAlgorithm::BBR2,
     }
   }
 }
@@ -30,7 +28,6 @@ impl From<quiche::CongestionControlAlgorithm> for CongestionControlAlgorithm {
       quiche::CongestionControlAlgorithm::Reno => CongestionControlAlgorithm::Reno,
       quiche::CongestionControlAlgorithm::CUBIC => CongestionControlAlgorithm::CUBIC,
       quiche::CongestionControlAlgorithm::BBR => CongestionControlAlgorithm::BBR,
-      quiche::CongestionControlAlgorithm::BBR2 => CongestionControlAlgorithm::BBR2,
     }
   }
 }

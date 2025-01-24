@@ -3,6 +3,8 @@
     nixpkgs-matrix = {
       type = "indirect";
       id = "nixpkgs-matrix";
+      inputs.nixpkgs.url =
+        "github:NixOS/nixpkgs?rev=e69e710edfed397959507bcee120ec8a9c7ff03e";
     };
     flake-utils.url = "github:numtide/flake-utils";
   };
