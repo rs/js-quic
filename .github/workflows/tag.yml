@@ -9,7 +9,7 @@ on:
 jobs:
   use-native-library-js-tag:
     permissions:
-      contents: read
+      contents: write
       actions: write
       checks: write
     uses: MatrixAI/.github/.github/workflows/native-library-js-tag.yml@master
