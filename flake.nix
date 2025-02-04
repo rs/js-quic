@@ -31,7 +31,7 @@
             shellHook = ''
               echo "Entering $(npm pkg get name)"
               set -o allexport
-              . ./.env
+              . <(polykey secrets env js-quic)
               set +o allexport
               set -v
               ${lib.optionalString ci ''
