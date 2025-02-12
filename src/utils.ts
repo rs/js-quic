@@ -18,6 +18,10 @@ import * as errors from './errors';
 const textEncoder = new TextEncoder();
 const textDecoder = new TextDecoder('utf-8');
 
+function never(message: string): never {
+  throw new errors.ErrorQUICUndefinedBehaviour(message);
+}
+
 /**
  * Used to yield to the event loop to allow other micro tasks to process
  */
@@ -572,6 +576,7 @@ function setMaxListeners(
 export {
   textEncoder,
   textDecoder,
+  never,
   yieldMicro,
   promisify,
   promise,

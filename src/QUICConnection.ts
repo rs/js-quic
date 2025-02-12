@@ -1029,30 +1029,47 @@ class QUICConnection {
           );
           continue;
         }
-
-        quicStream = QUICStream.createQUICStream({
-          initiated: 'peer',
-          streamId,
-          config: this.config,
-          connection: this,
-          codeToReason: this.codeToReason,
-          reasonToCode: this.reasonToCode,
-          logger: this.logger.getChild(`${QUICStream.name} ${streamId}`),
-        });
-        this.streamMap.set(quicStream.streamId, quicStream);
-        quicStream.addEventListener(
-          events.EventQUICStreamSend.name,
-          this.handleEventQUICStreamSend,
-        );
-        quicStream.addEventListener(
-          events.EventQUICStreamDestroyed.name,
-          this.handleEventQUICStreamDestroyed,
-          { once: true },
-        );
-        quicStream.addEventListener(EventAll.name, this.handleEventQUICStream);
-        this.dispatchEvent(
-          new events.EventQUICConnectionStream({ detail: quicStream }),
-        );
+        try {
+          this.conn.streamSend(streamId, Buffer.alloc(0), false);
+          utils.never(
+            'We never expect the stream to be writable if it was created during the writable iterator',
+          );
+        } catch (e) {
+          // If we got `FinalSize` during the writable iterator then we cleaned up an errant stream
+          if (e.message === 'FinalSize') continue;
+          if (utils.isStreamStopped(e) !== false) {
+            // In this case it was a stream that was created but errored out. We want to create a new stream for this one case.
+            quicStream = QUICStream.createQUICStream({
+              initiated: 'peer',
+              streamId,
+              config: this.config,
+              connection: this,
+              codeToReason: this.codeToReason,
+              reasonToCode: this.reasonToCode,
+              logger: this.logger.getChild(`${QUICStream.name} ${streamId}`),
+            });
+            this.streamMap.set(quicStream.streamId, quicStream);
+            quicStream.addEventListener(
+              events.EventQUICStreamSend.name,
+              this.handleEventQUICStreamSend,
+            );
+            quicStream.addEventListener(
+              events.EventQUICStreamDestroyed.name,
+              this.handleEventQUICStreamDestroyed,
+              { once: true },
+            );
+            quicStream.addEventListener(
+              EventAll.name,
+              this.handleEventQUICStream,
+            );
+            this.dispatchEvent(
+              new events.EventQUICConnectionStream({ detail: quicStream }),
+            );
+            quicStream.write();
+            continue;
+          }
+          utils.never(`Expected to throw "FinalSize", got ${e.message}`);
+        }
       }
       quicStream.write();
     }
