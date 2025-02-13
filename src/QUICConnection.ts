@@ -105,6 +105,26 @@ class QUICConnection {
   protected streamIdServerUni: StreamId = 0b11 as StreamId;
 
   /**
+   * Tracks the highest StreamId that has a created QUICStream for clientBidi
+   */
+  protected streamIdUsedClientBidi = -1 as StreamId;
+
+  /**
+   * Tracks the highest StreamId that has a created QUICStream for serverBidi
+   */
+  protected streamIdUsedServerBidi = -1 as StreamId;
+
+  /**
+   * Tracks the highest StreamId that has a created QUICStream for clientUni
+   */
+  protected streamIdUsedClientUni = -1 as StreamId;
+
+  /**
+   * Tracks the highest StreamId that has a created QUICStream for clientUni
+   */
+  protected streamIdUsedServerUni = -1 as StreamId;
+
+  /**
    * Quiche connection timer. This performs time delayed state transitions.
    */
   protected connTimeoutTimer?: Timer;
@@ -967,6 +987,30 @@ class QUICConnection {
     }
   }
 
+  protected isStreamUsed(streamId: StreamId): boolean {
+    const type = 0b11 & streamId;
+    switch (type) {
+      case 0b00:
+        if (streamId <= this.streamIdUsedClientBidi) return true;
+        this.streamIdUsedClientBidi = streamId;
+        return false;
+      case 0b01:
+        if (streamId <= this.streamIdUsedServerBidi) return true;
+        this.streamIdUsedServerBidi = streamId;
+        return false;
+      case 0b10:
+        if (streamId <= this.streamIdUsedClientUni) return true;
+        this.streamIdUsedClientUni = streamId;
+        return false;
+      case 0b11:
+        if (streamId <= this.streamIdUsedServerUni) return true;
+        this.streamIdUsedServerUni = streamId;
+        return false;
+      default:
+        utils.never('got an unexpected ID type');
+    }
+  }
+
   protected processStreams() {
     for (const streamId of this.conn.readable() as Iterable<StreamId>) {
       let quicStream = this.streamMap.get(streamId);
@@ -985,7 +1029,9 @@ class QUICConnection {
           );
           continue;
         }
-
+        if (this.isStreamUsed(streamId)) {
+          utils.never('We should never repeat streamIds when creating streams');
+        }
         quicStream = QUICStream.createQUICStream({
           initiated: 'peer',
           streamId,
@@ -1029,46 +1075,39 @@ class QUICConnection {
           );
           continue;
         }
-        try {
-          this.conn.streamSend(streamId, Buffer.alloc(0), false);
-        } catch (e) {
-          // If we got `FinalSize` during the writable iterator then we cleaned up an errant stream
-          if (e.message === 'FinalSize') continue;
-          if (utils.isStreamStopped(e) !== false) {
-            // In this case it was a stream that was created but errored out. We want to create a new stream for this one case.
-            quicStream = QUICStream.createQUICStream({
-              initiated: 'peer',
-              streamId,
-              config: this.config,
-              connection: this,
-              codeToReason: this.codeToReason,
-              reasonToCode: this.reasonToCode,
-              logger: this.logger.getChild(`${QUICStream.name} ${streamId}`),
-            });
-            this.streamMap.set(quicStream.streamId, quicStream);
-            quicStream.addEventListener(
-              events.EventQUICStreamSend.name,
-              this.handleEventQUICStreamSend,
-            );
-            quicStream.addEventListener(
-              events.EventQUICStreamDestroyed.name,
-              this.handleEventQUICStreamDestroyed,
-              { once: true },
-            );
-            quicStream.addEventListener(
-              EventAll.name,
-              this.handleEventQUICStream,
-            );
-            this.dispatchEvent(
-              new events.EventQUICConnectionStream({ detail: quicStream }),
-            );
-            quicStream.write();
-            continue;
+        if (this.isStreamUsed(streamId)) {
+          try {
+            this.conn.streamSend(streamId, new Uint8Array(), false);
+          } catch (e) {
+            // Both `StreamStopped()` and `FinalSize` errors means that the stream has ended and we cleaned up state
+            if (utils.isStreamStopped(e) !== false) continue;
+            if (e.message === 'FinalSize') continue;
+            throw e;
           }
-          utils.never(`Expected to throw "FinalSize", got ${e.message}`);
+          utils.never('We never expect a duplicate stream to be readable');
         }
-        utils.never(
-          'We never expect the stream to be writable if it was created during the writable iterator',
+        quicStream = QUICStream.createQUICStream({
+          initiated: 'peer',
+          streamId,
+          config: this.config,
+          connection: this,
+          codeToReason: this.codeToReason,
+          reasonToCode: this.reasonToCode,
+          logger: this.logger.getChild(`${QUICStream.name} ${streamId}`),
+        });
+        this.streamMap.set(quicStream.streamId, quicStream);
+        quicStream.addEventListener(
+          events.EventQUICStreamSend.name,
+          this.handleEventQUICStreamSend,
+        );
+        quicStream.addEventListener(
+          events.EventQUICStreamDestroyed.name,
+          this.handleEventQUICStreamDestroyed,
+          { once: true },
+        );
+        quicStream.addEventListener(EventAll.name, this.handleEventQUICStream);
+        this.dispatchEvent(
+          new events.EventQUICConnectionStream({ detail: quicStream }),
         );
       }
       quicStream.write();
@@ -1177,6 +1216,9 @@ class QUICConnection {
       streamId = this.streamIdClientUni;
     } else if (this.type === 'server' && type === 'uni') {
       streamId = this.streamIdServerUni;
+    }
+    if (this.isStreamUsed(streamId!)) {
+      utils.never('We should never repeat streamIds when creating streams');
     }
     const quicStream = QUICStream.createQUICStream({
       initiated: 'local',
