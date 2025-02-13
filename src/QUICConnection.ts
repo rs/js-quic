@@ -1031,9 +1031,6 @@ class QUICConnection {
         }
         try {
           this.conn.streamSend(streamId, Buffer.alloc(0), false);
-          utils.never(
-            'We never expect the stream to be writable if it was created during the writable iterator',
-          );
         } catch (e) {
           // If we got `FinalSize` during the writable iterator then we cleaned up an errant stream
           if (e.message === 'FinalSize') continue;
@@ -1070,6 +1067,9 @@ class QUICConnection {
           }
           utils.never(`Expected to throw "FinalSize", got ${e.message}`);
         }
+        utils.never(
+          'We never expect the stream to be writable if it was created during the writable iterator',
+        );
       }
       quicStream.write();
     }
