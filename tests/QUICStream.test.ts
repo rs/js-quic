@@ -1,6 +1,12 @@
-import type { ClientCryptoOps, QUICConnection, ServerCryptoOps } from '@';
+import type {
+  ClientCryptoOps,
+  QUICConnection,
+  ServerCryptoOps,
+  StreamId,
+} from '@';
 import Logger, { formatting, LogLevel, StreamHandler } from '@matrixai/logger';
 import { destroyed } from '@matrixai/async-init';
+import { test, fc } from '@fast-check/jest';
 import * as events from '@/events';
 import * as errors from '@/errors';
 import * as utils from '@/utils';
@@ -2245,5 +2251,126 @@ describe(QUICStream.name, () => {
     expect(streamCount).toBe(streamsNum);
     await client.destroy({ force: true });
     await server.stop({ force: true });
+  });
+  test.prop(
+    [
+      fc
+        .array(fc.integer({ min: 1 }), { minLength: 1000, maxLength: 2000 })
+        .noShrink(),
+    ],
+    { numRuns: 1 },
+  )('out of order Ids are handled properly', async (arr) => {
+    const size = arr.length;
+    const used: Set<number> = new Set();
+    const ids: Array<number> = [];
+    for (let num of arr) {
+      do {
+        num = (num + 1) % size;
+      } while (used.has(num));
+      ids.push(num);
+      used.add(num);
+    }
+
+    const connectionEventProm =
+      utils.promise<events.EventQUICServerConnection>();
+    const tlsConfig = await generateTLSConfig(defaultType);
+    const server = new QUICServer({
+      crypto: {
+        key,
+        ops: serverCrypto,
+      },
+      logger: logger.getChild(QUICServer.name),
+      config: {
+        key: tlsConfig.leafKeyPairPEM.privateKey,
+        cert: tlsConfig.leafCertPEM,
+        verifyPeer: false,
+      },
+    });
+    socketCleanMethods.extractSocket(server);
+    server.addEventListener(
+      events.EventQUICServerConnection.name,
+      (e: events.EventQUICServerConnection) => connectionEventProm.resolveP(e),
+    );
+    await server.start({
+      host: localhost,
+    });
+    const client = await QUICClient.createQUICClient({
+      host: localhost,
+      port: server.port,
+      localHost: localhost,
+      crypto: {
+        ops: clientCrypto,
+      },
+      logger: logger.getChild(QUICClient.name),
+      config: {
+        verifyPeer: false,
+      },
+    });
+    socketCleanMethods.extractSocket(client);
+    await connectionEventProm.p;
+
+    const checkId = (id: StreamId): boolean => {
+      // @ts-ignore: Using protected method
+      return client.connection.isStreamUsed(id);
+    };
+
+    for (const id of ids) {
+      expect(checkId(id as StreamId)).toBeFalse();
+    }
+    // @ts-ignore: using protected property
+    const usedIdSet = client.connection.streamIdUsedSet;
+    expect(usedIdSet.size).toBe(0);
+  });
+  test('out of order Ids are handled properly', async () => {
+    const connectionEventProm =
+      utils.promise<events.EventQUICServerConnection>();
+    const tlsConfig = await generateTLSConfig(defaultType);
+    const server = new QUICServer({
+      crypto: {
+        key,
+        ops: serverCrypto,
+      },
+      logger: logger.getChild(QUICServer.name),
+      config: {
+        key: tlsConfig.leafKeyPairPEM.privateKey,
+        cert: tlsConfig.leafCertPEM,
+        verifyPeer: false,
+      },
+    });
+    socketCleanMethods.extractSocket(server);
+    server.addEventListener(
+      events.EventQUICServerConnection.name,
+      (e: events.EventQUICServerConnection) => connectionEventProm.resolveP(e),
+    );
+    await server.start({
+      host: localhost,
+    });
+    const client = await QUICClient.createQUICClient({
+      host: localhost,
+      port: server.port,
+      localHost: localhost,
+      crypto: {
+        ops: clientCrypto,
+      },
+      logger: logger.getChild(QUICClient.name),
+      config: {
+        verifyPeer: false,
+      },
+    });
+    socketCleanMethods.extractSocket(client);
+    await connectionEventProm.p;
+
+    const checkId = (id: StreamId): boolean => {
+      // @ts-ignore: Using protected method
+      return client.connection.isStreamUsed(id);
+    };
+
+    expect(checkId(0 as StreamId)).toBeFalse();
+    expect(checkId(4 as StreamId)).toBeFalse();
+    expect(checkId(8 as StreamId)).toBeFalse();
+    expect(checkId(4 as StreamId)).toBeTrue();
+    expect(checkId(16 as StreamId)).toBeFalse();
+    expect(checkId(0 as StreamId)).toBeTrue();
+    expect(checkId(0 as StreamId)).toBeTrue();
   });
 });

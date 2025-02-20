@@ -107,22 +107,29 @@ class QUICConnection {
   /**
    * Tracks the highest StreamId that has a created QUICStream for clientBidi
    */
-  protected streamIdUsedClientBidi = -1 as StreamId;
+  protected streamIdUsedClientBidi = (0b00 - 4) as StreamId;
 
   /**
    * Tracks the highest StreamId that has a created QUICStream for serverBidi
    */
-  protected streamIdUsedServerBidi = -1 as StreamId;
+  protected streamIdUsedServerBidi = (0b01 - 4) as StreamId;
 
   /**
    * Tracks the highest StreamId that has a created QUICStream for clientUni
    */
-  protected streamIdUsedClientUni = -1 as StreamId;
+  protected streamIdUsedClientUni = (0b10 - 4) as StreamId;
 
   /**
    * Tracks the highest StreamId that has a created QUICStream for clientUni
    */
-  protected streamIdUsedServerUni = -1 as StreamId;
+  protected streamIdUsedServerUni = (0b11 - 4) as StreamId;
+
+  /**
+   * Tracks used ids that have skipped the expected next id for the streamIdUsed counters.
+   * If the next id in the streamIdUsed sequence is used then we remove IDs from the Set
+   * up to the next ID gap.
+   */
+  protected streamIdUsedSet: Set<number> = new Set();
 
   /**
    * Quiche connection timer. This performs time delayed state transitions.
@@ -988,24 +995,85 @@ class QUICConnection {
   }
 
   protected isStreamUsed(streamId: StreamId): boolean {
+    let nextId: number;
     const type = 0b11 & streamId;
     switch (type) {
       case 0b00:
-        if (streamId <= this.streamIdUsedClientBidi) return true;
-        this.streamIdUsedClientBidi = streamId;
-        return false;
+        nextId = this.streamIdUsedClientBidi + 4;
+        if (
+          streamId <= this.streamIdUsedClientBidi ||
+          this.streamIdUsedSet.has(streamId)
+        ) {
+          return true;
+        } else if (streamId === nextId) {
+          // Increase counter and check set in loop.
+          do {
+            this.streamIdUsedClientBidi = nextId as StreamId;
+            this.streamIdUsedSet.delete(nextId);
+            nextId += 4;
+          } while (this.streamIdUsedSet.has(nextId));
+          return false;
+        } else {
+          this.streamIdUsedSet.add(streamId);
+          return false;
+        }
       case 0b01:
-        if (streamId <= this.streamIdUsedServerBidi) return true;
-        this.streamIdUsedServerBidi = streamId;
-        return false;
+        nextId = this.streamIdUsedServerBidi + 4;
+        if (
+          streamId <= this.streamIdUsedServerBidi ||
+          this.streamIdUsedSet.has(streamId)
+        ) {
+          return true;
+        } else if (streamId === nextId) {
+          // Increase counter and check set in loop.
+          do {
+            this.streamIdUsedServerBidi = nextId as StreamId;
+            this.streamIdUsedSet.delete(nextId);
+            nextId += 4;
+          } while (this.streamIdUsedSet.has(nextId));
+          return false;
+        } else {
+          this.streamIdUsedSet.add(streamId);
+          return false;
+        }
       case 0b10:
-        if (streamId <= this.streamIdUsedClientUni) return true;
-        this.streamIdUsedClientUni = streamId;
-        return false;
+        nextId = this.streamIdUsedClientUni + 4;
+        if (
+          streamId <= this.streamIdUsedClientUni ||
+          this.streamIdUsedSet.has(streamId)
+        ) {
+          return true;
+        } else if (streamId === nextId) {
+          // Increase counter and check set in loop.
+          do {
+            this.streamIdUsedClientUni = nextId as StreamId;
+            this.streamIdUsedSet.delete(nextId);
+            nextId += 4;
+          } while (this.streamIdUsedSet.has(nextId));
+          return false;
+        } else {
+          this.streamIdUsedSet.add(streamId);
+          return false;
+        }
       case 0b11:
-        if (streamId <= this.streamIdUsedServerUni) return true;
-        this.streamIdUsedServerUni = streamId;
-        return false;
+        nextId = this.streamIdUsedServerUni + 4;
+        if (
+          streamId <= this.streamIdUsedServerUni ||
+          this.streamIdUsedSet.has(streamId)
+        ) {
+          return true;
+        } else if (streamId === nextId) {
+          // Increase counter and check set in loop.
+          do {
+            this.streamIdUsedServerUni = nextId as StreamId;
+            this.streamIdUsedSet.delete(nextId);
+            nextId += 4;
+          } while (this.streamIdUsedSet.has(nextId));
+          return false;
+        } else {
+          this.streamIdUsedSet.add(streamId);
+          return false;
+        }
       default:
         utils.never('got an unexpected ID type');
     }
