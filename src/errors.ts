@@ -1,6 +1,6 @@
 import type { POJO } from '@matrixai/errors';
-import type { ConnectionError, CryptoError } from './native';
-import AbstractError from '@matrixai/errors/dist/AbstractError';
+import type { ConnectionError, CryptoError } from './native/types.js';
+import { AbstractError } from '@matrixai/errors';
 
 class ErrorQUIC<T> extends AbstractError<T> {
   static description = 'QUIC error';

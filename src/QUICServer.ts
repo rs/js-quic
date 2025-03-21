@@ -8,27 +8,23 @@ import type {
   QUICServerConfigInput,
   StreamCodeToReason,
   StreamReasonToCode,
-} from './types';
-import type { Header } from './native/types';
+} from './types.js';
+import type { Header } from './native/types.js';
 import Logger from '@matrixai/logger';
 import { AbstractEvent, EventAll } from '@matrixai/events';
-import {
-  StartStop,
-  ready,
-  running,
-  status,
-} from '@matrixai/async-init/dist/StartStop';
-import QUICSocket from './QUICSocket';
-import QUICConnection from './QUICConnection';
-import QUICConnectionId from './QUICConnectionId';
-import { quiche, ConnectionErrorCode } from './native';
-import { serverDefault } from './config';
-import * as utils from './utils';
-import * as events from './events';
-import * as errors from './errors';
+import { startStop } from '@matrixai/async-init';
+import QUICSocket from './QUICSocket.js';
+import QUICConnection from './QUICConnection.js';
+import QUICConnectionId from './QUICConnectionId.js';
+import { ConnectionErrorCode } from './native/types.js';
+import quiche from './native/quiche.js';
+import { serverDefault } from './config.js';
+import * as utils from './utils.js';
+import * as events from './events.js';
+import * as errors from './errors.js';
 
-interface QUICServer extends StartStop {}
-@StartStop({
+interface QUICServer extends startStop.StartStop {}
+@startStop.StartStop({
   eventStart: events.EventQUICServerStart,
   eventStarted: events.EventQUICServerStarted,
   eventStop: events.EventQUICServerStop,
@@ -94,7 +90,7 @@ class QUICServer {
    *
    * If this event is dispatched first before `QUICServer.stop`, it represents
    * an evented close. This could originate from the `QUICSocket`. If it was
-   * from the `QUICSocket`, then here it will stop all connections with an
+   * from the `QUICSocket`, then here it will stop all connections with a
    * transport code `InternalError`.
    */
   protected handleEventQUICServerClose = async (
@@ -112,7 +108,7 @@ class QUICServer {
         try {
           // Force stop of the socket even if it had a connection map
           // This is because we will be stopping this `QUICServer` which
-          // which will stop all the relevant connections
+          //  will stop all the relevant connections
           await this.socket.stop({ force: true });
         } catch (e) {
           const e_ = new errors.ErrorQUICServerInternal(
@@ -125,7 +121,7 @@ class QUICServer {
     }
     this._closed = true;
     this.resolveClosedP();
-    if (this[running] && this[status] !== 'stopping') {
+    if (this[startStop.running] && this[startStop.status] !== 'stopping') {
       if (error !== undefined) {
         await this.stop({
           isApp: false,
@@ -190,7 +186,14 @@ class QUICServer {
     evt: events.EventQUICConnectionSend,
   ) => {
     // We want to skip this if the socket has already ended
-    if (!(this.socket[running] && this.socket[status] !== 'stopping')) return;
+    if (
+      !(
+        this.socket[startStop.running] &&
+        this.socket[startStop.status] !== 'stopping'
+      )
+    ) {
+      return;
+    }
     try {
       await this.socket.send_(
         evt.detail.msg,
@@ -334,12 +337,12 @@ class QUICServer {
     this.resolveClosedP = resolveClosedP;
   }
 
-  @ready(new errors.ErrorQUICServerNotRunning())
+  @startStop.ready(new errors.ErrorQUICServerNotRunning())
   public get host(): Host {
     return this.socket.host;
   }
 
-  @ready(new errors.ErrorQUICServerNotRunning())
+  @startStop.ready(new errors.ErrorQUICServerNotRunning())
   public get port(): Port {
     return this.socket.port;
   }
@@ -387,7 +390,7 @@ class QUICServer {
       address = utils.buildAddress(this.socket.host, this.socket.port);
     } else {
       // If the socket is shared, it must already be started
-      if (!this.socket[running]) {
+      if (!this.socket[startStop.running]) {
         throw new errors.ErrorQUICServerSocketNotRunning();
       }
       address = utils.buildAddress(this.socket.host, this.socket.port);
@@ -444,7 +447,7 @@ class QUICServer {
         force?: boolean;
       } = {}) {
     let address: string | undefined;
-    if (this.socket[running]) {
+    if (this.socket[startStop.running]) {
       address = utils.buildAddress(this.socket.host, this.socket.port);
     }
     this.logger.info(
@@ -512,7 +515,7 @@ class QUICServer {
    *
    * @internal
    */
-  @ready(new errors.ErrorQUICServerNotRunning())
+  @startStop.ready(new errors.ErrorQUICServerNotRunning())
   public async acceptConnection(
     remoteInfo: RemoteInfo,
     header: Header,

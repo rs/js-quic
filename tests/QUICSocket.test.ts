@@ -1,16 +1,17 @@
-import type QUICConnection from '@/QUICConnection';
-import type QUICServer from '@/QUICServer';
+import type QUICConnection from '#QUICConnection.js';
+import type QUICServer from '#QUICServer.js';
 import dgram from 'dgram';
-import { testProp } from '@fast-check/jest';
+import { test } from '@fast-check/jest';
 import Logger, { LogLevel, StreamHandler } from '@matrixai/logger';
 import { running } from '@matrixai/async-init';
-import QUICSocket from '@/QUICSocket';
-import QUICConnectionId from '@/QUICConnectionId';
-import { quiche } from '@/native';
-import * as utils from '@/utils';
-import * as errors from '@/errors';
-import * as events from '@/events';
-import * as testsUtils from './utils';
+import { jest } from '@jest/globals';
+import * as testsUtils from './utils.js';
+import QUICSocket from '#QUICSocket.js';
+import QUICConnectionId from '#QUICConnectionId.js';
+import quiche from '#native/quiche.js';
+import * as utils from '#utils.js';
+import * as errors from '#errors.js';
+import * as events from '#events.js';
 
 describe(QUICSocket.name, () => {
   const logger = new Logger(`${QUICSocket.name} Test`, LogLevel.WARN, [
@@ -752,9 +753,10 @@ describe(QUICSocket.name, () => {
     });
   });
   describe('receiving datagrams', () => {
-    testProp(
+    test.prop([testsUtils.bufferArb({ minLength: 0, maxLength: 100 })], {
+      numRuns: 20,
+    })(
       'random datagrams are discarded when there is no server',
-      [testsUtils.bufferArb({ minLength: 0, maxLength: 100 })],
       async (message) => {
         const socket = new QUICSocket({
           logger,
@@ -790,19 +792,20 @@ describe(QUICSocket.name, () => {
         expect(handleEventQUICSocketError).not.toHaveBeenCalled();
         await socket.stop({ force: true });
       },
-      { numRuns: 20 },
     );
-    testProp(
-      'datagrams at >20 bytes are sometimes accepted for new connections',
+    test.prop(
       [
         testsUtils.bufferArb({
           minLength: quiche.MAX_CONN_ID_LEN + 1,
           maxLength: 100,
         }),
       ],
+      { numRuns: 20 },
+    )(
+      'datagrams at >20 bytes are sometimes accepted for new connections',
       async (message) => {
         const quicServer = {
-          acceptConnection: jest.fn().mockResolvedValue(undefined),
+          acceptConnection: jest.fn<any>().mockResolvedValue(undefined),
         };
         const socket = new QUICSocket({
           logger,
@@ -847,20 +850,18 @@ describe(QUICSocket.name, () => {
         expect(handleEventQUICSocketError).not.toHaveBeenCalled();
         await socket.stop();
       },
-      { numRuns: 20 },
     );
-    testProp(
+    test.prop([
+      testsUtils.bufferArb({
+        minLength: quiche.MAX_CONN_ID_LEN + 1,
+        maxLength: 100,
+      }),
+    ])(
       'new connection failure due to socket errors results in domain error events',
-      [
-        testsUtils.bufferArb({
-          minLength: quiche.MAX_CONN_ID_LEN + 1,
-          maxLength: 100,
-        }),
-      ],
       async (message) => {
         const quicServer = {
           acceptConnection: jest
-            .fn()
+            .fn<any>()
             .mockRejectedValue(new errors.ErrorQUICSocket()),
         };
         // We expect lots of error logs
@@ -917,23 +918,20 @@ describe(QUICSocket.name, () => {
           await socket.stop();
         }
       },
-      {
-        seed: 528336845,
-        path: '0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0',
-        endOnFailure: true,
-      },
     );
-    testProp(
-      'new connection failure due start timeout is ignored',
+    test.prop(
       [
         testsUtils.bufferArb({
           minLength: quiche.MAX_CONN_ID_LEN + 1,
           maxLength: 100,
         }),
       ],
+      { numRuns: 20 },
+    )(
+      'new connection failure due start timeout is ignored',
       async (message) => {
         const quicServer = {
-          acceptConnection: jest.fn().mockRejectedValue(
+          acceptConnection: jest.fn<any>().mockRejectedValue(
             new errors.ErrorQUICServerNewConnection(undefined, {
               cause: new errors.ErrorQUICConnectionStartTimeout(),
             }),
@@ -983,7 +981,6 @@ describe(QUICSocket.name, () => {
         expect(handleEventQUICSocketError).not.toHaveBeenCalled();
         await socket.stop();
       },
-      { numRuns: 20 },
     );
   });
 });

@@ -1,12 +1,15 @@
-import type { Host, Port } from '@/types';
-import type { Connection } from '@/native';
+import type { Host, Port } from '#types.js';
+import type { Connection } from '#native/types.js';
+import url from 'node:url';
 import b from 'benny';
-import * as utils from '@/utils';
-import { quiche } from '@/native';
-import { buildQuicheConfig, clientDefault, serverDefault } from '@/config';
-import QUICConnectionId from '@/QUICConnectionId';
-import { summaryName, suiteCommon } from '../../utils';
-import * as testsUtils from '../../../tests/utils';
+import { summaryName, suiteCommon } from '../../utils.js';
+import * as testsUtils from '../../../tests/utils.js';
+import * as utils from '#utils.js';
+import quiche from '#native/quiche.js';
+import { buildQuicheConfig, clientDefault, serverDefault } from '#config.js';
+import QUICConnectionId from '#QUICConnectionId.js';
+
+const filename = url.fileURLToPath(new URL(import.meta.url));
 
 async function main() {
   const data1KiB = Buffer.allocUnsafe(1024);
@@ -211,7 +214,7 @@ async function main() {
   })();
 
   const summary = await b.suite(
-    summaryName(__filename),
+    summaryName(filename),
     b.add('send 1Kib of data over quiche FFI with no UDP socket', async () => {
       clientWrite(data1KiB);
     }),
@@ -227,7 +230,7 @@ async function main() {
   return summary;
 }
 
-if (require.main === module) {
+if (process.argv[1] === url.fileURLToPath(import.meta.url)) {
   void main();
 }
 

@@ -1,6 +1,6 @@
 import type { PromiseCancellable } from '@matrixai/async-cancellable';
 import type { ContextTimed, ContextTimedInput } from '@matrixai/contexts';
-import type QUICSocket from './QUICSocket';
+import type QUICSocket from './QUICSocket.js';
 import type {
   Host,
   Port,
@@ -10,30 +10,26 @@ import type {
   StreamId,
   StreamCodeToReason,
   StreamReasonToCode,
-} from './types';
-import type { Connection, ConnectionError, SendInfo } from './native/types';
+} from './types.js';
+import type { Connection, ConnectionError, SendInfo } from './native/types.js';
 import Logger from '@matrixai/logger';
 import { Timer } from '@matrixai/timer';
 import { Lock } from '@matrixai/async-locks';
 import { AbstractEvent, EventAll } from '@matrixai/events';
-import {
-  StartStop,
-  ready,
-  running,
-  status,
-} from '@matrixai/async-init/dist/StartStop';
-import { timedCancellable, context } from '@matrixai/contexts/dist/decorators';
-import { buildQuicheConfig, minIdleTimeout } from './config';
-import QUICConnectionId from './QUICConnectionId';
-import QUICStream from './QUICStream';
-import { quiche, ConnectionErrorCode } from './native';
-import { Shutdown } from './native/types';
-import * as utils from './utils';
-import * as events from './events';
-import * as errors from './errors';
+import { startStop } from '@matrixai/async-init';
+import { decorators } from '@matrixai/contexts';
+import { buildQuicheConfig, minIdleTimeout } from './config.js';
+import QUICConnectionId from './QUICConnectionId.js';
+import QUICStream from './QUICStream.js';
+import { ConnectionErrorCode } from './native/types.js';
+import quiche from './native/quiche.js';
+import { Shutdown } from './native/types.js';
+import * as utils from './utils.js';
+import * as events from './events.js';
+import * as errors from './errors.js';
 
-interface QUICConnection extends StartStop {}
-@StartStop({
+interface QUICConnection extends startStop.StartStop {}
+@startStop.StartStop({
   eventStart: events.EventQUICConnectionStart,
   eventStarted: events.EventQUICConnectionStarted,
   eventStop: events.EventQUICConnectionStop,
@@ -141,10 +137,10 @@ class QUICConnection {
    *
    * Quiche does not natively ensure activity on the connection. This interval
    * timer guarantees that there will be activity on the connection by sending
-   * acknowlegement eliciting frames, which will cause the peer to acknowledge.
+   * acknowledgement eliciting frames, which will cause the peer to acknowledge.
    *
    * This is still useful even if the `config.maxIdleTimeout` is set to 0, which
-   * means the connection will never timeout due to being idle.
+   * means the connection will never time out due to being idle.
    *
    * This mechanism will only start working after `secureEstablishedP`.
    */
@@ -249,7 +245,7 @@ class QUICConnection {
       await this.send();
     }
     // If the connection is still running, we will force close the connection
-    if (this[running] && this[status] !== 'stopping') {
+    if (this[startStop.running] && this[startStop.status] !== 'stopping') {
       // The `stop` will need to retrieve the error from `this.errorLast`
       await this.stop({
         force: true,
@@ -278,7 +274,7 @@ class QUICConnection {
    * `QUICConnection` is still running.
    */
   protected handleEventQUICStreamSend = async () => {
-    if (this[running]) await this.send();
+    if (this[startStop.running]) await this.send();
   };
 
   /**
@@ -453,7 +449,7 @@ class QUICConnection {
    * This is the destination connection ID.
    * This is only fully known after establishing the connection
    */
-  @ready(new errors.ErrorQUICConnectionNotRunning())
+  @startStop.ready(new errors.ErrorQUICConnectionNotRunning())
   public get connectionIdPeer() {
     const destinationId = this.conn.destinationId();
     // Zero copy construction of QUICConnectionId
@@ -468,7 +464,7 @@ class QUICConnection {
    * A common ID between the client and server connection.
    * Used to identify connection pairs more easily.
    */
-  @ready(new errors.ErrorQUICConnectionNotRunning())
+  @startStop.ready(new errors.ErrorQUICConnectionNotRunning())
   public get connectionIdShared() {
     const sourceId = this.conn.sourceId();
     const destinationId = this.conn.destinationId();
@@ -524,7 +520,7 @@ class QUICConnection {
     },
     ctx?: Partial<ContextTimedInput>,
   ): PromiseCancellable<void>;
-  @timedCancellable(
+  @decorators.timedCancellable(
     true,
     minIdleTimeout,
     errors.ErrorQUICConnectionStartTimeout,
@@ -537,7 +533,7 @@ class QUICConnection {
       data?: Uint8Array;
       remoteInfo?: RemoteInfo;
     } = {},
-    @context ctx: ContextTimed,
+    @decorators.context ctx: ContextTimed,
   ): Promise<void> {
     this.logger.info(`Start ${this.constructor.name}`);
     // If the connection has already been closed, we cannot start it again
@@ -595,7 +591,7 @@ class QUICConnection {
         // According to RFC9000, closing while in the middle of a handshake
         // should use a transport error code `APPLICATION_ERROR`.
         // For this library we extend this "handshake" phase to include the
-        // the TLS handshake too.
+        // TLS handshake too.
         // This is also the behaviour of quiche when the connection is not
         // in a "safe" state to send application errors (where `app` parameter is true).
         // https://www.rfc-editor.org/rfc/rfc9000.html#section-10.2.3-3
@@ -767,11 +763,11 @@ class QUICConnection {
    *
    * This function is callable during `this.start` and `this.stop`.
    * When the connection is draining, we can still receive data.
-   * However no streams are allowed to read or write data.
+   * However, no streams are allowed to read or write data.
    *
    * @internal
    */
-  @ready(new errors.ErrorQUICConnectionNotRunning(), false, [
+  @startStop.ready(new errors.ErrorQUICConnectionNotRunning(), false, [
     'starting',
     'stopping',
   ])
@@ -792,7 +788,7 @@ class QUICConnection {
         // This can process multiple QUIC packets.
         // Remember that 1 QUIC packet can have multiple QUIC frames.
         // Expect the `data` is mutated here due to in-place decryption,
-        // so do not re-use the `data` afterwards.
+        // so do not re-use the `data` afterward.
         this.conn.recv(data, recvInfo);
       } catch (e) {
         // If `config.verifyPeer` is true and `config.verifyCallback` is undefined,
@@ -879,11 +875,11 @@ class QUICConnection {
    *
    * This function is callable during `this.start` and `this.stop`.
    * When the connection is draining, we can still receive data.
-   * However no streams are allowed to read or write data.
+   * However, no streams are allowed to read or write data.
    *
    * @internal
    */
-  @ready(new errors.ErrorQUICConnectionNotRunning(), false, [
+  @startStop.ready(new errors.ErrorQUICConnectionNotRunning(), false, [
     'starting',
     'stopping',
   ])
@@ -963,7 +959,7 @@ class QUICConnection {
       this.resolveSecureEstablishedP();
       this.processStreams();
     }
-    if (this[status] !== 'stopping') {
+    if (this[startStop.status] !== 'stopping') {
       const peerError = this.conn.peerError();
       if (peerError != null) {
         const message = `Peer closed with ${
@@ -1083,7 +1079,10 @@ class QUICConnection {
     for (const streamId of this.conn.readable() as Iterable<StreamId>) {
       let quicStream = this.streamMap.get(streamId);
       if (quicStream == null) {
-        if (this[running] === false || this[status] === 'stopping') {
+        if (
+          this[startStop.running] === false ||
+          this[startStop.status] === 'stopping'
+        ) {
           // We should reject new connections when stopping
           this.conn.streamShutdown(
             streamId,
@@ -1129,7 +1128,10 @@ class QUICConnection {
     for (const streamId of this.conn.writable() as Iterable<StreamId>) {
       let quicStream = this.streamMap.get(streamId);
       if (quicStream == null) {
-        if (this[running] === false || this[status] === 'stopping') {
+        if (
+          this[startStop.running] === false ||
+          this[startStop.status] === 'stopping'
+        ) {
           // We should reject new connections when stopping
           this.conn.streamShutdown(
             streamId,
@@ -1186,7 +1188,7 @@ class QUICConnection {
    * Sets up the connection timeout timer.
    *
    * This only gets called on the first `QUICConnection.send`.
-   * It's the responsiblity of this timer to resolve the `closedP`.
+   * It's the responsibility of this timer to resolve the `closedP`.
    */
   protected setConnTimeoutTimer(): void {
     const connTimeoutHandler = async (signal: AbortSignal) => {
@@ -1215,7 +1217,7 @@ class QUICConnection {
       const timeout = this.conn.timeout();
       // If the max idle timeout is 0, then the timeout may be `null`,
       // and it would only be set when the connection is ready to be closed.
-      // If it is `null`, there is no need to setup the next timer
+      // If it is `null`, there is no need to set up the next timer
       if (timeout == null) {
         return;
       }
@@ -1273,7 +1275,7 @@ class QUICConnection {
   /**
    * Creates a new QUIC stream on the connection.
    */
-  @ready(new errors.ErrorQUICConnectionNotRunning())
+  @startStop.ready(new errors.ErrorQUICConnectionNotRunning())
   public newStream(type: 'bidi' | 'uni' = 'bidi'): QUICStream {
     let streamId: StreamId;
     if (this.type === 'client' && type === 'bidi') {

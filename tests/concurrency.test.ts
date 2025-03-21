@@ -1,15 +1,19 @@
-import type { ClientCryptoOps, ServerCryptoOps, StreamReasonToCode } from '@';
-import type { Messages, StreamData } from './utils';
-import type { QUICConfig } from '@';
-import { fc, testProp } from '@fast-check/jest';
+import type {
+  ClientCryptoOps,
+  ServerCryptoOps,
+  StreamReasonToCode,
+  QUICConfig,
+} from '#types.js';
+import type { Messages, StreamData } from './utils.js';
+import { test, fc } from '@fast-check/jest';
 import Logger, { formatting, LogLevel, StreamHandler } from '@matrixai/logger';
-import * as events from '@/events';
-import QUICServer from '@/QUICServer';
-import { promise } from '@/utils';
-import QUICClient from '@/QUICClient';
-import QUICSocket from '@/QUICSocket';
-import { generateTLSConfig, handleStreamProm, sleep } from './utils';
-import * as testsUtils from './utils';
+import { generateTLSConfig, handleStreamProm, sleep } from './utils.js';
+import * as testsUtils from './utils.js';
+import * as events from '#events.js';
+import QUICServer from '#QUICServer.js';
+import { promise } from '#utils.js';
+import QUICClient from '#QUICClient.js';
+import QUICSocket from '#QUICSocket.js';
 
 describe('Concurrency tests', () => {
   const logger = new Logger(`${QUICClient.name} Test`, LogLevel.WARN, [
@@ -79,15 +83,15 @@ describe('Concurrency tests', () => {
     startDelay: number;
     endDelay: number;
   };
-  const messagesArb = fc
-    .array(fc.uint8Array({ size: 'medium', minLength: 1 }), {
+  const messagesArb = fc.noShrink(
+    fc.array(fc.uint8Array({ size: 'medium', minLength: 1 }), {
       size: 'small',
       minLength: 1,
       maxLength: 10,
-    })
-    .noShrink() as fc.Arbitrary<Messages>;
-  const streamArb = fc
-    .record({
+    }),
+  ) as fc.Arbitrary<Messages>;
+  const streamArb = fc.noShrink(
+    fc.record({
       messages: messagesArb,
       startDelay: fc.integer({ min: 0, max: 20 }),
       endDelay: fc.integer({ min: 0, max: 20 }),
@@ -95,28 +99,27 @@ describe('Concurrency tests', () => {
         size: 'small',
         minLength: 1,
       }),
-    })
-    .noShrink() as fc.Arbitrary<StreamData>;
+    }),
+  ) as fc.Arbitrary<StreamData>;
   const streamsArb = (minLength?: number, maxLength?: number) =>
-    fc.array(streamArb, { size: 'small', minLength, maxLength }).noShrink();
-  const connectionArb = fc
-    .record({
+    fc.noShrink(fc.array(streamArb, { size: 'small', minLength, maxLength }));
+  const connectionArb = fc.noShrink(
+    fc.record({
       streams: streamsArb(1, 5),
       startDelay: fc.integer({ min: 0, max: 20 }),
       endDelay: fc.integer({ min: 0, max: 20 }),
-    })
-    .noShrink() as fc.Arbitrary<ConnectionData>;
-  const connectionsArb = fc
-    .array(connectionArb, {
+    }),
+  ) as fc.Arbitrary<ConnectionData>;
+  const connectionsArb = fc.noShrink(
+    fc.array(connectionArb, {
       minLength: 1,
       maxLength: 5,
       size: 'small',
-    })
-    .noShrink() as fc.Arbitrary<Array<ConnectionData>>;
+    }),
+  ) as fc.Arbitrary<Array<ConnectionData>>;
 
-  testProp(
+  test.prop([connectionsArb, streamsArb(3)], { numRuns: 1 })(
     'Multiple clients connecting to a server',
-    [connectionsArb, streamsArb(3)],
     async (clientDatas, serverStreams) => {
       const tlsConfig = await generateTLSConfig('RSA');
       const cleanUpHoldProm = promise<void>();
@@ -236,11 +239,9 @@ describe('Concurrency tests', () => {
       }
       logger.info('TEST FULLY DONE!');
     },
-    { numRuns: 1 },
   );
-  testProp(
+  test.prop([connectionsArb, streamsArb(3)], { numRuns: 1 })(
     'Multiple clients sharing a socket',
-    [connectionsArb, streamsArb(3)],
     async (clientDatas, serverStreams) => {
       const tlsConfig = await generateTLSConfig('RSA');
       const cleanUpHoldProm = promise<void>();
@@ -368,7 +369,6 @@ describe('Concurrency tests', () => {
       await socket.stop();
       logger.info('TEST FULLY DONE!');
     },
-    { numRuns: 1 },
   );
   const spawnServer = async ({
     socket,
@@ -450,9 +450,10 @@ describe('Concurrency tests', () => {
       );
     }
   };
-  testProp(
+  test.prop([connectionsArb, connectionsArb, streamsArb(3), streamsArb(3)], {
+    numRuns: 1,
+  })(
     'Multiple clients sharing a socket with a server',
-    [connectionsArb, connectionsArb, streamsArb(3), streamsArb(3)],
     async (clientDatas1, clientDatas2, serverStreams1, serverStreams2) => {
       const tlsConfig1 = await generateTLSConfig('RSA');
       const tlsConfig2 = await generateTLSConfig('RSA');
@@ -599,6 +600,5 @@ describe('Concurrency tests', () => {
       await socket2.stop({ force: true });
       logger.info('TEST FULLY DONE!');
     },
-    { numRuns: 1 },
   );
 });

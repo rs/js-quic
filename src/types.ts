@@ -1,5 +1,5 @@
-import type QUICStream from './QUICStream';
-import type { CryptoError } from './native';
+import type QUICStream from './QUICStream.js';
+import type { CryptoError } from './native/types.js';
 
 /**
  * Opaque types are wrappers of existing types
@@ -118,7 +118,7 @@ type QUICConfig = {
   /**
    * Private key as a PEM string or Uint8Array buffer containing PEM formatted
    * key. You can pass multiple keys. The number of keys must match the number
-   * of certs. Each key must be associated to the the corresponding cert chain.
+   * of certs. Each key must be associated to the corresponding cert chain.
    *
    * Currently multiple key and certificate chains is not supported.
    */
@@ -196,7 +196,7 @@ type QUICConfig = {
   /**
    * Maximum number of milliseconds to wait for an idle connection.
    * If this time is exhausted with no answer from the peer, then
-   * the connection will timeout. This applies to any open connection.
+   * the connection will time out. This applies to any open connection.
    * Note that the QUIC client will repeatedly send initial packets to
    * a non-responding QUIC server up to this time.
    * This is defaulted to `0` meaning infinite time.

@@ -1,13 +1,16 @@
 #!/usr/bin/env ts-node
 
-import type { Summary } from 'benny/lib/internal/common-types';
+import type { Summary } from 'benny/lib/internal/common-types.js';
 import fs from 'fs';
 import path from 'path';
+import url from 'node:url';
 import si from 'systeminformation';
-import { fsWalk, resultsPath, suitesPath } from './utils';
+import { fsWalk, resultsPath, suitesPath } from './utils.js';
+
+const dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 async function main(): Promise<void> {
-  await fs.promises.mkdir(path.join(__dirname, 'results'), { recursive: true });
+  await fs.promises.mkdir(path.join(dirname, 'results'), { recursive: true });
   // Running all suites
   for await (const suitePath of fsWalk(suitesPath)) {
     // Skip over non-ts and non-js files
@@ -44,12 +47,12 @@ async function main(): Promise<void> {
     system: 'model, manufacturer',
   });
   await fs.promises.writeFile(
-    path.join(__dirname, 'results', 'system.json'),
+    path.join(dirname, 'results', 'system.json'),
     JSON.stringify(systemData, null, 2),
   );
 }
 
-if (require.main === module) {
+if (process.argv[1] === url.fileURLToPath(import.meta.url)) {
   void main();
 }
 

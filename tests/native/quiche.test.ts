@@ -1,11 +1,10 @@
-import { testProp } from '@fast-check/jest';
-import { quiche } from '@/native';
-import * as testsUtils from '../utils';
+import { test } from '@fast-check/jest';
+import * as testsUtils from '../utils.js';
+import quiche from '#native/quiche.js';
 
 describe('native/quiche', () => {
-  testProp(
+  test.prop([testsUtils.bufferArb({ minLength: 0, maxLength: 100 })])(
     'packet parsing',
-    [testsUtils.bufferArb({ minLength: 0, maxLength: 100 })],
     (packet) => {
       // Remember a UDP payload only has 1 QUIC packet
       // But 1 QUIC packet can have multiple QUIC frames

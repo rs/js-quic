@@ -11,9 +11,14 @@ import type {
   ConfigConstructor,
   ConnectionConstructor,
   HeaderConstructor,
-} from './types';
+} from './types.js';
 import process from 'process';
 import path from 'path';
+import url from 'url';
+import Module from 'node:module';
+
+const require = Module.createRequire(import.meta.url);
+const dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 interface Quiche {
   MAX_CONN_ID_LEN: number;
@@ -48,7 +53,7 @@ interface Quiche {
   Header: HeaderConstructor;
 }
 
-const projectRoot = path.join(__dirname, '../../');
+const projectRoot = path.join(dirname, '../../');
 const prebuildPath = path.join(projectRoot, 'prebuild');
 
 /**

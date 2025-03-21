@@ -1,11 +1,14 @@
 import fs from 'fs';
 import path from 'path';
+import url from 'node:url';
 import b from 'benny';
 import { codeBlock } from 'common-tags';
 import packageJson from '../package.json';
 
-const suitesPath = path.join(__dirname, 'suites');
-const resultsPath = path.join(__dirname, 'results');
+const dirname = url.fileURLToPath(new URL('.', import.meta.url));
+
+const suitesPath = path.join(dirname, 'suites');
+const resultsPath = path.join(dirname, 'results');
 
 function summaryName(suitePath: string) {
   return path

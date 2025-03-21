@@ -8,12 +8,12 @@ import type {
   ConnectionId,
   ConnectionIdString,
   StreamId,
-} from './types';
+} from './types.js';
 import dns from 'dns';
-import events from 'events';
+import events from 'node:events';
 import { IPv4, IPv6, Validator } from 'ip-num';
-import QUICConnectionId from './QUICConnectionId';
-import * as errors from './errors';
+import QUICConnectionId from './QUICConnectionId.js';
+import * as errors from './errors.js';
 
 const textEncoder = new TextEncoder();
 const textDecoder = new TextDecoder('utf-8');

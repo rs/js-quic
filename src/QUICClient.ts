@@ -8,28 +8,24 @@ import type {
   QUICClientConfigInput,
   StreamCodeToReason,
   StreamReasonToCode,
-} from './types';
-import type { Config } from './native/types';
+} from './types.js';
+import type { Config } from './native/types.js';
 import Logger from '@matrixai/logger';
 import { AbstractEvent, EventAll } from '@matrixai/events';
 import { running } from '@matrixai/async-init';
-import {
-  CreateDestroy,
-  destroyed,
-  ready,
-  status,
-} from '@matrixai/async-init/dist/CreateDestroy';
-import { timedCancellable, context } from '@matrixai/contexts/dist/decorators';
-import QUICSocket from './QUICSocket';
-import QUICConnection from './QUICConnection';
-import QUICConnectionId from './QUICConnectionId';
-import { quiche, ConnectionErrorCode } from './native';
-import { clientDefault, minIdleTimeout } from './config';
-import * as utils from './utils';
-import * as events from './events';
-import * as errors from './errors';
-interface QUICClient extends CreateDestroy {}
-@CreateDestroy({
+import { createDestroy, startStop } from '@matrixai/async-init';
+import { decorators } from '@matrixai/contexts';
+import QUICSocket from './QUICSocket.js';
+import QUICConnection from './QUICConnection.js';
+import QUICConnectionId from './QUICConnectionId.js';
+import { ConnectionErrorCode } from './native/types.js';
+import quiche from './native/quiche.js';
+import { clientDefault, minIdleTimeout } from './config.js';
+import * as utils from './utils.js';
+import * as events from './events.js';
+import * as errors from './errors.js';
+interface QUICClient extends createDestroy.CreateDestroy {}
+@createDestroy.CreateDestroy({
   eventDestroy: events.EventQUICClientDestroy,
   eventDestroyed: events.EventQUICClientDestroyed,
 })
@@ -94,7 +90,11 @@ class QUICClient {
     },
     ctx?: Partial<ContextTimedInput>,
   ): PromiseCancellable<QUICClient>;
-  @timedCancellable(true, minIdleTimeout, errors.ErrorQUICClientCreateTimeout)
+  @decorators.timedCancellable(
+    true,
+    minIdleTimeout,
+    errors.ErrorQUICClientCreateTimeout,
+  )
   public static async createQUICClient(
     {
       host,
@@ -127,7 +127,7 @@ class QUICClient {
       codeToReason?: StreamCodeToReason;
       logger?: Logger;
     },
-    @context ctx: ContextTimed,
+    @decorators.context ctx: ContextTimed,
   ): Promise<QUICClient> {
     let address = utils.buildAddress(host, port);
     logger.info(`Create ${this.name} to ${address}`);
@@ -389,9 +389,9 @@ class QUICClient {
    * If this event is dispatched first before `QUICClient.destroy`, it represents
    * an evented close. This could originate from the `QUICSocket` or
    * `QUICConnection`. If it was from the `QUICSocket`, then here it will stop
-   * the `QUICConnection` with an transport code `InternalError`. If it was
+   * the `QUICConnection` with a transport code `InternalError`. If it was
    * from `QUICConnection`, then the `QUICConnection` will already be closing.
-   * Therefore attempting to stop the `QUICConnection` will be idempotent.
+   * Therefore, attempting to stop the `QUICConnection` will be idempotent.
    */
   protected handleEventQUICClientClose = async (
     evt: events.EventQUICClientClose,
@@ -419,7 +419,7 @@ class QUICClient {
         try {
           // Force stop of the socket even if it had a connection map
           // This is because we will be stopping this `QUICClient` which
-          // which will stop all the relevant connections
+          //  will stop all the relevant connections
           await this.socket.stop({ force: true });
         } catch (e) {
           const e_ = new errors.ErrorQUICClientInternal(
@@ -432,7 +432,10 @@ class QUICClient {
     }
     this._closed = true;
     this.resolveClosedP();
-    if (!this[destroyed] && this[status] !== 'destroying') {
+    if (
+      !this[createDestroy.destroyed] &&
+      this[createDestroy.status] !== 'destroying'
+    ) {
       await this.destroy({ force: true });
     }
   };
@@ -500,7 +503,14 @@ class QUICClient {
     evt: events.EventQUICConnectionSend,
   ) => {
     try {
-      if (!(this.socket[running] && this.socket[status] !== 'stopping')) return;
+      if (
+        !(
+          this.socket[startStop.running] &&
+          this.socket[startStop.status] !== 'stopping'
+        )
+      ) {
+        return;
+      }
       // Uses the raw send method as the port and address is fully resolved
       // and determined by `QUICConnection`.
       await this.socket.send_(
@@ -594,22 +604,22 @@ class QUICClient {
     this.resolveClosedP = resolveClosedP;
   }
 
-  @ready(new errors.ErrorQUICClientDestroyed())
+  @createDestroy.ready(new errors.ErrorQUICClientDestroyed())
   public get host(): Host {
     return this.connection.remoteHost;
   }
 
-  @ready(new errors.ErrorQUICClientDestroyed())
+  @createDestroy.ready(new errors.ErrorQUICClientDestroyed())
   public get port(): Port {
     return this.connection.remotePort;
   }
 
-  @ready(new errors.ErrorQUICClientDestroyed())
+  @createDestroy.ready(new errors.ErrorQUICClientDestroyed())
   public get localHost(): Host {
     return this.socket.host;
   }
 
-  @ready(new errors.ErrorQUICClientDestroyed())
+  @createDestroy.ready(new errors.ErrorQUICClientDestroyed())
   public get localPort(): Port {
     return this.socket.port;
   }
@@ -622,7 +632,7 @@ class QUICClient {
    * Destroy the QUICClient.
    *
    * @param opts
-   * @param opts.isApp - whether the destroy is initiated by the application
+   * @param opts.isApp - whether to destroy is initiated by the application
    * @param opts.errorCode - the error code to send to the peer
    * @param opts.reason - the reason to send to the peer
    * @param opts.force - force controls whether to cancel streams or wait for

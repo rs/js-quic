@@ -5,14 +5,14 @@ import type {
   ClientCryptoOps,
   ServerCryptoOps,
   TLSVerifyCallback,
-} from '@/types';
-import type { Config, Connection, SendInfo } from '@/native/types';
-import { quiche } from '@/native';
-import { clientDefault, serverDefault, buildQuicheConfig } from '@/config';
-import QUICConnectionId from '@/QUICConnectionId';
-import * as utils from '@/utils';
-import { CryptoError } from '@/native/types';
-import * as testsUtils from '../../utils';
+} from '#types.js';
+import type { Config, Connection, SendInfo } from '#native/types.js';
+import * as testsUtils from '../../utils.js';
+import quiche from '#native/quiche.js';
+import { clientDefault, serverDefault, buildQuicheConfig } from '#config.js';
+import QUICConnectionId from '#QUICConnectionId.js';
+import * as utils from '#utils.js';
+import { CryptoError } from '#native/types.js';
 
 describe('native/tls/ecdsa', () => {
   let crypto: {

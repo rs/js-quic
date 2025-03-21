@@ -1,8 +1,8 @@
-import type { QUICConfig } from './types';
-import type { Config as QuicheConfig } from './native/types';
-import { quiche } from './native';
-import * as utils from './utils';
-import * as errors from './errors';
+import type { QUICConfig } from './types.js';
+import type { Config as QuicheConfig } from './native/types.js';
+import quiche from './native/quiche.js';
+import * as utils from './utils.js';
+import * as errors from './errors.js';
 
 /**
  * BoringSSL does not support:
@@ -37,7 +37,7 @@ const sigalgs = [
  * boundary" when starting.
  * Both `minIdleTimeout` and `maxIdleTimeout` defaults to `Infinity` (where `0`
  * means `Infinity` for `maxIdleTimeout`), thus by default connections will not
- * timeout when starting or during keep-alive.
+ * time out when starting or during keep-alive.
  */
 const minIdleTimeout = Infinity;
 

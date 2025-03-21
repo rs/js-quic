@@ -1,7 +1,7 @@
 import type { X509Certificate } from '@peculiar/x509';
-import { clientDefault, serverDefault, buildQuicheConfig } from '@/config';
-import * as errors from '@/errors';
-import * as testsUtils from './utils';
+import * as testsUtils from './utils.js';
+import { clientDefault, serverDefault, buildQuicheConfig } from '#config.js';
+import * as errors from '#errors.js';
 
 describe('config', () => {
   let keyPairRSA: {
