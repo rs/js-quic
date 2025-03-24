@@ -1,20 +1,20 @@
-import type QUICServer from './QUICServer';
-import type { Host, Hostname, Port, ResolveHostname } from './types';
-import type { Header } from './native/types';
+import type QUICServer from './QUICServer.js';
+import type { Host, Hostname, Port, ResolveHostname } from './types.js';
+import type { Header } from './native/types.js';
 import dgram from 'dgram';
 import Logger from '@matrixai/logger';
-import { StartStop, ready, running } from '@matrixai/async-init/dist/StartStop';
+import { startStop } from '@matrixai/async-init';
 import { utils as errorsUtils } from '@matrixai/errors';
-import { _eventTarget } from '@matrixai/events/dist/utils';
-import QUICConnectionId from './QUICConnectionId';
-import QUICConnectionMap from './QUICConnectionMap';
-import { quiche } from './native';
-import * as utils from './utils';
-import * as events from './events';
-import * as errors from './errors';
+import { utils as eventsUtils } from '@matrixai/events';
+import QUICConnectionId from './QUICConnectionId.js';
+import QUICConnectionMap from './QUICConnectionMap.js';
+import quiche from './native/quiche.js';
+import * as utils from './utils.js';
+import * as events from './events.js';
+import * as errors from './errors.js';
 
-interface QUICSocket extends StartStop {}
-@StartStop({
+interface QUICSocket extends startStop.StartStop {}
+@startStop.StartStop({
   eventStart: events.EventQUICSocketStart,
   eventStarted: events.EventQUICSocketStarted,
   eventStop: events.EventQUICSocketStop,
@@ -23,7 +23,7 @@ interface QUICSocket extends StartStop {}
 class QUICSocket {
   /**
    * The connection map is defined here so that it can be shared between
-   * the `QUICClient` and the `QUICServer`. However every connection's
+   * the `QUICClient` and the `QUICServer`. However, every connection's
    * lifecycle is managed by either the `QUICClient` or `QUICServer`.
    * `QUICSocket` will not set or unset any connections in this connection map.
    * @internal
@@ -65,7 +65,7 @@ class QUICSocket {
     await this.socketClose();
     this._closed = true;
     this.resolveClosedP();
-    if (this[running]) {
+    if (this[startStop.running]) {
       await this.stop({ force: true });
     }
   };
@@ -96,7 +96,7 @@ class QUICSocket {
       if (e.message === 'BufferTooShort' || e.message === 'InvalidPacket') {
         return;
       }
-      // If the error is niether `BufferTooShort` or `InvalidPacket`, this
+      // If the error is neither `BufferTooShort` nor `InvalidPacket`, this
       // may indicate something went wrong in the header parsing, which should
       // be a software error.
       throw e;
@@ -126,9 +126,9 @@ class QUICSocket {
         // This call will block until the connection is started which
         // may require multiple `recv` and `send` pairs to process the
         // received packets.
-        // In order to do this, firstly the initial `data` is faciliated by the
+        // In order to do this, firstly the initial `data` is facilitated by the
         // `QUICServer`. And subsequently multiple `recv` and `send` pairs will
-        // occur concurrently while the the connection is starting.
+        // occur concurrently while the connection is starting.
         // These concurrent `recv` and `send` pairs occur in this same handler,
         // but just in the other branch of the current `if` statement where
         // the connection object already exists in the connection map.
@@ -188,7 +188,7 @@ class QUICSocket {
    * Note that `::` can mean all IPv4 and all IPv6.
    * Whereas `0.0.0.0` means only all IPv4.
    */
-  @ready(new errors.ErrorQUICSocketNotRunning())
+  @startStop.ready(new errors.ErrorQUICSocketNotRunning())
   public get host(): Host {
     return this._host;
   }
@@ -198,7 +198,7 @@ class QUICSocket {
    * This cannot be `0`.
    * Because `0` is always resolved to a specific port.
    */
-  @ready(new errors.ErrorQUICSocketNotRunning())
+  @startStop.ready(new errors.ErrorQUICSocketNotRunning())
   public get port(): Port {
     return this._port;
   }
@@ -207,7 +207,7 @@ class QUICSocket {
    * Gets the type of socket
    * It can be ipv4-only, ipv6-only or dual stack
    */
-  @ready(new errors.ErrorQUICSocketNotRunning())
+  @startStop.ready(new errors.ErrorQUICSocketNotRunning())
   public get type(): 'ipv4' | 'ipv6' | 'ipv4&ipv6' {
     return this._type;
   }
@@ -250,7 +250,7 @@ class QUICSocket {
   } = {}): Promise<void> {
     // Since we have a one-to-many relationship with clients and connections,
     // we want to up the warning limit on the EventTarget
-    utils.setMaxListeners(this[_eventTarget]);
+    utils.setMaxListeners(this[eventsUtils._eventTarget]);
     let address = utils.buildAddress(host, port);
     this.logger.info(`Start ${this.constructor.name} on ${address}`);
     // Resolves the host which could be a hostname and acquire the type.
@@ -367,7 +367,7 @@ class QUICSocket {
    * Because UDP socket is connectionless, the port and address are required.
    * This call is used internally by the rest of the library, but it is not
    * internal because it can be used for hole punching, which is an application
-   * concern. Therefore if this method throws an exception, it does necessarily
+   * concern. Therefore, if this method throws an exception, it does necessarily
    * mean that this `QUICSocket` is an error state. It could be the caller's
    * fault.
    */
@@ -383,7 +383,7 @@ class QUICSocket {
     port: number,
     address: string,
   ): Promise<number>;
-  @ready(new errors.ErrorQUICSocketNotRunning())
+  @startStop.ready(new errors.ErrorQUICSocketNotRunning())
   public async send(...params: Array<any>): Promise<number> {
     let index: number;
     if (params.length === 3 && typeof params[2] === 'string') {
@@ -412,7 +412,7 @@ class QUICSocket {
   /**
    * This is an internal send that is faster.
    * It does not do any resolution or validation of the target.
-   * If one of the internal procedures in this library calls this method and it
+   * If one of the internal procedures in this library calls this method, and it
    * throws up a caller error, then it could be considered an internal error.
    * There are no known intermittent runtime errors from sending UDP packets.
    * @internal
@@ -429,7 +429,7 @@ class QUICSocket {
     port: number,
     address: string,
   ): Promise<number>;
-  @ready(new errors.ErrorQUICSocketNotRunning())
+  @startStop.ready(new errors.ErrorQUICSocketNotRunning())
   public async send_(...params: Array<any>): Promise<number> {
     return this.socketSend(...params);
   }

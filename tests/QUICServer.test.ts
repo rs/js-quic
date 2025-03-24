@@ -1,13 +1,12 @@
 import type { X509Certificate } from '@peculiar/x509';
-import type { Host, ServerCryptoOps } from '@/types';
-import type { ClientCryptoOps } from '@/types';
+import type { Host, ServerCryptoOps, ClientCryptoOps } from '#types.js';
 import Logger, { LogLevel, StreamHandler, formatting } from '@matrixai/logger';
-import QUICServer from '@/QUICServer';
-import QUICClient from '@/QUICClient';
-import * as utils from '@/utils';
-import * as events from '@/events';
-import * as errors from '@/errors';
-import * as testsUtils from './utils';
+import * as testsUtils from './utils.js';
+import QUICServer from '#QUICServer.js';
+import QUICClient from '#QUICClient.js';
+import * as utils from '#utils.js';
+import * as events from '#events.js';
+import * as errors from '#errors.js';
 
 describe(QUICServer.name, () => {
   const logger = new Logger(`${QUICServer.name} Test`, LogLevel.WARN, [

@@ -1,10 +1,11 @@
-import type { Connection, StreamIter } from '@/native';
-import type { ClientCryptoOps, Host, ServerCryptoOps } from '@';
-import { quiche, Shutdown } from '@/native';
-import QUICConnectionId from '@/QUICConnectionId';
-import { buildQuicheConfig, clientDefault, serverDefault } from '@/config';
-import * as utils from '@/utils';
-import * as testsUtils from '../utils';
+import type { Connection, StreamIter } from '#native/index.js';
+import type { ClientCryptoOps, Host, ServerCryptoOps } from '#types.js';
+import * as testsUtils from '../utils.js';
+import { Shutdown } from '#native/index.js';
+import quiche from '#native/quiche.js';
+import QUICConnectionId from '#QUICConnectionId.js';
+import { buildQuicheConfig, clientDefault, serverDefault } from '#config.js';
+import * as utils from '#utils.js';
 
 describe('native/stream', () => {
   const localHost = '127.0.0.1' as Host;

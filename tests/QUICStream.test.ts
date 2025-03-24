@@ -1,21 +1,18 @@
-import type {
-  ClientCryptoOps,
-  QUICConnection,
-  ServerCryptoOps,
-  StreamId,
-} from '@';
+import type { ClientCryptoOps, ServerCryptoOps, StreamId } from '#types.js';
+import type QUICConnection from '#QUICConnection.js';
 import Logger, { formatting, LogLevel, StreamHandler } from '@matrixai/logger';
 import { destroyed } from '@matrixai/async-init';
 import { test, fc } from '@fast-check/jest';
-import * as events from '@/events';
-import * as errors from '@/errors';
-import * as utils from '@/utils';
-import QUICServer from '@/QUICServer';
-import QUICClient from '@/QUICClient';
-import QUICStream from '@/QUICStream';
-import * as testsUtils from './utils';
-import { generateTLSConfig, sleep } from './utils';
-
+import { jest } from '@jest/globals';
+import * as testsUtils from './utils.js';
+import { generateTLSConfig, sleep } from './utils.js';
+import * as events from '#events.js';
+import * as errors from '#errors.js';
+import * as utils from '#utils.js';
+import QUICServer from '#QUICServer.js';
+import QUICClient from '#QUICClient.js';
+import QUICStream from '#QUICStream.js';
+1;
 describe(QUICStream.name, () => {
   const logger = new Logger(`${QUICStream.name} Test`, LogLevel.WARN, [
     new StreamHandler(
@@ -34,7 +31,7 @@ describe(QUICStream.name, () => {
     randomBytes: testsUtils.randomBytes,
   };
   let socketCleanMethods: ReturnType<typeof testsUtils.socketCleanupFactory>;
-  let createQUICStreamMock: jest.SpyInstance;
+  let createQUICStreamMock: jest.SpiedFunction<any>;
 
   const testReason = Symbol('TestReason');
   const testCodeToReason = (type, code) => {
@@ -2254,9 +2251,9 @@ describe(QUICStream.name, () => {
   });
   test.prop(
     [
-      fc
-        .array(fc.integer({ min: 1 }), { minLength: 1000, maxLength: 2000 })
-        .noShrink(),
+      fc.noShrink(
+        fc.array(fc.integer({ min: 1 }), { minLength: 1000, maxLength: 2000 }),
+      ),
     ],
     { numRuns: 1 },
   )('out of order Ids are handled properly', async (arr) => {

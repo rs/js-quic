@@ -1,9 +1,12 @@
+import url from 'node:url';
 import b from 'benny';
-import { summaryName, suiteCommon } from '../../utils';
+import { summaryName, suiteCommon } from '../../utils.js';
+
+const filename = url.fileURLToPath(new URL(import.meta.url));
 
 async function main() {
   const summary = await b.suite(
-    summaryName(__filename),
+    summaryName(filename),
     b.add('Buffer.alloc', () => {
       Buffer.alloc(1350);
     }),
@@ -39,7 +42,7 @@ async function main() {
   return summary;
 }
 
-if (require.main === module) {
+if (process.argv[1] === url.fileURLToPath(import.meta.url)) {
   void main();
 }
 

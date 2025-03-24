@@ -1,5 +1,5 @@
-import type QUICConnection from './QUICConnection';
-import QUICConnectionId from './QUICConnectionId';
+import type QUICConnection from './QUICConnection.js';
+import QUICConnectionId from './QUICConnectionId.js';
 
 class QUICConnectionMap implements Map<QUICConnectionId, QUICConnection> {
   public [Symbol.toStringTag]: string = 'QUICConnectionMap';

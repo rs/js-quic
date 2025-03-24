@@ -1,5 +1,5 @@
-import type QUICConnection from './QUICConnection';
-import type QUICStream from './QUICStream';
+import type QUICConnection from './QUICConnection.js';
+import type QUICStream from './QUICStream.js';
 import type {
   ErrorQUICConnectionLocal,
   ErrorQUICConnectionPeer,
@@ -15,7 +15,7 @@ import type {
   ErrorQUICServerSocketNotRunning,
   ErrorQUICClientSocketNotRunning,
   ErrorQUICClientInternal,
-} from './errors';
+} from './errors.js';
 import { AbstractEvent } from '@matrixai/events';
 
 abstract class EventQUIC<T = undefined> extends AbstractEvent<T> {}
@@ -108,7 +108,7 @@ class EventQUICConnectionStopped extends EventQUICConnection {}
 /**
  * Closing a quic connection is always an error no matter if it is graceful or
  * not. This is due to the utilisation of the error code and reason during
- * connection close. Additionally it is also possible that that the QUIC
+ * connection close. Additionally, it is also possible that the QUIC
  * connection times out. In this case, quiche does will not send a
  * `CONNECTION_CLOSE` frame.
  */

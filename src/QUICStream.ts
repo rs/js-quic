@@ -3,35 +3,30 @@ import type {
   ReadableStreamDefaultController,
   WritableStreamDefaultController,
 } from 'stream/web';
-import type QUICConnection from './QUICConnection';
+import type QUICConnection from './QUICConnection.js';
 import type {
   QUICConfig,
   ConnectionMetadata,
   StreamId,
   StreamReasonToCode,
   StreamCodeToReason,
-} from './types';
+} from './types.js';
 import {
   ReadableStream,
   WritableStream,
   CountQueuingStrategy,
 } from 'stream/web';
 import Logger from '@matrixai/logger';
-import {
-  CreateDestroy,
-  ready,
-  destroyed,
-  status,
-} from '@matrixai/async-init/dist/CreateDestroy';
-import { quiche } from './native';
-import * as utils from './utils';
-import * as events from './events';
-import * as errors from './errors';
+import { createDestroy, destroyed, status } from '@matrixai/async-init';
+import quiche from './native/quiche.js';
+import * as utils from './utils.js';
+import * as events from './events.js';
+import * as errors from './errors.js';
 
 const abortReadablePReason = Symbol('abort readableP reason');
 
-interface QUICStream extends CreateDestroy {}
-@CreateDestroy({
+interface QUICStream extends createDestroy.CreateDestroy {}
+@createDestroy.CreateDestroy({
   eventDestroy: events.EventQUICStreamDestroy,
   eventDestroyed: events.EventQUICStreamDestroyed,
 })
@@ -236,7 +231,7 @@ class QUICStream implements ReadableWritablePair<Uint8Array, Uint8Array> {
     const { p: closedP, resolveP: resolveClosedP } = utils.promise();
     this.closedP = closedP;
     this.resolveClosedP = resolveClosedP;
-    // This will setup the readable chunk buffer with the size set to the
+    // This will set up the readable chunk buffer with the size set to the
     // configured per-stream buffer size. Note that this doubles the memory
     // usage of each stream due to maintaining both the Rust and JS buffers
     if (this.type === 'uni' && initiated === 'local') {
@@ -285,12 +280,12 @@ class QUICStream implements ReadableWritablePair<Uint8Array, Uint8Array> {
       try {
         // Quiche stream state doesn't yet exist until data is either received
         // or sent on the stream. However in this QUIC library, one may want to
-        // create a new stream to use. Therefore in order to maintain consistent
+        // create a new stream to use. Therefore, in order to maintain consistent
         // closing behaviour, we can prime the stream state in quiche by sending
         // a 0-length message. The data is not actually send to the peer.
         connection.conn.streamSend(streamId, new Uint8Array(0), false);
       } catch (e) {
-        // If the peer initally sent `RESET_STREAM`, and we constructed the
+        // If the peer initially sent `RESET_STREAM`, and we constructed the
         // `QUICStream`, then we cannot create local quiche stream state.
         // We would get the `StreamStopped` exception here. If so, we can
         // ignore.
@@ -328,7 +323,7 @@ class QUICStream implements ReadableWritablePair<Uint8Array, Uint8Array> {
     return this._readClosed;
   }
 
-  @ready(new errors.ErrorQUICStreamDestroyed())
+  @createDestroy.ready(new errors.ErrorQUICStreamDestroyed())
   public get meta(): ConnectionMetadata {
     return this.connection.meta();
   }
@@ -406,7 +401,9 @@ class QUICStream implements ReadableWritablePair<Uint8Array, Uint8Array> {
    * @throws {errors.ErrorQUICStreamInternal}
    * @internal
    */
-  @ready(new errors.ErrorQUICStreamDestroyed(), false, ['destroying'])
+  @createDestroy.ready(new errors.ErrorQUICStreamDestroyed(), false, [
+    'destroying',
+  ])
   public read(): void {
     // Stream is finished if due to `RESET_STREAM` or `fin` flag
     if (this.connection.conn.streamFinished(this.streamId)) {
@@ -481,7 +478,7 @@ class QUICStream implements ReadableWritablePair<Uint8Array, Uint8Array> {
       this.rejectReadableP?.(abortReadablePReason);
       return;
     }
-    // Resolve the read blocking promise if exists
+    // Resolve the read blocking promise if exists.
     // If already resolved, this is a noop
     this.resolveReadableP?.();
   }
@@ -500,7 +497,9 @@ class QUICStream implements ReadableWritablePair<Uint8Array, Uint8Array> {
    * @throws {errors.ErrorQUICStreamInternal}
    * @internal
    */
-  @ready(new errors.ErrorQUICStreamDestroyed(), false, ['destroying'])
+  @createDestroy.ready(new errors.ErrorQUICStreamDestroyed(), false, [
+    'destroying',
+  ])
   public write(): void {
     // Stream is aborted if due to `STOP_SENDING`
     try {
@@ -509,7 +508,7 @@ class QUICStream implements ReadableWritablePair<Uint8Array, Uint8Array> {
       let code: number | false;
       if ((code = utils.isStreamStopped(e)) !== false) {
         // Cleanup the underlying quiche stream state, otherwise the stream
-        // remains writable and we end up re-creating a `QUICStream`.
+        // remains writable, and we end up re-creating a `QUICStream`.
         this.connection.conn.streamShutdown(
           this.streamId,
           quiche.Shutdown.Write,
@@ -546,7 +545,7 @@ class QUICStream implements ReadableWritablePair<Uint8Array, Uint8Array> {
         throw e_;
       }
     }
-    // Resolve the write blocking promise if exists
+    // Resolve the write blocking promise if exists.
     // If already resolved, this is a noop
     this.resolveWritableP?.();
   }

@@ -1,5 +1,5 @@
-import type { Host } from '@/types';
-import * as utils from '@/utils';
+import type { Host } from '#types.js';
+import * as utils from '#utils.js';
 
 describe('utils', () => {
   test('detect IPv4 mapped IPv6 addresses', () => {

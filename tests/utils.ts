@@ -1,10 +1,10 @@
 import type { X509Certificate } from '@peculiar/x509';
-import type { Connection } from '@/native/types';
-import type QUICSocket from '@/QUICSocket';
-import type QUICClient from '@/QUICClient';
-import type QUICServer from '@/QUICServer';
-import type QUICStream from '@/QUICStream';
-import type { StreamCodeToReason, StreamReasonToCode } from '@';
+import type { Connection } from '#native/types.js';
+import type QUICSocket from '#QUICSocket.js';
+import type QUICClient from '#QUICClient.js';
+import type QUICServer from '#QUICServer.js';
+import type QUICStream from '#QUICStream.js';
+import type { StreamCodeToReason, StreamReasonToCode } from '#types.js';
 import * as peculiarWebcrypto from '@peculiar/webcrypto';
 import * as x509 from '@peculiar/x509';
 import * as nobleEd25519 from '@noble/ed25519';

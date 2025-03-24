@@ -1,13 +1,18 @@
 #!/usr/bin/env node
 
-const os = require('os');
-const fs = require('fs');
-const path = require('path');
-const process = require('process');
-const childProcess = require('child_process');
-const packageJSON = require('../package.json');
+import os from 'node:os';
+import fs from 'node:fs';
+import path from 'node:path';
+import process from 'node:process';
+import childProcess from 'node:child_process';
+import url from 'node:url';
+import packageJSON from '../package.json' assert { type: 'json' };
 
 const platform = os.platform();
+
+const projectPath = path.dirname(
+  path.dirname(url.fileURLToPath(import.meta.url)),
+);
 
 /* eslint-disable no-console */
 async function main(argv = process.argv) {
@@ -73,12 +78,11 @@ async function main(argv = process.argv) {
   const target = [targetArch, targetVendor, targetSystem, targetABI]
     .filter((s) => s != null)
     .join('-');
-  const projectRoot = path.join(__dirname, '..');
-  const prebuildPath = path.join(projectRoot, 'prebuild');
+  const prebuildPath = path.join(projectPath, 'prebuild');
   await fs.promises.mkdir(prebuildPath, {
     recursive: true,
   });
-  const cargoTOMLPath = path.join(projectRoot, 'Cargo.toml');
+  const cargoTOMLPath = path.join(projectPath, 'Cargo.toml');
   const cargoTOML = await fs.promises.readFile(cargoTOMLPath, 'utf-8');
   const cargoTOMLVersion = cargoTOML.match(/version\s*=\s*"(.*)"/)?.[1];
   if (packageJSON.version !== cargoTOMLVersion) {
@@ -120,4 +124,9 @@ async function main(argv = process.argv) {
 }
 /* eslint-enable no-console */
 
-void main();
+if (import.meta.url.startsWith('file:')) {
+  const modulePath = url.fileURLToPath(import.meta.url);
+  if (process.argv[1] === modulePath) {
+    void main();
+  }
+}

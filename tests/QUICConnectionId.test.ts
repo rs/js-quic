@@ -1,6 +1,6 @@
-import QUICConnectionId from '@/QUICConnectionId';
-import { quiche } from '@/native';
-import * as testsUtils from './utils';
+import * as testsUtils from './utils.js';
+import QUICConnectionId from '#QUICConnectionId.js';
+import quiche from '#native/quiche.js';
 
 describe(QUICConnectionId.name, () => {
   test('connection ID is a Uint8Array', async () => {
