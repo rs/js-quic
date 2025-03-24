@@ -22,8 +22,8 @@
 <ul class="tsd-hierarchy">
 <li><span class="target">QUICServer</span></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L30">src/QUICServer.ts:30</a></li>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L37">src/QUICServer.ts:37</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L26">src/QUICServer.ts:26</a></li>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L33">src/QUICServer.ts:33</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -47,6 +47,7 @@
 <a href="QUICServer.html#reasonToCode" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>reason<wbr/>To<wbr/>Code?</span></a>
 <a href="QUICServer.html#resolveClosedP" class="tsd-index-link tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>resolve<wbr/>ClosedP</span></a>
 <a href="QUICServer.html#socket" class="tsd-index-link tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>socket</span></a>
+<a href="QUICServer.html#stopAbortController" class="tsd-index-link tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>stop<wbr/>Abort<wbr/>Controller</span></a>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Accessors</h3>
@@ -133,9 +134,9 @@
 <div class="tsd-comment tsd-typography"></div></li></ul></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="QUICServer.html" class="tsd-signature-type tsd-kind-class">QUICServer</a></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
-<p>Inherited from StartStop.constructor</p>
+<p>Inherited from startStop.StartStop.constructor</p>
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L238">src/QUICServer.ts:238</a></li></ul></aside></li>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L279">src/QUICServer.ts:279</a></li></ul></aside></li>
 <li class="tsd-signature tsd-anchor-link" id="constructor.new_QUICServer-1"><span class="tsd-kind-constructor-signature">new QUICServer</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">opts</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="QUICServer.html" class="tsd-signature-type tsd-kind-class">QUICServer</a><a href="#constructor.new_QUICServer-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
@@ -159,27 +160,27 @@
 <li class="tsd-parameter">
 <h5><span class="tsd-kind-property">socket</span><span class="tsd-signature-symbol">: </span><a href="QUICSocket.html" class="tsd-signature-type tsd-kind-class">QUICSocket</a></h5></li></ul></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="QUICServer.html" class="tsd-signature-type tsd-kind-class">QUICServer</a></h4><aside class="tsd-sources">
-<p>Inherited from StartStop.constructor</p>
+<p>Inherited from startStop.StartStop.constructor</p>
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L247">src/QUICServer.ts:247</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L288">src/QUICServer.ts:288</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"><a id="_initLock_" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagReadonly">Readonly</code> <span>[init<wbr/>Lock]</span><a href="#_initLock_" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">[init<wbr/>Lock]</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">RWLockWriter</span></div><aside class="tsd-sources">
-<p>Inherited from StartStop.[initLock]</p>
+<p>Inherited from startStop.StartStop.[initLock]</p>
 <ul>
 <li>Defined in node_modules/@matrixai/async-init/dist/StartStop.d.ts:9</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-protected"><a id="_closed" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>_closed</span><a href="#_closed" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">_closed</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L62">src/QUICServer.ts:62</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L58">src/QUICServer.ts:58</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-protected"><a id="_closedP" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>_closedP</span><a href="#_closedP" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">_closedP</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L63">src/QUICServer.ts:63</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L59">src/QUICServer.ts:59</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="codeToReason" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>code<wbr/>To<wbr/>Reason</span><a href="#codeToReason" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">code<wbr/>To<wbr/>Reason</span><span class="tsd-signature-symbol">?:</span> <a href="../types/StreamCodeToReason.html" class="tsd-signature-type tsd-kind-type-alias">StreamCodeToReason</a></div>
@@ -187,17 +188,17 @@
 </div>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L51">src/QUICServer.ts:51</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L47">src/QUICServer.ts:47</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-protected"><a id="config" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>config</span><a href="#config" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">config</span><span class="tsd-signature-symbol">:</span> <a href="../types/QUICConfig.html" class="tsd-signature-type tsd-kind-type-alias">QUICConfig</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L61">src/QUICServer.ts:61</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L57">src/QUICServer.ts:57</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-protected"><a id="crypto" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>crypto</span><a href="#crypto" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">crypto</span><span class="tsd-signature-symbol">:</span> <a href="../types/QUICServerCrypto.html" class="tsd-signature-type tsd-kind-type-alias">QUICServerCrypto</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L60">src/QUICServer.ts:60</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L56">src/QUICServer.ts:56</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="isSocketShared" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagReadonly">Readonly</code> <span>is<wbr/>Socket<wbr/>Shared</span><a href="#isSocketShared" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">is<wbr/>Socket<wbr/>Shared</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
@@ -205,12 +206,12 @@
 </div>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L41">src/QUICServer.ts:41</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L37">src/QUICServer.ts:37</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-protected"><a id="logger" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>logger</span><a href="#logger" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">logger</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">Logger</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L58">src/QUICServer.ts:58</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L54">src/QUICServer.ts:54</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="minIdleTimeout" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>min<wbr/>Idle<wbr/>Timeout</span><a href="#minIdleTimeout" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">min<wbr/>Idle<wbr/>Timeout</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span></div>
@@ -218,7 +219,7 @@
 </div>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L56">src/QUICServer.ts:56</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L52">src/QUICServer.ts:52</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="reasonToCode" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>reason<wbr/>To<wbr/>Code</span><a href="#reasonToCode" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">reason<wbr/>To<wbr/>Code</span><span class="tsd-signature-symbol">?:</span> <a href="../types/StreamReasonToCode.html" class="tsd-signature-type tsd-kind-type-alias">StreamReasonToCode</a></div>
@@ -226,7 +227,7 @@
 </div>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L46">src/QUICServer.ts:46</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L42">src/QUICServer.ts:42</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-protected"><a id="resolveClosedP" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>resolve<wbr/>ClosedP</span><a href="#resolveClosedP" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">resolve<wbr/>ClosedP</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span></div>
@@ -239,12 +240,17 @@
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L64">src/QUICServer.ts:64</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L60">src/QUICServer.ts:60</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-protected"><a id="socket" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>socket</span><a href="#socket" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">socket</span><span class="tsd-signature-symbol">:</span> <a href="QUICSocket.html" class="tsd-signature-type tsd-kind-class">QUICSocket</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L59">src/QUICServer.ts:59</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L55">src/QUICServer.ts:55</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-is-protected"><a id="stopAbortController" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>stop<wbr/>Abort<wbr/>Controller</span><a href="#stopAbortController" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">stop<wbr/>Abort<wbr/>Controller</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type ">AbortController</span></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L62">src/QUICServer.ts:62</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Accessors</h2>
 <section class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"><a id="_eventHandled_" class="tsd-anchor"></a>
@@ -253,7 +259,7 @@
 <li class="tsd-signature" id="_eventHandled_._eventHandled_-1"><span class="tsd-signature-symbol">get</span> [eventHandled]<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">ReadonlyWeakSet</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">Event</span><span class="tsd-signature-symbol">&gt;</span></li>
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">ReadonlyWeakSet</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">Event</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
-<p>Inherited from StartStop.[eventHandled]</p>
+<p>Inherited from startStop.StartStop.[eventHandled]</p>
 <ul>
 <li>Defined in node_modules/@matrixai/events/dist/Evented.d.ts:7</li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"><a id="_eventHandlers_" class="tsd-anchor"></a>
@@ -262,7 +268,7 @@
 <li class="tsd-signature" id="_eventHandlers_._eventHandlers_-1"><span class="tsd-signature-symbol">get</span> [eventHandlers]<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">ReadonlyMap</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type ">Set</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">EventHandlerInfo</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">ReadonlyMap</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type ">Set</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">EventHandlerInfo</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
-<p>Inherited from StartStop.[eventHandlers]</p>
+<p>Inherited from startStop.StartStop.[eventHandlers]</p>
 <ul>
 <li>Defined in node_modules/@matrixai/events/dist/Evented.d.ts:6</li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"><a id="_eventTarget_" class="tsd-anchor"></a>
@@ -271,7 +277,7 @@
 <li class="tsd-signature" id="_eventTarget_._eventTarget_-1"><span class="tsd-signature-symbol">get</span> [eventTarget]<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">EventTarget</span></li>
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">EventTarget</span></h4><aside class="tsd-sources">
-<p>Inherited from StartStop.[eventTarget]</p>
+<p>Inherited from startStop.StartStop.[eventTarget]</p>
 <ul>
 <li>Defined in node_modules/@matrixai/events/dist/Evented.d.ts:5</li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"><a id="_handleEventError_" class="tsd-anchor"></a>
@@ -291,7 +297,7 @@
 <li>
 <h5><span class="tsd-kind-parameter">evt</span>: <span class="tsd-signature-type ">EventError</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4></li></ul></li></ul><aside class="tsd-sources">
-<p>Inherited from StartStop.[handleEventError]</p>
+<p>Inherited from startStop.StartStop.[handleEventError]</p>
 <ul>
 <li>Defined in node_modules/@matrixai/events/dist/Evented.d.ts:8</li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"><a id="_running_" class="tsd-anchor"></a>
@@ -300,7 +306,7 @@
 <li class="tsd-signature" id="_running_._running_-1"><span class="tsd-signature-symbol">get</span> [running]<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
-<p>Inherited from StartStop.[running]</p>
+<p>Inherited from startStop.StartStop.[running]</p>
 <ul>
 <li>Defined in node_modules/@matrixai/async-init/dist/StartStop.d.ts:6</li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"><a id="_statusP_" class="tsd-anchor"></a>
@@ -309,7 +315,7 @@
 <li class="tsd-signature" id="_statusP_._statusP_-1"><span class="tsd-signature-symbol">get</span> [statusP]<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">Status</span><span class="tsd-signature-symbol">&gt;</span></li>
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">Status</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
-<p>Inherited from StartStop.[statusP]</p>
+<p>Inherited from startStop.StartStop.[statusP]</p>
 <ul>
 <li>Defined in node_modules/@matrixai/async-init/dist/StartStop.d.ts:8</li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"><a id="_status_" class="tsd-anchor"></a>
@@ -318,7 +324,7 @@
 <li class="tsd-signature" id="_status_._status_-1"><span class="tsd-signature-symbol">get</span> [status]<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Status</span></li>
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Status</span></h4><aside class="tsd-sources">
-<p>Inherited from StartStop.[status]</p>
+<p>Inherited from startStop.StartStop.[status]</p>
 <ul>
 <li>Defined in node_modules/@matrixai/async-init/dist/StartStop.d.ts:7</li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="closed" class="tsd-anchor"></a>
@@ -331,7 +337,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L312">src/QUICServer.ts:312</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L353">src/QUICServer.ts:353</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="closedP" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>closedP</span><a href="#closedP" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -339,7 +345,7 @@
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L316">src/QUICServer.ts:316</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L357">src/QUICServer.ts:357</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="host" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>host</span><a href="#host" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -347,7 +353,7 @@
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <a href="../types/Host.html" class="tsd-signature-type tsd-kind-type-alias">Host</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L299">src/QUICServer.ts:299</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L340">src/QUICServer.ts:340</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="port" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>port</span><a href="#port" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -355,7 +361,7 @@
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <a href="../types/Port.html" class="tsd-signature-type tsd-kind-type-alias">Port</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L304">src/QUICServer.ts:304</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L345">src/QUICServer.ts:345</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"><a id="addEventListener" class="tsd-anchor"></a>
@@ -373,7 +379,7 @@
 <li>
 <h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-parameter">options</span>: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type ">AddEventListenerOptions</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
-<p>Inherited from StartStop.addEventListener</p>
+<p>Inherited from startStop.StartStop.addEventListener</p>
 <ul>
 <li>Defined in node_modules/@matrixai/events/dist/Evented.d.ts:9</li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"><a id="dispatchEvent" class="tsd-anchor"></a>
@@ -387,7 +393,7 @@
 <li>
 <h5><span class="tsd-kind-parameter">event</span>: <span class="tsd-signature-type ">Event</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
-<p>Inherited from StartStop.dispatchEvent</p>
+<p>Inherited from startStop.StartStop.dispatchEvent</p>
 <ul>
 <li>Defined in node_modules/@matrixai/events/dist/Evented.d.ts:11</li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-protected"><a id="handleEventQUICConnection" class="tsd-anchor"></a>
@@ -405,7 +411,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L169">src/QUICServer.ts:169</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L168">src/QUICServer.ts:168</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-protected"><a id="handleEventQUICConnectionSend" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>handle<wbr/>EventQUICConnection<wbr/>Send</span><a href="#handleEventQUICConnectionSend" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-protected">
@@ -424,7 +430,7 @@ at a time.</p>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L182">src/QUICServer.ts:182</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L185">src/QUICServer.ts:185</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-protected"><a id="handleEventQUICConnectionStopped" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>handle<wbr/>EventQUICConnection<wbr/>Stopped</span><a href="#handleEventQUICConnectionStopped" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-protected">
@@ -441,7 +447,7 @@ Registered once.</p>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L209">src/QUICServer.ts:209</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L250">src/QUICServer.ts:250</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-protected"><a id="handleEventQUICServerClose" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>handle<wbr/>EventQUICServer<wbr/>Close</span><a href="#handleEventQUICServerClose" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-protected">
@@ -452,7 +458,7 @@ Registered once.</p>
 <p>This event propagates errors minus the internal errors.</p>
 <p>If this event is dispatched first before <code>QUICServer.stop</code>, it represents
 an evented close. This could originate from the <code>QUICSocket</code>. If it was
-from the <code>QUICSocket</code>, then here it will stop all connections with an
+from the <code>QUICSocket</code>, then here it will stop all connections with a
 transport code <code>InternalError</code>.</p>
 </div>
 <div class="tsd-parameters">
@@ -463,7 +469,7 @@ transport code <code>InternalError</code>.</p>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L97">src/QUICServer.ts:97</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L96">src/QUICServer.ts:96</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-protected"><a id="handleEventQUICServerError" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>handle<wbr/>EventQUICServer<wbr/>Error</span><a href="#handleEventQUICServerError" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-protected">
@@ -481,7 +487,7 @@ transport code <code>InternalError</code>.</p>
 <div class="tsd-comment tsd-typography">
 <h4>Throws</h4></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L73">src/QUICServer.ts:73</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L71">src/QUICServer.ts:71</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-protected"><a id="handleEventQUICSocket" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>handle<wbr/>EventQUICSocket</span><a href="#handleEventQUICSocket" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-protected">
@@ -498,7 +504,7 @@ Registered only if the socket is encapsulated.</p>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L143">src/QUICServer.ts:143</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L142">src/QUICServer.ts:142</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-protected"><a id="handleEventQUICSocketStopped" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>handle<wbr/>EventQUICSocket<wbr/>Stopped</span><a href="#handleEventQUICSocketStopped" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-protected">
@@ -512,7 +518,7 @@ stopped.</p>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L156">src/QUICServer.ts:156</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L155">src/QUICServer.ts:155</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-protected"><a id="mintToken" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>mint<wbr/>Token</span><a href="#mintToken" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-protected">
@@ -532,7 +538,7 @@ It will authenticate the data by providing a signature signed by our key.</p>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">Buffer</span><span class="tsd-signature-symbol">&gt;</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L651">src/QUICServer.ts:651</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L704">src/QUICServer.ts:704</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"><a id="removeEventListener" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>remove<wbr/>Event<wbr/>Listener</span><a href="#removeEventListener" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited tsd-is-external">
@@ -548,7 +554,7 @@ It will authenticate the data by providing a signature signed by our key.</p>
 <li>
 <h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-parameter">options</span>: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type ">EventListenerOptions</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
-<p>Inherited from StartStop.removeEventListener</p>
+<p>Inherited from startStop.StartStop.removeEventListener</p>
 <ul>
 <li>Defined in node_modules/@matrixai/events/dist/Evented.d.ts:10</li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="start" class="tsd-anchor"></a>
@@ -587,9 +593,9 @@ It will authenticate the data by providing a signature signed by our key.</p>
 <div class="tsd-comment tsd-typography"></div></li></ul></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
-<p>Inherited from StartStop.start</p>
+<p>Inherited from startStop.StartStop.start</p>
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L329">src/QUICServer.ts:329</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L370">src/QUICServer.ts:370</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="stop" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>stop</span><a href="#stop" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -605,9 +611,9 @@ It will authenticate the data by providing a signature signed by our key.</p>
 <div class="tsd-comment tsd-typography"></div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
-<p>Inherited from StartStop.stop</p>
+<p>Inherited from startStop.StartStop.stop</p>
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L386">src/QUICServer.ts:386</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L431">src/QUICServer.ts:431</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="updateConfig" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>update<wbr/>Config</span><a href="#updateConfig" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -625,7 +631,7 @@ It will not affect existing connections, they will keep using the old
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L639">src/QUICServer.ts:639</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L692">src/QUICServer.ts:692</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="updateCrypto" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>update<wbr/>Crypto</span><a href="#updateCrypto" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -638,7 +644,7 @@ It will not affect existing connections, they will keep using the old
 <h5><span class="tsd-kind-parameter">crypto</span>: <span class="tsd-signature-type ">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/QUICServerCrypto.html" class="tsd-signature-type tsd-kind-type-alias">QUICServerCrypto</a><span class="tsd-signature-symbol">&gt;</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L627">src/QUICServer.ts:627</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L680">src/QUICServer.ts:680</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-protected"><a id="validateToken" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>validate<wbr/>Token</span><a href="#validateToken" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-protected">
@@ -660,7 +666,7 @@ This returns the DCID inside the token, which was the original DCID.</p>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="QUICConnectionId.html" class="tsd-signature-type tsd-kind-class">QUICConnectionId</a><span class="tsd-signature-symbol">&gt;</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L665">src/QUICServer.ts:665</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/QUICServer.ts#L718">src/QUICServer.ts:718</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -693,6 +699,7 @@ This returns the DCID inside the token, which was the original DCID.</p>
 <li><a href="#reasonToCode" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>reason<wbr/>To<wbr/>Code</span></a></li>
 <li><a href="#resolveClosedP" class="tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>resolve<wbr/>ClosedP</span></a></li>
 <li><a href="#socket" class="tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>socket</span></a></li>
+<li><a href="#stopAbortController" class="tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>stop<wbr/>Abort<wbr/>Controller</span></a></li>
 <li><a href="#_eventHandled_" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>[event<wbr/>Handled]</span></a></li>
 <li><a href="#_eventHandlers_" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>[event<wbr/>Handlers]</span></a></li>
 <li><a href="#_eventTarget_" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>[event<wbr/>Target]</span></a></li>

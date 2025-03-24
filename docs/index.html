@@ -12,19 +12,22 @@
 <div class="col-content">
 <div class="tsd-page-title">
 <h2>@matrixai/quic</h2></div>
-<div class="tsd-panel tsd-typography"><a id="md:js-quic" class="tsd-anchor"></a><h1><a href="#md:js-quic">js-quic</a></h1><p>staging: <a href="https://gitlab.com/MatrixAI/open-source/js-quic/commits/staging"><img src="https://gitlab.com/MatrixAI/open-source/js-quic/badges/staging/pipeline.svg" alt="pipeline status"></a>
-master: <a href="https://gitlab.com/MatrixAI/open-source/js-quic/commits/master"><img src="https://gitlab.com/MatrixAI/open-source/js-quic/badges/master/pipeline.svg" alt="pipeline status"></a></p>
-<p>QUIC library for TypeScript/JavaScript applications.</p>
+<div class="tsd-panel tsd-typography"><a id="md:js-quic" class="tsd-anchor"></a><h1><a href="#md:js-quic">js-quic</a></h1><p>QUIC library for TypeScript/JavaScript applications.</p>
 <p>This is built on top of Cloudflare&#39;s <a href="https://github.com/cloudflare/quiche">quiche</a> library. It is intended to support Linux, Windows MacOS, Android and iOS. Mobile support is still pending.</p>
 <p>Since Cloudflare&#39;s quiche is written in Rust. This uses the <a href="https://github.com/napi-rs/napi-rs">napi-rs</a> binding system compile the native objects for Node.js.</p>
 <p>This library focuses only on the QUIC protocol. It does not support HTTP3. You can build HTTP3 on top of this.</p>
 <a id="md:installation" class="tsd-anchor"></a><h2><a href="#md:installation">Installation</a></h2><pre><code class="language-sh"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span><span class="hl-1"> </span><span class="hl-3">--save</span><span class="hl-1"> </span><span class="hl-2">@matrixai/quic</span>
 </code><button>Copy</button></pre>
-<a id="md:usage" class="tsd-anchor"></a><h2><a href="#md:usage">Usage</a></h2><p>See the example executables in <code>/src/bin</code>.</p>
-<a id="md:development" class="tsd-anchor"></a><h2><a href="#md:development">Development</a></h2><p>Run <code>nix-shell</code>, and once you&#39;re inside, you can use:</p>
-<pre><code class="language-sh"><span class="hl-4"># install (or reinstall packages from package.json)</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span><br/><span class="hl-4"># build the native objects</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">prebuild</span><br/><span class="hl-4"># build the dist and native objects</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">build</span><br/><span class="hl-4"># run the repl (this allows you to import from ./src)</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">ts-node</span><br/><span class="hl-4"># run the tests</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">test</span><br/><span class="hl-4"># lint the source code</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">lint</span><br/><span class="hl-4"># automatically fix the source</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">lintfix</span>
+<a id="md:usage" class="tsd-anchor"></a><h2><a href="#md:usage">Usage</a></h2><p>See the example usage in <a href="tests">tests</a>.</p>
+<a id="md:development" class="tsd-anchor"></a><h2><a href="#md:development">Development</a></h2><p>Run <code>nix develop</code>, and once you&#39;re inside, you can use:</p>
+<pre><code class="language-sh"><span class="hl-4"># install (or reinstall packages from package.json)</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span><br/><span class="hl-4"># build the native objects</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">prebuild</span><br/><span class="hl-4"># build the dist and native objects</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">build</span><br/><span class="hl-4"># run the repl (this allows you to import from ./src)</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">tsx</span><br/><span class="hl-4"># run the tests</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">test</span><br/><span class="hl-4"># lint the source code</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">lint</span><br/><span class="hl-4"># automatically fix the source</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">lintfix</span>
 </code><button>Copy</button></pre>
-<a id="md:quiche" class="tsd-anchor"></a><h3><a href="#md:quiche">Quiche</a></h3><p>To understand how to develop this, it is important to understand how quiche works.</p>
+<a id="md:docs-generation" class="tsd-anchor"></a><h3><a href="#md:docs-generation">Docs Generation</a></h3><pre><code class="language-sh"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">docs</span>
+</code><button>Copy</button></pre>
+<p>See the docs at: <a href="https://matrixai.github.io/js-quic/">https://matrixai.github.io/js-quic/</a></p>
+<a id="md:publishing" class="tsd-anchor"></a><h3><a href="#md:publishing">Publishing</a></h3><pre><code class="language-sh"><span class="hl-4"># npm login</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">version</span><span class="hl-1"> </span><span class="hl-2">patch</span><span class="hl-1"> </span><span class="hl-4"># major/minor/patch</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">build</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">publish</span><span class="hl-1"> </span><span class="hl-3">--access</span><span class="hl-1"> </span><span class="hl-2">public</span><br/><span class="hl-0">git</span><span class="hl-1"> </span><span class="hl-2">push</span><br/><span class="hl-0">git</span><span class="hl-1"> </span><span class="hl-2">push</span><span class="hl-1"> </span><span class="hl-3">--tags</span>
+</code><button>Copy</button></pre>
+<a id="md:how-it-works" class="tsd-anchor"></a><h2><a href="#md:how-it-works">How it works</a></h2><a id="md:quiche" class="tsd-anchor"></a><h3><a href="#md:quiche">Quiche</a></h3><p>To understand how to develop this, it is important to understand how quiche works.</p>
 <p>Clone the <a href="https://github.com/cloudflare/quiche">https://github.com/cloudflare/quiche</a> project. It&#39;s multi-workspace Cargo project.</p>
 <p>You can build and run their examples located in <code>/quiche/examples/</code>:</p>
 <pre><code class="language-sh"><span class="hl-0">cargo</span><span class="hl-1"> </span><span class="hl-2">build</span><span class="hl-1"> </span><span class="hl-3">--examples</span><br/><span class="hl-0">cargo</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-3">--example</span><span class="hl-1"> </span><span class="hl-2">client</span><span class="hl-1"> </span><span class="hl-2">&#39;127.0.0.1:55555&#39;</span>
@@ -45,18 +48,18 @@ master: <a href="https://gitlab.com/MatrixAI/open-source/js-quic/commits/master"
 <a id="md:structure" class="tsd-anchor"></a><h3><a href="#md:structure">Structure</a></h3><p>It is possible to structure the QUIC system in the encapsulated way or the injected way.</p>
 <p>When using the encapsulated way, the <code>QUICSocket</code> is separated between client and server.</p>
 <p>When using the injected way, the <code>QUICSocket</code> is shared between client and server.</p>
-<p><img src="/images/quic_structure_encapsulated.svg" alt=""></p>
+<p><img src="/images/quic_structure_encapsulated.svg" alt="image"></p>
 <p>If you are building a peer to peer network, you must use the injected way. This is the only way to ensure that hole-punching works because both the client and server for any given peer must share the same UDP socket and thus share the <code>QUICSocket</code>. When done in this way, the <code>QUICSocket</code> lifecycle is managed outside of both the <code>QUICClient</code> and <code>QUICServer</code>.</p>
-<p><img src="/images/quic_structure_injected.svg" alt=""></p>
+<p><img src="/images/quic_structure_injected.svg" alt="image"></p>
 <p>This also means both <code>QUICClient</code> and <code>QUICServer</code> must share the same connection map.  In order to allow the <code>QUICSocket</code> to dispatch data into the correct connection, the connection map is constructed in the <code>QUICSocket</code>, however setting and unsetting connections is managed by <code>QUICClient</code> and <code>QUICServer</code>.</p>
-<a id="md:dataflow" class="tsd-anchor"></a><h2><a href="#md:dataflow">Dataflow</a></h2><p>The data flow of the QUIC system is a bidirectional graph.</p>
+<a id="md:dataflow" class="tsd-anchor"></a><h3><a href="#md:dataflow">Dataflow</a></h3><p>The data flow of the QUIC system is a bidirectional graph.</p>
 <p>Data received from the outside world is received on the UDP socket. It is parsed and then dispatched to each <code>QUICConnection</code>. Each connection further parses the data and then dispatches to the <code>QUICStream</code>. Each <code>QUICStream</code> presents the data on the <code>ReadableStream</code> interface, which can be read by a caller.</p>
 <p>Data sent to the outside world is written to a <code>WritableStream</code> interface of a <code>QUICStream</code>. This data is buffered up in the underlying Quiche stream. A send procedure is triggered on the associated <code>QUICConnection</code> which takes all the buffered data to be sent for that connection, and sends it to the <code>QUICSocket</code>, which then sends it to the underlying UDP socket.</p>
-<p><img src="/images/quic_dataflow.svg" alt=""></p>
+<p><img src="/images/quic_dataflow.svg" alt="image"></p>
 <p>Buffering occurs at the connection level and at the stream level. Each connection has a global buffer for all streams, and each stream has its own buffer. Note that connection buffering and stream buffering all occur within the Quiche library. The web streams <code>ReadableStream</code> and <code>WritableStream</code> do not do any buffering at all.</p>
 <a id="md:connection-negotiation" class="tsd-anchor"></a><h3><a href="#md:connection-negotiation">Connection Negotiation</a></h3><p>The connection negotiation process involves several exchanges of QUIC packets before the <code>QUICConnection</code> is constructed.</p>
 <p>The primary reason to do this is for both sides to determine their respective connection IDs.</p>
-<p><img src="/images/quic_connection_negotiation.svg" alt=""></p>
+<p><img src="/images/quic_connection_negotiation.svg" alt="image"></p>
 <a id="md:push-amp-pull" class="tsd-anchor"></a><h3><a href="#md:push-amp-pull">Push &amp; Pull</a></h3><p>The <code>QUICSocket</code>, <code>QUICClient</code>, <code>QUICServer</code>, <code>QUICConnection</code> and <code>QUICStream</code> are independent state machines that exposes methods that can be called as well as events that may be emitted between them.</p>
 <p>This creates a concurrent decentralised state machine system where there are multiple entrypoints of change.</p>
 <p>Users may call methods which causes state transitions internally that trigger event emissions. However some methods are considered internal to the library, this means these methods are not intended to be called by the end user. They are however public relative to the other components in the system. These methods should be marked with <code>@internal</code> documentation annotation.</p>
@@ -66,22 +69,7 @@ master: <a href="https://gitlab.com/MatrixAI/open-source/js-quic/commits/master"
 <li>Pull methods - these are either synchronous or asynchronous methods that may throw exceptions.</li>
 <li>Push handlers - these are event handlers that can initiate pull methods, if these pull handlers throw exceptions, these exceptions must be caught, and expected runtime exceptions are to be converted to error events, all other exceptions will be considered to be software bugs and will be bubbled up to the program boundary as unhandled exceptions or unhandled promise rejections. Generally the only exceptions that are expected runtime exceptions are those that arise from perform IO with the operating system.</li>
 </ul>
-<a id="md:benchmarks" class="tsd-anchor"></a><h2><a href="#md:benchmarks">Benchmarks</a></h2><pre><code class="language-sh"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">bench</span>
-</code><button>Copy</button></pre>
-<p>View benchmarks here: <a href="https://github.com/MatrixAI/js-quic/blob/master/benches/results">https://github.com/MatrixAI/js-quic/blob/master/benches/results</a> with <a href="https://raw.githack.com/">https://raw.githack.com/</a></p>
-<a id="md:docs-generation" class="tsd-anchor"></a><h3><a href="#md:docs-generation">Docs Generation</a></h3><pre><code class="language-sh"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">docs</span>
-</code><button>Copy</button></pre>
-<p>See the docs at: <a href="https://matrixai.github.io/js-quic/">https://matrixai.github.io/js-quic/</a></p>
-<a id="md:publishing" class="tsd-anchor"></a><h3><a href="#md:publishing">Publishing</a></h3><p>Publishing is handled automatically by the staging pipeline.</p>
-<p>Prerelease:</p>
-<pre><code class="language-sh"><span class="hl-4"># npm login</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">version</span><span class="hl-1"> </span><span class="hl-2">prepatch</span><span class="hl-1"> </span><span class="hl-3">--preid</span><span class="hl-1"> </span><span class="hl-2">alpha</span><span class="hl-1"> </span><span class="hl-4"># premajor/preminor/prepatch</span><br/><span class="hl-0">git</span><span class="hl-1"> </span><span class="hl-2">push</span><span class="hl-1"> </span><span class="hl-3">--follow-tags</span>
-</code><button>Copy</button></pre>
-<p>Release:</p>
-<pre><code class="language-sh"><span class="hl-4"># npm login</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">version</span><span class="hl-1"> </span><span class="hl-2">patch</span><span class="hl-1"> </span><span class="hl-4"># major/minor/patch</span><br/><span class="hl-0">git</span><span class="hl-1"> </span><span class="hl-2">push</span><span class="hl-1"> </span><span class="hl-3">--follow-tags</span>
-</code><button>Copy</button></pre>
-<p>Manually:</p>
-<pre><code class="language-sh"><span class="hl-4"># npm login</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">version</span><span class="hl-1"> </span><span class="hl-2">patch</span><span class="hl-1"> </span><span class="hl-4"># major/minor/patch</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">build</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">publish</span><span class="hl-1"> </span><span class="hl-3">--access</span><span class="hl-1"> </span><span class="hl-2">public</span><br/><span class="hl-0">git</span><span class="hl-1"> </span><span class="hl-2">push</span><br/><span class="hl-0">git</span><span class="hl-1"> </span><span class="hl-2">push</span><span class="hl-1"> </span><span class="hl-3">--tags</span>
-</code><button>Copy</button></pre>
+<a id="md:license" class="tsd-anchor"></a><h2><a href="#md:license">License</a></h2><p>js-quic is licensed under Apache-2.0, you may read the terms of the license <a href="LICENSE">here</a>.</p>
 </div></div>
 <div class="col-sidebar">
 <div class="page-menu">
@@ -112,20 +100,19 @@ master: <a href="https://gitlab.com/MatrixAI/open-source/js-quic/commits/master"
 <li><a href="#md:development"><span>Development</span></a></li>
 <li>
 <ul>
+<li><a href="#md:docs-generation"><span>Docs <wbr/>Generation</span></a></li>
+<li><a href="#md:publishing"><span>Publishing</span></a></li></ul></li>
+<li><a href="#md:how-it-works"><span>How it works</span></a></li>
+<li>
+<ul>
 <li><a href="#md:quiche"><span>Quiche</span></a></li>
 <li><a href="#md:tls"><span>TLS</span></a></li>
 <li><a href="#md:cargorust-targets"><span>Cargo/<wbr/>Rust targets</span></a></li>
-<li><a href="#md:structure"><span>Structure</span></a></li></ul></li>
+<li><a href="#md:structure"><span>Structure</span></a></li>
 <li><a href="#md:dataflow"><span>Dataflow</span></a></li>
-<li>
-<ul>
 <li><a href="#md:connection-negotiation"><span>Connection <wbr/>Negotiation</span></a></li>
 <li><a href="#md:push-amp-pull"><span>Push &amp; <wbr/>Pull</span></a></li></ul></li>
-<li><a href="#md:benchmarks"><span>Benchmarks</span></a></li>
-<li>
-<ul>
-<li><a href="#md:docs-generation"><span>Docs <wbr/>Generation</span></a></li>
-<li><a href="#md:publishing"><span>Publishing</span></a></li></ul></li></ul></li></ul></li></ul></div></details></div>
+<li><a href="#md:license"><span>License</span></a></li></ul></li></ul></li></ul></div></details></div>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="modules.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-4"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-namespace)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6"></rect><path d="M9.33 16V7.24H10.77L13.446 14.74C13.43 14.54 13.41 14.296 13.386 14.008C13.37 13.712 13.354 13.404 13.338 13.084C13.33 12.756 13.326 12.448 13.326 12.16V7.24H14.37V16H12.93L10.266 8.5C10.282 8.692 10.298 8.936 10.314 9.232C10.33 9.52 10.342 9.828 10.35 10.156C10.366 10.476 10.374 10.784 10.374 11.08V16H9.33Z" fill="var(--color-text)"></path></g></svg><span>@matrixai/quic</span></a>
 <ul class="tsd-small-nested-navigation">

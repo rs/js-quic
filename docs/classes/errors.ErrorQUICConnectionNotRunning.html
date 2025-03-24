@@ -28,7 +28,7 @@
 <ul class="tsd-hierarchy">
 <li><span class="target">ErrorQUICConnectionNotRunning</span></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/errors.ts#L95">src/errors.ts:95</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/errors.ts#L112">src/errors.ts:112</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -144,7 +144,7 @@ Guaranteed to be weakly monotonic</p>
 <div class="tsd-signature"><span class="tsd-kind-property">description</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &#39;QUIC Connection is not running&#39;</span></div><aside class="tsd-sources">
 <p>Overrides <a href="errors.ErrorQUICConnection.html">ErrorQUICConnection</a>.<a href="errors.ErrorQUICConnection.html#description">description</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/errors.ts#L96">src/errors.ts:96</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/MatrixAI/js-quic/blob/master/src/errors.ts#L113">src/errors.ts:113</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"><a id="prepareStackTrace" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <code class="tsd-tag ts-flagOptional">Optional</code> <span>prepare<wbr/>Stack<wbr/>Trace</span><a href="#prepareStackTrace" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">prepare<wbr/>Stack<wbr/>Trace</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">err</span>, <span class="tsd-kind-parameter">stackTraces</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span></div>
@@ -300,6 +300,7 @@ to support polymorphic <code>this</code> in static methods
 <li><a href="errors.ErrorQUICClientCreateTimeout.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICClient<wbr/>Create<wbr/>Timeout</span></a></li>
 <li><a href="errors.ErrorQUICClientDestroyed.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICClient<wbr/>Destroyed</span></a></li>
 <li><a href="errors.ErrorQUICClientInternal.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICClient<wbr/>Internal</span></a></li>
+<li><a href="errors.ErrorQUICClientInvalidArgument.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICClient<wbr/>Invalid<wbr/>Argument</span></a></li>
 <li><a href="errors.ErrorQUICClientInvalidHost.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICClient<wbr/>Invalid<wbr/>Host</span></a></li>
 <li><a href="errors.ErrorQUICClientSocketNotRunning.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICClient<wbr/>Socket<wbr/>Not<wbr/>Running</span></a></li>
 <li><a href="errors.ErrorQUICConfig.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICConfig</span></a></li>
@@ -315,6 +316,7 @@ to support polymorphic <code>this</code> in static methods
 <li><a href="errors.ErrorQUICConnectionPeerTLS.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICConnection<wbr/>PeerTLS</span></a></li>
 <li><a href="errors.ErrorQUICConnectionStartData.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICConnection<wbr/>Start<wbr/>Data</span></a></li>
 <li><a href="errors.ErrorQUICConnectionStartTimeout.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICConnection<wbr/>Start<wbr/>Timeout</span></a></li>
+<li><a href="errors.ErrorQUICConnectionStopping.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICConnection<wbr/>Stopping</span></a></li>
 <li><a href="errors.ErrorQUICHostInvalid.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICHost<wbr/>Invalid</span></a></li>
 <li><a href="errors.ErrorQUICPortInvalid.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICPort<wbr/>Invalid</span></a></li>
 <li><a href="errors.ErrorQUICServer.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICServer</span></a></li>
@@ -322,6 +324,7 @@ to support polymorphic <code>this</code> in static methods
 <li><a href="errors.ErrorQUICServerNewConnection.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICServer<wbr/>New<wbr/>Connection</span></a></li>
 <li><a href="errors.ErrorQUICServerNotRunning.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICServer<wbr/>Not<wbr/>Running</span></a></li>
 <li><a href="errors.ErrorQUICServerSocketNotRunning.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICServer<wbr/>Socket<wbr/>Not<wbr/>Running</span></a></li>
+<li><a href="errors.ErrorQUICServerStopping.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICServer<wbr/>Stopping</span></a></li>
 <li><a href="errors.ErrorQUICSocket.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICSocket</span></a></li>
 <li><a href="errors.ErrorQUICSocketConnectionsActive.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICSocket<wbr/>Connections<wbr/>Active</span></a></li>
 <li><a href="errors.ErrorQUICSocketInternal.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICSocket<wbr/>Internal</span></a></li>
@@ -331,10 +334,12 @@ to support polymorphic <code>this</code> in static methods
 <li><a href="errors.ErrorQUICStream.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICStream</span></a></li>
 <li><a href="errors.ErrorQUICStreamDestroyed.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICStream<wbr/>Destroyed</span></a></li>
 <li><a href="errors.ErrorQUICStreamInternal.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICStream<wbr/>Internal</span></a></li>
+<li><a href="errors.ErrorQUICStreamLimit.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICStream<wbr/>Limit</span></a></li>
 <li><a href="errors.ErrorQUICStreamLocalRead.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICStream<wbr/>Local<wbr/>Read</span></a></li>
 <li><a href="errors.ErrorQUICStreamLocalWrite.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICStream<wbr/>Local<wbr/>Write</span></a></li>
 <li><a href="errors.ErrorQUICStreamPeerRead.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICStream<wbr/>Peer<wbr/>Read</span></a></li>
-<li><a href="errors.ErrorQUICStreamPeerWrite.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICStream<wbr/>Peer<wbr/>Write</span></a></li></ul></div></details></li>
+<li><a href="errors.ErrorQUICStreamPeerWrite.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICStream<wbr/>Peer<wbr/>Write</span></a></li>
+<li><a href="errors.ErrorQUICUndefinedBehaviour.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ErrorQUICUndefined<wbr/>Behaviour</span></a></li></ul></div></details></li>
 <li><a href="../modules/events.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>events</span></a></li>
 <li><a href="../modules/native.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>native</span></a></li>
 <li><a href="../modules/utils.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>utils</span></a></li>
