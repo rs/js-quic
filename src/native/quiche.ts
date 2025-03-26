@@ -66,11 +66,13 @@ function requireBinding(targets: Array<string>): Quiche {
   );
   for (const prebuildTarget of prebuildTargets) {
     try {
+      console.log('trying path', prebuildTarget);
       return require(prebuildTarget);
     } catch (e) {
       if (e.code !== 'MODULE_NOT_FOUND') throw e;
     }
     try {
+      console.log('trying path', url.pathToFileURL(prebuildTarget).href);
       return require(url.pathToFileURL(prebuildTarget).href);
     } catch (e) {
       if (e.code !== 'MODULE_NOT_FOUND') throw e;
@@ -79,11 +81,13 @@ function requireBinding(targets: Array<string>): Quiche {
   const npmTargets = targets.map((target) => `@matrixai/quic-${target}`);
   for (const npmTarget of npmTargets) {
     try {
+      console.log('trying path', npmTarget);
       return require(npmTarget);
     } catch (e) {
       if (e.code !== 'MODULE_NOT_FOUND') throw e;
     }
     try {
+      console.log('trying path', url.pathToFileURL(npmTarget).href);
       return require(url.pathToFileURL(npmTarget).href);
     } catch (e) {
       if (e.code !== 'MODULE_NOT_FOUND') throw e;
@@ -160,6 +164,8 @@ switch (process.platform) {
       `Unsupported OS: ${process.platform}, architecture: ${process.arch}`,
     );
 }
+
+console.log('dirname', dirname);
 
 export default nativeBinding;
 

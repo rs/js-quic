@@ -21,4 +21,5 @@ brew link --overwrite rustup-init
 # However rustup provides specific versions
 # Here we provide both toolchains
 rustup-init --default-toolchain 1.68.2 -y
-rustup add x86_64-apple-darwin aarch64-apple-darwin
+rustup add x86_64-apple-darwin
+rustup add aarch64-apple-darwin

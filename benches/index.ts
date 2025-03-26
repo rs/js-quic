@@ -7,12 +7,11 @@ import url from 'node:url';
 import si from 'systeminformation';
 import { fsWalk, resultsPath, suitesPath } from './utils.js';
 
-// Adding for more context
-Error.stackTraceLimit = 100;
-
 const dirname = url.fileURLToPath(new URL('.', import.meta.url));
+console.log('dirname', dirname);
 
 async function main(): Promise<void> {
+  console.log('mkdir', path.join(dirname, 'results'));
   await fs.promises.mkdir(path.join(dirname, 'results'), { recursive: true });
   // Running all suites
   for await (const suitePath of fsWalk(suitesPath)) {
@@ -49,6 +48,7 @@ async function main(): Promise<void> {
     osInfo: 'platform, distro, release, kernel, arch',
     system: 'model, manufacturer',
   });
+  console.log('write file', path.join(dirname, 'results', 'system.json'))
   await fs.promises.writeFile(
     path.join(dirname, 'results', 'system.json'),
     JSON.stringify(systemData, null, 2),
