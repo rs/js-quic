@@ -12,7 +12,9 @@ console.log('dirname', dirname);
 
 async function main(): Promise<void> {
   console.log('mkdir', path.join(dirname, 'results'));
-  await fs.promises.mkdir(path.join(dirname, 'results'), { recursive: true });
+  await fs.promises.mkdir(url.pathToFileURL(path.join(dirname, 'results')), {
+    recursive: true,
+  });
   // Running all suites
   for await (const suitePath of fsWalk(suitesPath)) {
     // Skip over non-ts and non-js files
@@ -29,18 +31,20 @@ async function main(): Promise<void> {
   }
   // Concatenating metrics
   const metricsPath = path.join(resultsPath, 'metrics.txt');
-  await fs.promises.rm(metricsPath, { force: true });
+  await fs.promises.rm(url.pathToFileURL(metricsPath), { force: true });
   let concatenating = false;
   for await (const metricPath of fsWalk(resultsPath)) {
     // Skip over non-metrics files
     if (!metricPath.endsWith('_metrics.txt')) {
       continue;
     }
-    const metricData = await fs.promises.readFile(metricPath);
+    const metricData = await fs.promises.readFile(
+      url.pathToFileURL(metricPath),
+    );
     if (concatenating) {
-      await fs.promises.appendFile(metricsPath, '\n');
+      await fs.promises.appendFile(url.pathToFileURL(metricsPath), '\n');
     }
-    await fs.promises.appendFile(metricsPath, metricData);
+    await fs.promises.appendFile(url.pathToFileURL(metricsPath), metricData);
     concatenating = true;
   }
   const systemData = await si.get({
@@ -48,9 +52,9 @@ async function main(): Promise<void> {
     osInfo: 'platform, distro, release, kernel, arch',
     system: 'model, manufacturer',
   });
-  console.log('write file', path.join(dirname, 'results', 'system.json'))
+  console.log('write file', path.join(dirname, 'results', 'system.json'));
   await fs.promises.writeFile(
-    path.join(dirname, 'results', 'system.json'),
+    url.pathToFileURL(path.join(dirname, 'results', 'system.json')),
     JSON.stringify(systemData, null, 2),
   );
 }

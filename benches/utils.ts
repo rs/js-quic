@@ -27,7 +27,9 @@ const suiteCommon = [
       // To `results/path/to/suite`
       const resultPath = path.join(resultsPath, relativePath);
       // This creates directory `results/path/to`
-      fs.mkdirSync(path.dirname(resultPath), { recursive: true });
+      fs.mkdirSync(url.pathToFileURL(path.dirname(resultPath)), {
+        recursive: true,
+      });
       return relativePath;
     },
     folder: resultsPath,
@@ -41,7 +43,9 @@ const suiteCommon = [
       // To `results/path/to/suite`
       const resultPath = path.join(resultsPath, relativePath);
       // This creates directory `results/path/to`
-      fs.mkdirSync(path.dirname(resultPath), { recursive: true });
+      fs.mkdirSync(url.pathToFileURL(path.dirname(resultPath)), {
+        recursive: true,
+      });
       return relativePath;
     },
     folder: resultsPath,
@@ -54,9 +58,11 @@ const suiteCommon = [
     // To `results/path/to/suite_metrics.txt`
     const resultPath = path.join(resultsPath, relativePath) + '_metrics.txt';
     // This creates directory `results/path/to`
-    fs.mkdirSync(path.dirname(resultPath), { recursive: true });
+    fs.mkdirSync(url.pathToFileURL(path.dirname(resultPath)), {
+      recursive: true,
+    });
     fs.writeFileSync(
-      resultPath,
+      url.pathToFileURL(resultPath),
       codeBlock`
       # TYPE ${summary.name}_ops gauge
       ${summary.results
@@ -89,7 +95,9 @@ const suiteCommon = [
 ];
 
 async function* fsWalk(dir: string): AsyncGenerator<string> {
-  const dirents = await fs.promises.readdir(dir, { withFileTypes: true });
+  const dirents = await fs.promises.readdir(url.pathToFileURL(dir), {
+    withFileTypes: true,
+  });
   for (const dirent of dirents) {
     const res = path.resolve(dir, dirent.name);
     if (dirent.isDirectory()) {
