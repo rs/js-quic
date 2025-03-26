@@ -7,6 +7,9 @@ import url from 'node:url';
 import si from 'systeminformation';
 import { fsWalk, resultsPath, suitesPath } from './utils.js';
 
+// Adding for more context
+Error.stackTraceLimit = 100;
+
 const dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 async function main(): Promise<void> {
