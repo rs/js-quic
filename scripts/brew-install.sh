@@ -20,6 +20,10 @@ brew link --overwrite rustup-init
 # Brew does not provide specific versions of rust
 # However rustup provides specific versions
 # Here we provide both toolchains
+echo "Running rustup-init"
 rustup-init --default-toolchain 1.68.2 -y
+echo "Adding x86_64-apple-darwin as target"
 rustup add x86_64-apple-darwin
+echo "Adding aarch64-apple-darwin as target"
 rustup add aarch64-apple-darwin
+echo "Completed brew setup"
