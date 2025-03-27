@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
-    <title>streams.stream_1KiB</title>
+    <title>stream_1KiB_FFI</title>
     <style>
       body {
         margin: 0;
@@ -28,7 +28,7 @@
   </head>
   <body>
     <div class="container">
-      <canvas id="chart1742779750695" width="16" height="9"></canvas>
+      <canvas id="chart1743111779487" width="16" height="9"></canvas>
     </div>
     <script>
       const format = (num) => {
@@ -51,16 +51,16 @@
           chunked.map((chunk) => chunk.join('')).join(' ') + fractionStr
         )
       }
-      const ctx1742779750695 = document
-        .getElementById('chart1742779750695')
+      const ctx1743111779487 = document
+        .getElementById('chart1743111779487')
         .getContext('2d')
-      const chart1742779750695 = new Chart(ctx1742779750695, {
+      const chart1743111779487 = new Chart(ctx1743111779487, {
         type: 'bar',
         data: {
-          labels: ["send 1Kib of data over QUICStream with UDP socket"],
+          labels: ["send 1Kib of data over quiche FFI with no UDP socket"],
           datasets: [
             {
-              data: [2022],
+              data: [10438],
               backgroundColor: ["hsl(120, 85%, 55%)"],
               borderColor: ["hsl(120, 85%, 55%)"],
               borderWidth: 2,
@@ -72,7 +72,7 @@
           plugins: {
             title: {
               display: true,
-              text: 'streams.stream_1KiB',
+              text: 'stream_1KiB_FFI',
               font: { size: 20 },
               padding: 20,
             },

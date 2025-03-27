@@ -1,20 +1,19 @@
 import url from 'node:url';
+import path from 'node:path';
 import b from 'benny';
-import Logger, { LogLevel, StreamHandler, formatting } from '@matrixai/logger';
-import { summaryName, suiteCommon } from '../../utils.js';
-import * as testsUtils from '../../../tests/utils.js';
+import Logger, { LogLevel } from '@matrixai/logger';
+import { BenchHandler, suiteCommon } from './utils/index.js';
+import * as testsUtils from '../tests/utils.js';
 import QUICClient from '#QUICClient.js';
 import QUICServer from '#QUICServer.js';
 import * as events from '#events.js';
 import * as utils from '#utils.js';
 
-const filename = url.fileURLToPath(new URL(import.meta.url));
+const filePath = url.fileURLToPath(import.meta.url);
 
 async function main() {
   const logger = new Logger(`stream_1KiB Bench`, LogLevel.SILENT, [
-    new StreamHandler(
-      formatting.format`${formatting.level}:${formatting.keys}:${formatting.msg}`,
-    ),
+    new BenchHandler(),
   ]);
   const data1KiB = Buffer.allocUnsafe(1024);
   const tlsConfig = await testsUtils.generateTLSConfig('RSA');
@@ -74,7 +73,7 @@ async function main() {
     // No nothing, just consume
   }
   const summary = await b.suite(
-    summaryName(filename),
+    path.basename(filePath, path.extname(filePath)),
     b.add('send 1Kib of data over QUICStream with UDP socket', async () => {
       await writer.write(data1KiB);
     }),
@@ -87,8 +86,11 @@ async function main() {
   return summary;
 }
 
-if (process.argv[1] === url.fileURLToPath(import.meta.url)) {
-  void main();
+if (import.meta.url.startsWith('file:')) {
+  const modulePath = url.fileURLToPath(import.meta.url);
+  if (process.argv[1] === modulePath) {
+    void main();
+  }
 }
 
 export default main;

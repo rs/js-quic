@@ -1,44 +1,44 @@
-# TYPE buffers.buffer_allocation_ops gauge
-buffers.buffer_allocation_ops{name="Buffer.alloc"} 1370590
-buffers.buffer_allocation_ops{name="Buffer.allocUnsafe"} 5346372
-buffers.buffer_allocation_ops{name="Buffer.allocUnsafeSlow"} 1350702
-buffers.buffer_allocation_ops{name="Buffer.from subarray"} 2741252
-buffers.buffer_allocation_ops{name="Buffer.copyBytesFrom"} 676306
-buffers.buffer_allocation_ops{name="Uint8Array"} 1146307
-buffers.buffer_allocation_ops{name="Uint8Array slice"} 1027805
+# TYPE buffer_allocation_ops gauge
+buffer_allocation_ops{name="Buffer.alloc"} 938109
+buffer_allocation_ops{name="Buffer.allocUnsafe"} 4536822
+buffer_allocation_ops{name="Buffer.allocUnsafeSlow"} 1033223
+buffer_allocation_ops{name="Buffer.from subarray"} 2772304
+buffer_allocation_ops{name="Buffer.copyBytesFrom"} 664578
+buffer_allocation_ops{name="Uint8Array"} 942396
+buffer_allocation_ops{name="Uint8Array slice"} 967255
 
-# TYPE buffers.buffer_allocation_margin gauge
-buffers.buffer_allocation_margin{name="Buffer.alloc"} 6.53
-buffers.buffer_allocation_margin{name="Buffer.allocUnsafe"} 1.91
-buffers.buffer_allocation_margin{name="Buffer.allocUnsafeSlow"} 6.23
-buffers.buffer_allocation_margin{name="Buffer.from subarray"} 1.61
-buffers.buffer_allocation_margin{name="Buffer.copyBytesFrom"} 2.66
-buffers.buffer_allocation_margin{name="Uint8Array"} 4.4
-buffers.buffer_allocation_margin{name="Uint8Array slice"} 2.55
+# TYPE buffer_allocation_margin gauge
+buffer_allocation_margin{name="Buffer.alloc"} 1.98
+buffer_allocation_margin{name="Buffer.allocUnsafe"} 1.93
+buffer_allocation_margin{name="Buffer.allocUnsafeSlow"} 2.71
+buffer_allocation_margin{name="Buffer.from subarray"} 2.34
+buffer_allocation_margin{name="Buffer.copyBytesFrom"} 2.79
+buffer_allocation_margin{name="Uint8Array"} 2.16
+buffer_allocation_margin{name="Uint8Array slice"} 2.32
 
-# TYPE buffers.buffer_allocation_samples counter
-buffers.buffer_allocation_samples{name="Buffer.alloc"} 69
-buffers.buffer_allocation_samples{name="Buffer.allocUnsafe"} 85
-buffers.buffer_allocation_samples{name="Buffer.allocUnsafeSlow"} 53
-buffers.buffer_allocation_samples{name="Buffer.from subarray"} 88
-buffers.buffer_allocation_samples{name="Buffer.copyBytesFrom"} 60
-buffers.buffer_allocation_samples{name="Uint8Array"} 49
-buffers.buffer_allocation_samples{name="Uint8Array slice"} 55
+# TYPE buffer_allocation_samples counter
+buffer_allocation_samples{name="Buffer.alloc"} 76
+buffer_allocation_samples{name="Buffer.allocUnsafe"} 87
+buffer_allocation_samples{name="Buffer.allocUnsafeSlow"} 60
+buffer_allocation_samples{name="Buffer.from subarray"} 91
+buffer_allocation_samples{name="Buffer.copyBytesFrom"} 73
+buffer_allocation_samples{name="Uint8Array"} 43
+buffer_allocation_samples{name="Uint8Array slice"} 46
 
-# TYPE streams.stream_1KiB_FFI_ops gauge
-streams.stream_1KiB_FFI_ops{name="send 1Kib of data over quiche FFI with no UDP socket"} 9610
+# TYPE stream_1KiB_FFI_ops gauge
+stream_1KiB_FFI_ops{name="send 1Kib of data over quiche FFI with no UDP socket"} 10438
 
-# TYPE streams.stream_1KiB_FFI_margin gauge
-streams.stream_1KiB_FFI_margin{name="send 1Kib of data over quiche FFI with no UDP socket"} 7.97
+# TYPE stream_1KiB_FFI_margin gauge
+stream_1KiB_FFI_margin{name="send 1Kib of data over quiche FFI with no UDP socket"} 2.52
 
-# TYPE streams.stream_1KiB_FFI_samples counter
-streams.stream_1KiB_FFI_samples{name="send 1Kib of data over quiche FFI with no UDP socket"} 70
+# TYPE stream_1KiB_FFI_samples counter
+stream_1KiB_FFI_samples{name="send 1Kib of data over quiche FFI with no UDP socket"} 78
 
-# TYPE streams.stream_1KiB_ops gauge
-streams.stream_1KiB_ops{name="send 1Kib of data over QUICStream with UDP socket"} 2022
+# TYPE stream_1KiB_ops gauge
+stream_1KiB_ops{name="send 1Kib of data over QUICStream with UDP socket"} 1490
 
-# TYPE streams.stream_1KiB_margin gauge
-streams.stream_1KiB_margin{name="send 1Kib of data over QUICStream with UDP socket"} 7.97
+# TYPE stream_1KiB_margin gauge
+stream_1KiB_margin{name="send 1Kib of data over QUICStream with UDP socket"} 9.12
 
-# TYPE streams.stream_1KiB_samples counter
-streams.stream_1KiB_samples{name="send 1Kib of data over QUICStream with UDP socket"} 59
+# TYPE stream_1KiB_samples counter
+stream_1KiB_samples{name="send 1Kib of data over QUICStream with UDP socket"} 36

@@ -1,66 +1,58 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env tsx
 
-import type { Summary } from 'benny/lib/internal/common-types.js';
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import url from 'node:url';
 import si from 'systeminformation';
-import { fsWalk, resultsPath, suitesPath } from './utils.js';
-
-const dirname = url.fileURLToPath(new URL('.', import.meta.url));
-console.log('dirname', dirname);
+import { benchesPath } from './utils/utils.js';
+import buffer_allocation from './buffer_allocation.js';
+import stream_1KiB from './stream_1KiB.js';
+import stream_1KiB_FFI from './stream_1KiB_FFI.js';
 
 async function main(): Promise<void> {
-  console.log('mkdir', path.join(dirname, 'results'));
-  await fs.promises.mkdir(url.pathToFileURL(path.join(dirname, 'results')), {
+  await fs.promises.mkdir(path.join(benchesPath, 'results'), {
     recursive: true,
   });
-  // Running all suites
-  for await (const suitePath of fsWalk(suitesPath)) {
-    // Skip over non-ts and non-js files
-    const ext = path.extname(suitePath);
-    if (ext !== '.ts' && ext !== '.js') {
-      continue;
-    }
-    const suite: () => Promise<Summary> = (await import(suitePath)).default;
-    // Skip default exports that are not functions and are not called "main"
-    // They might be utility files
-    if (typeof suite === 'function' && suite.name === 'main') {
-      await suite();
-    }
-  }
-  // Concatenating metrics
-  const metricsPath = path.join(resultsPath, 'metrics.txt');
-  await fs.promises.rm(url.pathToFileURL(metricsPath), { force: true });
+  await buffer_allocation();
+  await stream_1KiB();
+  await stream_1KiB_FFI();
+  const resultFilenames = await fs.promises.readdir(
+    path.join(benchesPath, 'results'),
+  );
+  const metricsFile = await fs.promises.open(
+    path.join(benchesPath, 'results', 'metrics.txt'),
+    'w',
+  );
   let concatenating = false;
-  for await (const metricPath of fsWalk(resultsPath)) {
-    // Skip over non-metrics files
-    if (!metricPath.endsWith('_metrics.txt')) {
-      continue;
+  for (const resultFilename of resultFilenames) {
+    if (/.+_metrics\.txt$/.test(resultFilename)) {
+      const metricsData = await fs.promises.readFile(
+        path.join(benchesPath, 'results', resultFilename),
+      );
+      if (concatenating) {
+        await metricsFile.write('\n');
+      }
+      await metricsFile.write(metricsData);
+      concatenating = true;
     }
-    const metricData = await fs.promises.readFile(
-      url.pathToFileURL(metricPath),
-    );
-    if (concatenating) {
-      await fs.promises.appendFile(url.pathToFileURL(metricsPath), '\n');
-    }
-    await fs.promises.appendFile(url.pathToFileURL(metricsPath), metricData);
-    concatenating = true;
   }
+  await metricsFile.close();
   const systemData = await si.get({
     cpu: '*',
     osInfo: 'platform, distro, release, kernel, arch',
     system: 'model, manufacturer',
   });
-  console.log('write file', path.join(dirname, 'results', 'system.json'));
   await fs.promises.writeFile(
-    url.pathToFileURL(path.join(dirname, 'results', 'system.json')),
+    path.join(benchesPath, 'results', 'system.json'),
     JSON.stringify(systemData, null, 2),
   );
 }
 
-if (process.argv[1] === url.fileURLToPath(import.meta.url)) {
-  void main();
+if (import.meta.url.startsWith('file:')) {
+  const modulePath = url.fileURLToPath(import.meta.url);
+  if (process.argv[1] === modulePath) {
+    void main();
+  }
 }
 
 export default main;

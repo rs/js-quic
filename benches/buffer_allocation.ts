@@ -1,12 +1,13 @@
+import path from 'node:path';
 import url from 'node:url';
 import b from 'benny';
-import { summaryName, suiteCommon } from '../../utils.js';
+import { suiteCommon } from './utils/index.js';
 
-const filename = url.fileURLToPath(new URL(import.meta.url));
+const filePath = url.fileURLToPath(import.meta.url);
 
 async function main() {
   const summary = await b.suite(
-    summaryName(filename),
+    path.basename(filePath, path.extname(filePath)),
     b.add('Buffer.alloc', () => {
       Buffer.alloc(1350);
     }),
@@ -42,8 +43,11 @@ async function main() {
   return summary;
 }
 
-if (process.argv[1] === url.fileURLToPath(import.meta.url)) {
-  void main();
+if (import.meta.url.startsWith('file:')) {
+  const modulePath = url.fileURLToPath(import.meta.url);
+  if (process.argv[1] === modulePath) {
+    void main();
+  }
 }
 
 export default main;
