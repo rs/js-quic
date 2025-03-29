@@ -17,20 +17,12 @@
     "url": "https://github.com/MatrixAI/js-quic.git"
   },
   "type": "module",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    },
-    "./*.js": {
-      "types": "./dist/*.d.ts",
-      "import": "./dist/*.js"
-    },
-    "./*": "./dist/*"
-  },
-  "imports": {
-    "#*": "./dist/*"
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs.js"
   },
   "napi": {
     "name": "quic"
@@ -38,7 +30,7 @@
   "scripts": {
     "prepare": "tsc -p ./tsconfig.build.json",
     "prebuild": "node ./scripts/prebuild.mjs",
-    "build": "shx rm -rf ./dist && tsc -p ./tsconfig.build.json",
+    "build": "shx rm -rf ./dist && tsup",
     "version": "node ./scripts/version.mjs",
     "prepublishOnly": "node ./scripts/prepublishOnly.mjs",
     "tsx": "tsx",
@@ -99,6 +91,7 @@
     "sodium-native": "^3.4.1",
     "systeminformation": "^5.18.5",
     "ts-node": "^10.9.1",
+    "tsup": "^8.4.0",
     "tsx": "^3.12.7",
     "typedoc": "^0.24.8",
     "typescript": "^5.1.6"
