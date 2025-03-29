@@ -17,8 +17,20 @@ import path from 'path';
 import url from 'url';
 import Module from 'node:module';
 
-const require = Module.createRequire(import.meta.url);
-const dirname = url.fileURLToPath(new URL('.', import.meta.url));
+function getRequireAndDirname() {
+  try {
+    // ESM
+    const Module = require('module');
+    const requireFn = Module.createRequire(import.meta.url);
+    const dirname = url.fileURLToPath(new URL('.', import.meta.url));
+    return { require: requireFn, dirname };
+  } catch {
+    // CJS
+    return { require, dirname: __dirname };
+  }
+}
+
+const { require, dirname } = getRequireAndDirname();
 
 interface Quiche {
   MAX_CONN_ID_LEN: number;
