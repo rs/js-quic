@@ -1,7 +1,7 @@
 import url from 'node:url';
 import path from 'node:path';
 import b from 'benny';
-import Logger, { LogLevel } from '@matrixai/logger';
+import Logger, { LogLevel } from '#logger/index.js';
 import { BenchHandler, suiteCommon } from './utils/index.js';
 import * as testsUtils from '../tests/utils.js';
 import QUICClient from '#QUICClient.js';

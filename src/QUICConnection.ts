@@ -1,5 +1,5 @@
-import type { PromiseCancellable } from '@matrixai/async-cancellable';
-import type { ContextTimed, ContextTimedInput } from '@matrixai/contexts';
+import type { PromiseCancellable } from './async-cancellable/index.js';
+import type { ContextTimed, ContextTimedInput } from './contexts/index.js';
 import type QUICSocket from './QUICSocket.js';
 import type {
   Host,
@@ -12,12 +12,12 @@ import type {
   StreamReasonToCode,
 } from './types.js';
 import type { Connection, ConnectionError, SendInfo } from './native/types.js';
-import Logger from '@matrixai/logger';
-import { Timer } from '@matrixai/timer';
-import { Lock } from '@matrixai/async-locks';
-import { AbstractEvent, EventAll } from '@matrixai/events';
-import { startStop } from '@matrixai/async-init';
-import { decorators } from '@matrixai/contexts';
+import Logger from './logger/index.js';
+import { Timer } from './timer/index.js';
+import { Lock } from './async-locks/index.js';
+import { AbstractEvent, EventAll } from './events/index.js';
+import { startStop } from './async-init/index.js';
+import { decorators } from './contexts/index.js';
 import { buildQuicheConfig, minIdleTimeout } from './config.js';
 import QUICConnectionId from './QUICConnectionId.js';
 import QUICStream from './QUICStream.js';

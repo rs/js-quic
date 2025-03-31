@@ -1,6 +1,6 @@
 import type { X509Certificate } from '@peculiar/x509';
 import type { Host, ServerCryptoOps, ClientCryptoOps } from '#types.js';
-import Logger, { LogLevel, StreamHandler, formatting } from '@matrixai/logger';
+import Logger, { LogLevel, StreamHandler, formatting } from '#logger/index.js';
 import * as testsUtils from './utils.js';
 import QUICServer from '#QUICServer.js';
 import QUICClient from '#QUICClient.js';

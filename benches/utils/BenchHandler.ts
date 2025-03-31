@@ -1,4 +1,4 @@
-import { Handler } from '@matrixai/logger';
+import { Handler } from '#logger/index.js';
 
 /**
  * Custom bench handler where emission is free

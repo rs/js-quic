@@ -16,8 +16,8 @@ import {
   WritableStream,
   CountQueuingStrategy,
 } from 'stream/web';
-import Logger from '@matrixai/logger';
-import { createDestroy, destroyed, status } from '@matrixai/async-init';
+import Logger from './logger/index.js';
+import { createDestroy, destroyed, status } from './async-init/index.js';
 import quiche from './native/quiche.js';
 import * as utils from './utils.js';
 import * as events from './events.js';

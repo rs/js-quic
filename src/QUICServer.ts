@@ -10,9 +10,9 @@ import type {
   StreamReasonToCode,
 } from './types.js';
 import type { Header } from './native/types.js';
-import Logger from '@matrixai/logger';
-import { AbstractEvent, EventAll } from '@matrixai/events';
-import { startStop } from '@matrixai/async-init';
+import Logger from './logger/index.js';
+import { AbstractEvent, EventAll } from './events/index.js';
+import { startStop } from './async-init/index.js';
 import QUICSocket from './QUICSocket.js';
 import QUICConnection from './QUICConnection.js';
 import QUICConnectionId from './QUICConnectionId.js';

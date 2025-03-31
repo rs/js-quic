@@ -16,7 +16,7 @@ import type {
   ErrorQUICClientSocketNotRunning,
   ErrorQUICClientInternal,
 } from './errors.js';
-import { AbstractEvent } from '@matrixai/events';
+import { AbstractEvent } from './events/index.js';
 
 abstract class EventQUIC<T = undefined> extends AbstractEvent<T> {}
 

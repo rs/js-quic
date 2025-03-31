@@ -1,7 +1,7 @@
 import type { ClientCryptoOps, ServerCryptoOps, StreamId } from '#types.js';
 import type QUICConnection from '#QUICConnection.js';
-import Logger, { formatting, LogLevel, StreamHandler } from '@matrixai/logger';
-import { destroyed } from '@matrixai/async-init';
+import Logger, { formatting, LogLevel, StreamHandler } from '#logger/index.js';
+import { destroyed } from '#async-init/index.js';
 import { test, fc } from '@fast-check/jest';
 import { jest } from '@jest/globals';
 import * as testsUtils from './utils.js';
