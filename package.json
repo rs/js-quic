@@ -21,8 +21,20 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "exports": {
-    "import": "./dist/index.mjs",
-    "require": "./dist/index.cjs.js"
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./*.js": {
+      "types": "./dist/*.d.ts",
+      "import": "./dist/*.js"
+    },
+    "./*": "./dist/*"
+  },
+  "imports": {
+    "#*": "./dist/*"
   },
   "napi": {
     "name": "quic"

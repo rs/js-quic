@@ -20,7 +20,6 @@ import Module from 'node:module';
 function getRequireAndDirname() {
   try {
     // ESM
-    const Module = require('module');
     const requireFn = Module.createRequire(import.meta.url);
     const dirname = url.fileURLToPath(new URL('.', import.meta.url));
     return { require: requireFn, dirname };
