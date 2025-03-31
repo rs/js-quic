@@ -1,6 +1,6 @@
 {
   "name": "@rs/quic",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "author": "Matrix AI",
   "contributors": [
     {
@@ -40,7 +40,7 @@
     "name": "quic"
   },
   "scripts": {
-    "prepare": "tsc -p ./tsconfig.build.json",
+    "prepare": "tsup --tsconfig ./tsconfig.build.json",
     "prebuild": "node ./scripts/prebuild.mjs",
     "build": "shx rm -rf ./dist && tsup",
     "version": "node ./scripts/version.mjs",
