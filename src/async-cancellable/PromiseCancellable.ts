@@ -180,7 +180,7 @@ class PromiseCancellable<T> extends Promise<T> {
         // This swaps the `DOMException [AbortError]` for `undefined`.
         // This is because we expect aborting or cancelling with `undefined`
         // should mean rejection of `undefined`.
-        if (reason instanceof DOMException && reason.name === 'AbortError') {
+        if (typeof DOMException !== 'undefined' && reason instanceof DOMException && reason.name === 'AbortError') {
           reason = undefined;
         }
         reject(reason);

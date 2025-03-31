@@ -540,7 +540,9 @@ class QUICConnection {
     if (this.conn.isClosed()) {
       throw new errors.ErrorQUICConnectionClosed();
     }
-    ctx.signal.throwIfAborted();
+    if (ctx.signal.aborted) {
+      throw ctx.signal.reason ?? new Error('Aborted');
+    }
     const { p: abortP, rejectP: rejectAbortP } = utils.promise<never>();
     // Prevent promise rejection leak
     void abortP.catch(() => {});
