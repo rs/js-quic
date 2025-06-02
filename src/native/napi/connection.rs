@@ -818,8 +818,10 @@ impl Connection {
   }
 
   #[napi]
-  pub fn source_id(&self) -> Uint8Array {
-    return self.0.source_id().as_ref().into();
+  pub fn source_id(&self) -> External<Vec<u8>> {
+    let source_id = self.0.source_id();
+    let bytes = source_id.as_ref().to_vec();
+    External::new(bytes) 
   }
 
   #[napi]

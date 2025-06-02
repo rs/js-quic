@@ -73,6 +73,11 @@ impl Header {
       |e| Err(Error::from_reason(e.to_string()))
     ).map(|header| header.into());
   }
+
+  #[napi]
+  pub fn get_dcid(&self) -> External<Vec<u8>> {
+    External::new(self.dcid.to_vec()) 
+  }
 }
 
 #[napi]
