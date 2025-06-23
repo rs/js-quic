@@ -819,12 +819,6 @@ impl Connection {
     return self.0.session().map(|s| s.to_vec().into());
   }
 
-  /*
-  #[napi]
-  pub fn source_id(&self) -> Uint8Array {
-    return self.0.source_id().as_ref().into();
-  }
-  */
   #[napi]
   pub fn source_id(&self) -> String {
     let data = self.0.source_id();

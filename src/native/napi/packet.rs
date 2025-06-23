@@ -66,7 +66,6 @@ impl From<quiche::Header<'_>> for Header {
 impl Header {
   #[napi(factory)]
   pub fn from_slice(mut data: Uint8Array, dcid_len: i64) -> napi::Result<Self> {
-    println!("tst");
     return quiche::Header::from_slice(
       &mut data,
       dcid_len as usize

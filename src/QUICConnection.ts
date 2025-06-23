@@ -437,7 +437,6 @@ class QUICConnection {
    */
   public get connectionId() {
     const sourceId = new Uint8Array(Buffer.from(this.conn.sourceId(), 'base64')); 
-    console.log(sourceId);
     // Zero copy construction of QUICConnectionId
     return new QUICConnectionId(
       sourceId.buffer,
