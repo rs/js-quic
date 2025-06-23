@@ -436,7 +436,8 @@ class QUICConnection {
    * This is the source connection ID.
    */
   public get connectionId() {
-    const sourceId = this.conn.sourceId();
+    const sourceId = new Uint8Array(Buffer.from(this.conn.sourceId(), 'base64')); 
+    console.log(sourceId);
     // Zero copy construction of QUICConnectionId
     return new QUICConnectionId(
       sourceId.buffer,
@@ -466,7 +467,8 @@ class QUICConnection {
    */
   @startStop.ready(new errors.ErrorQUICConnectionNotRunning())
   public get connectionIdShared() {
-    const sourceId = this.conn.sourceId();
+    const sourceId = new Uint8Array(Buffer.from(this.conn.sourceId(), 'base64')); 
+    console.log(sourceId);
     const destinationId = this.conn.destinationId();
     if (Buffer.compare(sourceId, destinationId) <= 0) {
       return new QUICConnectionId(Buffer.concat([sourceId, destinationId]));

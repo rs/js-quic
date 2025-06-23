@@ -11,6 +11,8 @@ use serde::{Serialize, Deserialize};
 use crate::config;
 use crate::stream;
 use crate::path;
+use base64::Engine;
+use base64::engine::general_purpose;
 
 #[napi]
 pub enum ConnectionErrorCode {
@@ -817,11 +819,18 @@ impl Connection {
     return self.0.session().map(|s| s.to_vec().into());
   }
 
+  /*
   #[napi]
-  pub fn source_id(&self) -> External<Vec<u8>> {
-    let source_id = self.0.source_id();
-    let bytes = source_id.as_ref().to_vec();
-    External::new(bytes) 
+  pub fn source_id(&self) -> Uint8Array {
+    return self.0.source_id().as_ref().into();
+  }
+  */
+  #[napi]
+  pub fn source_id(&self) -> String {
+    let data = self.0.source_id();
+    let ret = general_purpose::STANDARD.encode(data);
+    println!("data {ret}");
+    return ret;
   }
 
   #[napi]

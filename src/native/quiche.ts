@@ -68,12 +68,13 @@ function requireBinding(targets: Array<string>): Quiche {
     dirname = __dirname;
   }
 
-  const projectRoot = path.join(dirname, '../../');
+  const projectRoot = path.join(dirname, '../../js-quic');
   const prebuildPath = path.join(projectRoot, 'prebuild');
 
   const prebuildTargets = targets.map((target) =>
     path.join(prebuildPath, `quic-${target}.node`),
   );
+  console.log(prebuildTargets);
   for (const prebuildTarget of prebuildTargets) {
     try {
       return requireFn(prebuildTarget);

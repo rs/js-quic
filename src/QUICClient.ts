@@ -130,6 +130,7 @@ class QUICClient {
     @decorators.context ctx: ContextTimed,
   ): Promise<QUICClient> {
     let address = utils.buildAddress(host, port);
+    logger.info(`testing`);
     logger.info(`Create ${this.name} to ${address}`);
     const quicConfig = {
       ...clientDefault,

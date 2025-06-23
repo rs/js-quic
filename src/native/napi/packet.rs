@@ -66,17 +66,13 @@ impl From<quiche::Header<'_>> for Header {
 impl Header {
   #[napi(factory)]
   pub fn from_slice(mut data: Uint8Array, dcid_len: i64) -> napi::Result<Self> {
+    println!("tst");
     return quiche::Header::from_slice(
       &mut data,
       dcid_len as usize
     ).or_else(
       |e| Err(Error::from_reason(e.to_string()))
     ).map(|header| header.into());
-  }
-
-  #[napi]
-  pub fn get_dcid(&self) -> External<Vec<u8>> {
-    External::new(self.dcid.to_vec()) 
   }
 }
 
