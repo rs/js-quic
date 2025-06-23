@@ -11,8 +11,6 @@ use serde::{Serialize, Deserialize};
 use crate::config;
 use crate::stream;
 use crate::path;
-use base64::Engine;
-use base64::engine::general_purpose;
 
 #[napi]
 pub enum ConnectionErrorCode {
@@ -820,11 +818,11 @@ impl Connection {
   }
 
   #[napi]
-  pub fn source_id(&self) -> String {
-    let data = self.0.source_id();
-    let ret = general_purpose::STANDARD.encode(data);
-    println!("data {ret}");
-    return ret;
+  pub fn source_id(&self, env: Env) -> napi::Result<napi::JsTypedArray> {
+    let src = self.0.source_id();
+    let array_buffer = env.create_arraybuffer(src.len())?;
+    let typed_array = array_buffer.into_raw().into_typedarray(TypedArrayType::Uint8, src.len(), 0)?;
+    Ok(typed_array)
   }
 
   #[napi]

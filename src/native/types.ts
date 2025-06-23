@@ -121,7 +121,7 @@ interface Connection {
   serverName(): string | null;
   peerCertChain(): Array<Uint8Array> | null;
   session(): Uint8Array | null;
-  sourceId(): string;
+  sourceId(): Uint8Array;
   destinationId(): Uint8Array;
   isEstablished(): boolean;
   isResumed(): boolean;
