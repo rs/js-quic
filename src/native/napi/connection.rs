@@ -818,11 +818,11 @@ impl Connection {
   }
 
   #[napi]
-  pub fn source_id(&self, env: Env) -> napi::Result<napi::JsTypedArray> {
+  pub fn source_id(&self, env: Env) -> napi::Result<napi::JsBuffer> {
     let src = self.0.source_id();
-    let array_buffer = env.create_arraybuffer(src.len())?;
-    let typed_array = array_buffer.into_raw().into_typedarray(TypedArrayType::Uint8, src.len(), 0)?;
-    Ok(typed_array)
+    let mut js_buffer = env.create_buffer(src.len())?;
+    js_buffer.as_mut().copy_from_slice(src.as_ref());
+    Ok(js_buffer.into_raw())
   }
 
   #[napi]
