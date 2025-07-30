@@ -162,6 +162,7 @@ interface Header {
   scid: Uint8Array;
   token?: Uint8Array;
   versions?: Array<number>;
+  getDcid(): Uint8Array;
 }
 
 interface HeaderConstructor {
