@@ -6,9 +6,9 @@ import type {
 } from '#types.js';
 import type { Messages, StreamData } from './utils.js';
 import { test, fc } from '@fast-check/jest';
-import Logger, { formatting, LogLevel, StreamHandler } from '#logger/index.js';
 import { generateTLSConfig, handleStreamProm, sleep } from './utils.js';
 import * as testsUtils from './utils.js';
+import Logger, { formatting, LogLevel, StreamHandler } from '#logger/index.js';
 import * as events from '#events.js';
 import QUICServer from '#QUICServer.js';
 import { promise } from '#utils.js';

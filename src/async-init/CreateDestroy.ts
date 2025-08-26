@@ -1,6 +1,4 @@
 import type { Status, Class } from './types.js';
-import { Evented } from '../events/index.js';
-import { RWLockWriter } from '../async-locks/index.js';
 import {
   _destroyed,
   destroyed,
@@ -18,6 +16,8 @@ import {
 } from './utils.js';
 import { EventAsyncInitDestroy, EventAsyncInitDestroyed } from './events.js';
 import { ErrorAsyncInitDestroyed } from './errors.js';
+import { RWLockWriter } from '../async-locks/index.js';
+import { Evented } from '../events/index.js';
 
 interface CreateDestroy<DestroyReturn = unknown> extends Evented {
   get [destroyed](): boolean;

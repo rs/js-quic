@@ -5,11 +5,11 @@ import type {
   ContextTimed,
   ContextTimedInput,
 } from './types.js';
-import { PromiseCancellable } from '../async-cancellable/index.js';
-import { withF, withG } from '../resources/index.js';
 import Lock from './Lock.js';
 import * as utils from './utils.js';
 import * as errors from './errors.js';
+import { withF, withG } from '../resources/index.js';
+import { PromiseCancellable } from '../async-cancellable/index.js';
 
 /**
  * Read-preferring read write lock
@@ -67,14 +67,14 @@ class RWLockReader implements Lockable {
       (params.length === 2
         ? params[0]
         : typeof params[0] === 'string'
-        ? params[0]
-        : undefined) ?? 'write';
+          ? params[0]
+          : undefined) ?? 'write';
     const ctx =
       params.length === 2
         ? params[1]
         : typeof params[0] !== 'string'
-        ? params[0]
-        : undefined;
+          ? params[0]
+          : undefined;
     switch (type) {
       case 'read':
         return this.read(ctx);

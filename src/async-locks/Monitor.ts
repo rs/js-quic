@@ -9,9 +9,9 @@ import type {
   RWLockRequest,
   ContextTimedInput,
 } from './types.js';
+import * as errors from './errors.js';
 import { PromiseCancellable } from '../async-cancellable/index.js';
 import { withF, withG } from '../resources/index.js';
-import * as errors from './errors.js';
 
 class Monitor<RWLock extends RWLockReader | RWLockWriter> implements Lockable {
   /**
@@ -287,14 +287,14 @@ class Monitor<RWLock extends RWLockReader | RWLockWriter> implements Lockable {
       params.length === 2
         ? params[0]
         : typeof params[0] === 'string'
-        ? params[0]
-        : undefined;
+          ? params[0]
+          : undefined;
     const ctx =
       params.length === 2
         ? params[1]
         : typeof params[0] !== 'string'
-        ? params[0]
-        : undefined;
+          ? params[0]
+          : undefined;
     if (key == null) {
       const waitPs: Array<PromiseCancellable<void>> = [];
       for (const [key, lock] of this._locks.entries()) {

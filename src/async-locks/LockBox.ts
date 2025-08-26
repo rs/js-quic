@@ -8,10 +8,10 @@ import type {
   ContextTimed,
   ContextTimedInput,
 } from './types.js';
-import { PromiseCancellable } from '../async-cancellable/index.js';
-import { withF, withG } from '../resources/index.js';
 import * as utils from './utils.js';
 import * as errors from './errors.js';
+import { PromiseCancellable } from '../async-cancellable/index.js';
+import { withF, withG } from '../resources/index.js';
 
 class LockBox<L extends Lockable = Lockable> implements Lockable {
   protected _locks: Map<string, L> = new Map();
@@ -217,14 +217,14 @@ class LockBox<L extends Lockable = Lockable> implements Lockable {
       params.length === 2
         ? params[0]
         : typeof params[0] === 'string'
-        ? params[0]
-        : undefined;
+          ? params[0]
+          : undefined;
     const ctx =
       params.length === 2
         ? params[1]
         : typeof params[0] !== 'string'
-        ? params[0]
-        : undefined;
+          ? params[0]
+          : undefined;
     if (key == null) {
       const waitPs: Array<PromiseCancellable<void>> = [];
       for (const lock of this._locks.values()) {

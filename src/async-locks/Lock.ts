@@ -4,8 +4,8 @@ import type {
   Lockable,
   ContextTimedInput,
 } from './types.js';
-import { withF, withG } from '../resources/index.js';
 import Semaphore from './Semaphore.js';
+import { withF, withG } from '../resources/index.js';
 
 class Lock implements Lockable {
   protected semaphore: Semaphore = new Semaphore(1);

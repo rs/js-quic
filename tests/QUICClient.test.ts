@@ -1,11 +1,11 @@
 import type { ClientCryptoOps, ServerCryptoOps } from '#types.js';
 import type QUICConnection from '#QUICConnection.js';
 import type { KeyTypes, TLSConfigs } from './utils.js';
-import Logger, { LogLevel, StreamHandler, formatting } from '#logger/index.js';
 import { test, fc } from '@fast-check/jest';
-import { running } from '#async-init/index.js';
 import * as testsUtils from './utils.js';
 import { generateTLSConfig, sleep } from './utils.js';
+import { running } from '#async-init/index.js';
+import Logger, { LogLevel, StreamHandler, formatting } from '#logger/index.js';
 import QUICSocket from '#QUICSocket.js';
 import QUICClient from '#QUICClient.js';
 import QUICServer from '#QUICServer.js';

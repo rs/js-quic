@@ -1,9 +1,9 @@
 import url from 'node:url';
 import path from 'node:path';
 import b from 'benny';
-import Logger, { LogLevel } from '#logger/index.js';
 import { BenchHandler, suiteCommon } from './utils/index.js';
 import * as testsUtils from '../tests/utils.js';
+import Logger, { LogLevel } from '#logger/index.js';
 import QUICClient from '#QUICClient.js';
 import QUICServer from '#QUICServer.js';
 import * as events from '#events.js';

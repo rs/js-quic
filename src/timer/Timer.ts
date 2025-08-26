@@ -1,7 +1,7 @@
 import type { PromiseCancellableController } from '../async-cancellable/index.js';
 import { performance } from 'node:perf_hooks';
-import { PromiseCancellable } from '../async-cancellable/index.js';
 import { ErrorTimerEnded } from './errors.js';
+import { PromiseCancellable } from '../async-cancellable/index.js';
 
 /**
  * Just like `setTimeout` or `setInterval`,
