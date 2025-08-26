@@ -73,6 +73,13 @@ impl Header {
       |e| Err(Error::from_reason(e.to_string()))
     ).map(|header| header.into());
   }
+
+  #[napi]
+  pub fn get_dcid(&self, env: Env) -> napi::Result<napi::JsBuffer> {
+    let mut js_buffer = env.create_buffer(self.dcid.len())?;
+    js_buffer.as_mut().copy_from_slice(self.dcid.as_ref());
+    Ok(js_buffer.into_raw())
+  }
 }
 
 #[napi]

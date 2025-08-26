@@ -104,7 +104,7 @@ class QUICSocket {
     // All QUIC packets will have the `dcid` header property
     // However short packets will not have the `scid` property
     // The destination connection ID is supposed to be our connection ID
-    const dcid = new QUICConnectionId(header.dcid);
+    const dcid = new QUICConnectionId(header.getDcid());
     const remoteInfo_ = {
       host: remoteInfo.address as Host,
       port: remoteInfo.port as Port,
