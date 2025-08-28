@@ -23,8 +23,8 @@ function canonicalizeOptions(
     ...(typeof options === 'boolean'
       ? { capture: options }
       : typeof options === 'object'
-      ? options
-      : undefined),
+        ? options
+        : undefined),
   };
 }
 

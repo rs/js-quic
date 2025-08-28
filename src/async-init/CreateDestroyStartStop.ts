@@ -1,6 +1,4 @@
 import type { Status, Class } from './types.js';
-import { Evented } from '../events/index.js';
-import { RWLockWriter } from '../async-locks/index.js';
 import {
   _running,
   running,
@@ -31,6 +29,8 @@ import {
   ErrorAsyncInitNotRunning,
   ErrorAsyncInitDestroyed,
 } from './errors.js';
+import { RWLockWriter } from '../async-locks/index.js';
+import { Evented } from '../events/index.js';
 
 interface CreateDestroyStartStop<
   StartReturn = unknown,

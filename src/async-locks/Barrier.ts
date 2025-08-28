@@ -1,7 +1,7 @@
 import type { ResourceRelease } from '../resources/index.js';
 import type { ContextTimedInput } from './types.js';
-import { PromiseCancellable } from '../async-cancellable/index.js';
 import Lock from './Lock.js';
+import { PromiseCancellable } from '../async-cancellable/index.js';
 
 class Barrier {
   protected lock: Lock;

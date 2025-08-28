@@ -1,6 +1,4 @@
 import type { Status, Class } from './types.js';
-import { Evented } from '../events/index.js';
-import { RWLockWriter } from '../async-locks/index.js';
 import {
   _running,
   running,
@@ -23,6 +21,8 @@ import {
   EventAsyncInitStopped,
 } from './events.js';
 import { ErrorAsyncInitNotRunning } from './errors.js';
+import { RWLockWriter } from '../async-locks/index.js';
+import { Evented } from '../events/index.js';
 
 interface StartStop<StartReturn = unknown, StopReturn = unknown>
   extends Evented {

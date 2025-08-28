@@ -5,9 +5,9 @@ import type {
   ContextTimed,
   ContextTimedInput,
 } from './types.js';
-import { withF, withG } from '../resources/index.js';
 import * as utils from './utils.js';
 import * as errors from './errors.js';
+import { withF, withG } from '../resources/index.js';
 
 type Task = {
   task: () => void;
@@ -55,14 +55,14 @@ class Semaphore implements Lockable {
       (params.length === 2
         ? params[0]
         : typeof params[0] === 'number'
-        ? params[0]
-        : undefined) ?? 1;
+          ? params[0]
+          : undefined) ?? 1;
     let ctx =
       params.length === 2
         ? params[1]
         : typeof params[0] !== 'number'
-        ? params[0]
-        : undefined;
+          ? params[0]
+          : undefined;
     if (weight < 1) {
       throw new RangeError('Semaphore must be locked with `weight` >= 1');
     }
@@ -137,14 +137,14 @@ class Semaphore implements Lockable {
       (params.length === 2
         ? params[0]
         : typeof params[0] === 'number'
-        ? params[0]
-        : undefined) ?? 1;
+          ? params[0]
+          : undefined) ?? 1;
     let ctx =
       params.length === 2
         ? params[1]
         : typeof params[0] !== 'number'
-        ? params[0]
-        : undefined;
+          ? params[0]
+          : undefined;
     if (weight < 1) {
       throw new RangeError('Semaphore must be locked with `weight` >= 1');
     }
