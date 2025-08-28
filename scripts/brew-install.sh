@@ -12,8 +12,17 @@ export HOMEBREW_NO_ANALYTICS=1
 
 brew reinstall node@20
 brew link --overwrite node@20
-brew install cmake
-brew link --overwrite cmake
+
+if brew list --formula cmake &>/dev/null; then
+  echo "cmake already present (tap: $(brew info --json=v1 cmake | \
+        /usr/bin/python3 -c 'import sys, json; print(json.load(sys.stdin)[0]["tap"])'))"
+  # just make sure it is linked
+  brew link --overwrite cmake
+else
+  brew install cmake
+  brew link --overwrite cmake
+fi
+
 brew install rustup-init
 brew link --overwrite rustup-init
 
