@@ -28,11 +28,11 @@ if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
   Save-ChocoPackage -PackageName $nodejs
 }
 
-# Install rust v1.68.0
+# Install rust v1.70.0
 if (-not (Get-Command rustup -ErrorAction SilentlyContinue)) {
   Write-Error "Rustup is unexpectedly missing"; exit 1
 }
-$toolchain = '1.68.0'
+$toolchain = '1.70.0'
 Write-Host "Installing Rust toolchain $toolchain via rustup"
 rustup toolchain install $toolchain --profile minimal
 rustup default $toolchain
