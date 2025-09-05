@@ -61,19 +61,6 @@ pub struct Stats {
   pub lost_bytes: i64,
   pub stream_retrans_bytes: i64,
   pub paths_count: i64,
-  pub peer_max_idle_timeout: i64,
-  pub peer_max_udp_payload_size: i64,
-  pub peer_initial_max_data: i64,
-  pub peer_initial_max_stream_data_bidi_local: i64,
-  pub peer_initial_max_stream_data_bidi_remote: i64,
-  pub peer_initial_max_stream_data_uni: i64,
-  pub peer_initial_max_streams_bidi: i64,
-  pub peer_initial_max_streams_uni: i64,
-  pub peer_ack_delay_exponent: i64,
-  pub peer_max_ack_delay: i64,
-  pub peer_disable_active_migration: bool,
-  pub peer_active_conn_id_limit: i64,
-  pub peer_max_datagram_frame_size: Option<i64>,
 }
 
 impl From<quiche::Stats> for Stats {
@@ -88,19 +75,6 @@ impl From<quiche::Stats> for Stats {
       lost_bytes: stats.lost_bytes as i64,
       stream_retrans_bytes: stats.stream_retrans_bytes as i64,
       paths_count: stats.paths_count as i64,
-      peer_max_idle_timeout: stats.peer_max_idle_timeout as i64,
-      peer_max_udp_payload_size: stats.peer_max_udp_payload_size as i64,
-      peer_initial_max_data: stats.peer_initial_max_data as i64,
-      peer_initial_max_stream_data_bidi_local: stats.peer_initial_max_stream_data_bidi_local as i64,
-      peer_initial_max_stream_data_bidi_remote: stats.peer_initial_max_stream_data_bidi_remote as i64,
-      peer_initial_max_stream_data_uni: stats.peer_initial_max_stream_data_uni as i64,
-      peer_initial_max_streams_bidi: stats.peer_initial_max_streams_bidi as i64,
-      peer_initial_max_streams_uni: stats.peer_initial_max_streams_uni as i64,
-      peer_ack_delay_exponent: stats.peer_ack_delay_exponent as i64,
-      peer_max_ack_delay: stats.peer_max_ack_delay as i64,
-      peer_disable_active_migration: stats.peer_disable_active_migration,
-      peer_active_conn_id_limit: stats.peer_active_conn_id_limit as i64,
-      peer_max_datagram_frame_size: stats.peer_max_datagram_frame_size.map(|v| v as i64),
     };
   }
 }

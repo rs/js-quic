@@ -96,12 +96,6 @@ async function main(argv = process.argv) {
   const buildPath = await fs.promises.mkdtemp(
     path.join(os.tmpdir(), 'prebuild-'),
   );
-  childProcess.execFileSync('cargo', ['build', '--verbose'], {
-    stdio: ['inherit', 'inherit', 'inherit'],
-    windowsHide: true,
-    encoding: 'utf-8',
-    shell: platform === 'win32' ? true : false,
-  });
   const buildArgs = [
     'build',
     buildPath,
