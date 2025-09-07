@@ -12,8 +12,17 @@ export HOMEBREW_NO_ANALYTICS=1
 
 brew reinstall node@20
 brew link --overwrite node@20
-brew install cmake
-brew link --overwrite cmake
+
+if brew list --formula cmake &>/dev/null; then
+  echo "cmake already present (tap: $(brew info --json=v1 cmake | \
+        /usr/bin/python3 -c 'import sys, json; print(json.load(sys.stdin)[0]["tap"])'))"
+  # just make sure it is linked
+  brew link --overwrite cmake
+else
+  brew install cmake
+  brew link --overwrite cmake
+fi
+
 brew install rustup-init
 brew link --overwrite rustup-init
 
@@ -21,7 +30,7 @@ brew link --overwrite rustup-init
 # However rustup provides specific versions
 # Here we provide both toolchains
 echo "Running rustup-init"
-rustup-init --default-toolchain 1.68.2 -y
+rustup-init --default-toolchain 1.70.0 -y
 echo "Adding x86_64-apple-darwin as target"
 rustup target add x86_64-apple-darwin
 echo "Adding aarch64-apple-darwin as target"

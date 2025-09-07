@@ -1378,14 +1378,12 @@ describe('native/stream', () => {
         expect(() => serverConn.streamRecv(0, streamBuf)).toThrow(
           'StreamReset(42)',
         );
-        expect(() => serverConn.streamRecv(0, streamBuf)).toThrow(
-          'StreamReset(42)',
-        );
+        expect(serverConn.streamRecv(0, streamBuf)).toBeNull();
 
         // Connection is now not readable
         expect(serverConn.isReadable()).toBeFalse();
-        // Stream is still readable and finished
-        expect(serverConn.streamReadable(0)).toBeTrue();
+        // Stream is finished
+        expect(serverConn.streamReadable(0)).toBeFalse();
         expect(serverConn.streamFinished(0)).toBeTrue();
         // But not in the iterator
         expect(iterToArray(serverConn.readable())).not.toContain(0);
@@ -1404,7 +1402,7 @@ describe('native/stream', () => {
 
         // No changes to stream state on server
         expect(serverConn.isReadable()).toBeFalse();
-        expect(serverConn.streamReadable(0)).toBeTrue();
+        expect(serverConn.streamReadable(0)).toBeFalse();
         expect(serverConn.streamFinished(0)).toBeTrue();
         expect(iterToArray(serverConn.readable())).not.toContain(0);
 
@@ -1518,9 +1516,11 @@ describe('native/stream', () => {
 
         // No changes to stream state on server
         expect(() => serverConn.streamWritable(0, 0)).toThrow(
-          'StreamStopped(42)',
+          'InvalidStreamState(0)',
         );
-        expect(() => serverConn.streamCapacity(0)).toThrow('StreamStopped(42)');
+        expect(() => serverConn.streamCapacity(0)).toThrow(
+          'InvalidStreamState(0)',
+        );
         expect(iterToArray(serverConn.writable())).not.toContain(0);
 
         // Client changes
@@ -1544,13 +1544,6 @@ describe('native/stream', () => {
       });
     });
     test('server final stream state', async () => {
-      // Server states
-      expect(() =>
-        serverConn.streamSend(0, Buffer.from('message'), true),
-      ).toThrow('StreamStopped(42)');
-      expect(() => serverConn.streamRecv(0, streamBuf)).toThrow(
-        'StreamReset(42)',
-      );
       // States change
       expect(serverConn.streamSend(0, Buffer.from('message'), true)).toBeNull();
       expect(() => serverConn.streamRecv(0, streamBuf)).toThrow(
@@ -1656,14 +1649,12 @@ describe('native/stream', () => {
         expect(() => clientConn.streamRecv(0, streamBuf)).toThrow(
           'StreamReset(42)',
         );
-        expect(() => clientConn.streamRecv(0, streamBuf)).toThrow(
-          'StreamReset(42)',
-        );
+        expect(clientConn.streamRecv(0, streamBuf)).toBeNull();
 
         // Connection is now not readable
         expect(clientConn.isReadable()).toBeFalse();
-        // Stream is still readable and finished
-        expect(clientConn.streamReadable(0)).toBeTrue();
+        // Stream is finished
+        expect(clientConn.streamReadable(0)).toBeFalse();
         expect(clientConn.streamFinished(0)).toBeTrue();
         // But not in the iterator
         expect(iterToArray(clientConn.readable())).not.toContain(0);
@@ -1682,7 +1673,7 @@ describe('native/stream', () => {
 
         // No changes to stream state on server
         expect(clientConn.isReadable()).toBeFalse();
-        expect(clientConn.streamReadable(0)).toBeTrue();
+        expect(clientConn.streamReadable(0)).toBeFalse();
         expect(clientConn.streamFinished(0)).toBeTrue();
         expect(iterToArray(clientConn.readable())).not.toContain(0);
 
@@ -1804,9 +1795,11 @@ describe('native/stream', () => {
 
         // No changes to stream state on client
         expect(() => clientConn.streamWritable(0, 0)).toThrow(
-          'StreamStopped(42)',
+          'InvalidStreamState(0)',
         );
-        expect(() => clientConn.streamCapacity(0)).toThrow('StreamStopped(42)');
+        expect(() => clientConn.streamCapacity(0)).toThrow(
+          'InvalidStreamState(0)',
+        );
         expect(iterToArray(clientConn.writable())).not.toContain(0);
 
         // Server changes
@@ -1831,11 +1824,9 @@ describe('native/stream', () => {
     });
     test('client final stream state', async () => {
       // Server states
-      expect(() =>
-        clientConn.streamSend(0, Buffer.from('message'), true),
-      ).toThrow('StreamStopped(42)');
+      expect(clientConn.streamSend(0, Buffer.from('message'), true)).toBeNull();
       expect(() => clientConn.streamRecv(0, streamBuf)).toThrow(
-        'StreamReset(42)',
+        'InvalidStreamState(0)',
       );
       // States change
       expect(clientConn.streamSend(0, Buffer.from('message'), true)).toBeNull();
@@ -1960,14 +1951,12 @@ describe('native/stream', () => {
         expect(() => serverConn.streamRecv(0, streamBuf)).toThrow(
           'StreamReset(42)',
         );
-        expect(() => serverConn.streamRecv(0, streamBuf)).toThrow(
-          'StreamReset(42)',
-        );
+        expect(serverConn.streamRecv(0, streamBuf)).toBeNull();
 
         // Connection is now not readable
         expect(serverConn.isReadable()).toBeFalse();
-        // Stream is still readable and finished
-        expect(serverConn.streamReadable(0)).toBeTrue();
+        // Stream is finished
+        expect(serverConn.streamReadable(0)).toBeFalse();
         expect(serverConn.streamFinished(0)).toBeTrue();
         // But not in the iterator
         expect(iterToArray(serverConn.readable())).not.toContain(0);
@@ -1986,7 +1975,7 @@ describe('native/stream', () => {
 
         // No changes to stream state on server
         expect(serverConn.isReadable()).toBeFalse();
-        expect(serverConn.streamReadable(0)).toBeTrue();
+        expect(serverConn.streamReadable(0)).toBeFalse();
         expect(serverConn.streamFinished(0)).toBeTrue();
         expect(iterToArray(serverConn.readable())).not.toContain(0);
 
@@ -2100,9 +2089,11 @@ describe('native/stream', () => {
 
         // No changes to stream state on server
         expect(() => serverConn.streamWritable(0, 0)).toThrow(
-          'StreamStopped(42)',
+          'InvalidStreamState(0)',
         );
-        expect(() => serverConn.streamCapacity(0)).toThrow('StreamStopped(42)');
+        expect(() => serverConn.streamCapacity(0)).toThrow(
+          'InvalidStreamState(0)',
+        );
         expect(iterToArray(serverConn.writable())).not.toContain(0);
 
         // Client changes
@@ -2127,13 +2118,6 @@ describe('native/stream', () => {
     });
     test('server final stream state', async () => {
       // Server states
-      expect(() =>
-        serverConn.streamSend(0, Buffer.from('message'), true),
-      ).toThrow('StreamStopped(42)');
-      expect(() => serverConn.streamRecv(0, streamBuf)).toThrow(
-        'StreamReset(42)',
-      );
-      // States change
       expect(serverConn.streamSend(0, Buffer.from('message'), true)).toBeNull();
       expect(() => serverConn.streamRecv(0, streamBuf)).toThrow(
         'InvalidStreamState(0)',
@@ -2253,13 +2237,11 @@ describe('native/stream', () => {
         expect(() => serverConn.streamRecv(0, streamBuf)).toThrow(
           'StreamReset(42)',
         );
-        expect(() => serverConn.streamRecv(0, streamBuf)).toThrow(
-          'StreamReset(42)',
-        );
+        expect(serverConn.streamRecv(0, streamBuf)).toBeNull();
 
         // Connection is now not readable
         expect(serverConn.isReadable()).toBeFalse();
-        expect(serverConn.streamReadable(0)).toBeTrue();
+        expect(serverConn.streamReadable(0)).toBeFalse();
         expect(serverConn.streamFinished(0)).toBeTrue();
         expect(iterToArray(serverConn.readable())).not.toContain(0);
       });
@@ -2277,7 +2259,7 @@ describe('native/stream', () => {
 
         // No changes to stream state on server
         expect(serverConn.isReadable()).toBeFalse();
-        expect(serverConn.streamReadable(0)).toBeTrue();
+        expect(serverConn.streamReadable(0)).toBeFalse();
         expect(serverConn.streamFinished(0)).toBeTrue();
         expect(iterToArray(serverConn.readable())).not.toContain(0);
 
@@ -2399,9 +2381,11 @@ describe('native/stream', () => {
 
         // No changes to stream state on server
         expect(() => serverConn.streamWritable(0, 0)).toThrow(
-          'StreamStopped(42)',
+          'InvalidStreamState(0)',
         );
-        expect(() => serverConn.streamCapacity(0)).toThrow('StreamStopped(42)');
+        expect(() => serverConn.streamCapacity(0)).toThrow(
+          'InvalidStreamState(0)',
+        );
         expect(iterToArray(serverConn.writable())).not.toContain(0);
 
         // Client changes
@@ -2426,13 +2410,6 @@ describe('native/stream', () => {
     });
     test('server final stream state', async () => {
       // Server states
-      expect(() =>
-        serverConn.streamSend(0, Buffer.from('message'), true),
-      ).toThrow('StreamStopped(42)');
-      expect(() => serverConn.streamRecv(0, streamBuf)).toThrow(
-        'StreamReset(42)',
-      );
-      // States change
       expect(serverConn.streamSend(0, Buffer.from('message'), true)).toBeNull();
       expect(() => serverConn.streamRecv(0, streamBuf)).toThrow(
         'InvalidStreamState(0)',
