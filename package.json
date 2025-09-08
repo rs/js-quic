@@ -14,7 +14,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MatrixAI/js-quic.git"
+    "url": "https://github.com/rs/js-quic.git"
   },
   "type": "module",
   "main": "dist/index.cjs.js",
@@ -58,11 +58,11 @@
     "ts-custom-error": "^3.2.2"
   },
   "optionalDependencies": {
-    "@matrixai/quic-darwin-arm64": "2.0.9",
-    "@matrixai/quic-darwin-universal": "2.0.9",
-    "@matrixai/quic-darwin-x64": "2.0.9",
-    "@matrixai/quic-linux-x64": "2.0.9",
-    "@matrixai/quic-win32-x64": "2.0.9"
+    "@rs/quic-darwin-arm64": "2.0.9",
+    "@rs/quic-darwin-universal": "2.0.9",
+    "@rs/quic-darwin-x64": "2.0.9",
+    "@rs/quic-linux-x64": "2.0.9",
+    "@rs/quic-win32-x64": "2.0.9"
   },
   "devDependencies": {
     "@fast-check/jest": "^2.1.0",
