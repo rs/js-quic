@@ -1,6 +1,6 @@
 {
   "name": "@rs/quic",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "author": "Matrix AI",
   "contributors": [
     {
@@ -58,11 +58,11 @@
     "ts-custom-error": "^3.2.2"
   },
   "optionalDependencies": {
-    "@rs/quic-darwin-arm64": "2.0.9",
-    "@rs/quic-darwin-universal": "2.0.9",
-    "@rs/quic-darwin-x64": "2.0.9",
-    "@rs/quic-linux-x64": "2.0.9",
-    "@rs/quic-win32-x64": "2.0.9"
+    "@rs/quic-darwin-arm64": "2.2.2",
+    "@rs/quic-darwin-universal": "2.2.2",
+    "@rs/quic-darwin-x64": "2.2.2",
+    "@rs/quic-linux-x64": "2.2.2",
+    "@rs/quic-win32-x64": "2.2.2"
   },
   "devDependencies": {
     "@fast-check/jest": "^2.1.0",
