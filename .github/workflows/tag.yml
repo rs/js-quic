@@ -11,11 +11,242 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  use-native-library-js-tag:
+  tag-lint:
+    name: "Tag / Lint"
+    runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+      - uses: MatrixAI/.github/.github/actions/matrixai-env-setup@master
+      - name: Run linting
+        run: |
+          nix develop .#ci --command bash -c $'
+          npm run lint
+          '
+
+  # Build the distribution - JS is platform-agnostic
+  tag-build:
+    name: "Tag / Build"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
+    needs: tag-lint
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+      - uses: MatrixAI/.github/.github/actions/matrixai-env-setup@master
+      - name: Run build
+        run: |
+          nix develop .#ci --command bash -c $'
+          npm run build --verbose
+          '
+      - name: Upload Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: ./dist
+
+  tag-platforms:
+    name: "Tag / Platforms"
+    needs:
+      - tag-build
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
       actions: write
       checks: write
-    uses: MatrixAI/.github/.github/workflows/native-library-js-tag.yml@master
-    secrets:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux
+            os: ubuntu-latest
+            env:
+              npm_config_arch: "x64"
+              RUST_BACKTRACE: "1"
+            script: |
+              nix develop .#ci --command bash -c $'
+              npm run prebuild --verbose -- --production
+              npm test -- --ci --coverage
+              npm run bench
+              '
+          - platform: windows
+            os: windows-latest
+            env:
+              npm_config_arch: "x64"
+              RUST_BACKTRACE: "1"
+              LIBCLANG_PATH: "C:\\Program Files\\LLVM\\bin"
+            script: |
+              mkdir -Force "$CI_PROJECT_DIR/tmp"
+              Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
+              ./scripts/choco-install.ps1
+              npm install --ignore-scripts
+              npm run prebuild --verbose -- --production
+              npm test -- --ci --coverage
+              npm run bench
+          - platform: macos
+            os: macos-latest
+            env:
+              RUST_BACKTRACE: "1"
+            script: |
+              eval "$(brew shellenv)"
+              ./scripts/brew-install.sh
+              export PYTHON=$(brew --prefix python@3.10)/bin/python3.10
+              hash -r
+              npm install --ignore-scripts
+              export PATH="$(npm root)/.bin:$PATH"
+              export PATH="$HOME/.cargo/bin:$PATH"
+              echo "Prebuilding for darwin-x64"
+              npm run prebuild --verbose -- --arch x64 --production
+              echo "Prebuilding for darwin-arm64"
+              npm run prebuild --verbose -- --arch arm64 --production
+              echo "Creating universal binary"
+              for f in prebuild/*-darwin-arm64.node; do
+                prefix=$(basename "$f" | sed -E 's/-darwin-arm64\.node$//')
+                lipo -create \
+                  -output "prebuild/${prefix}-darwin-x64+arm64.node" \
+                  "prebuild/${prefix}-darwin-arm64.node" \
+                  "prebuild/${prefix}-darwin-x64.node"
+              done
+              rm -rf node_modules/@matrixai/*-*
+              echo "Running tests"
+              npm test -- --ci --coverage
+              echo "Running benchmarks"
+              npm run bench
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.5.1'
+      - if: matrix.platform == 'linux'
+        uses: MatrixAI/.github/.github/actions/matrixai-env-setup@master
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: ./dist
+      - name: Build
+        env: ${{ matrix.env }}
+        run: ${{ matrix.script }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prebuild-${{ matrix.platform }}
+          path: ./prebuild
+
+
+  # Publish the prerelease
+  tag-prerelease:
+    name: "Tag / Pre-release"
+    runs-on: ubuntu-latest
+    concurrency:
+      group: tag-prerelease
+      cancel-in-progress: false
+    needs:
+      - tag-platforms
+    permissions:
+      contents: write
+    if: startsWith(github.ref, 'refs/tags/v') && contains(github.ref, '-')
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+      - uses: MatrixAI/.github/.github/actions/matrixai-env-setup@master
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: prebuild*
+          path: prebuild
+          merge-multiple: true
+      - name: Publishing library prerelease
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ./.npmrc
+          nix develop .#ci --command bash -c $'
+          npm publish --tag prerelease --access public
+          '
+          for d in prebuild/*; do
+            tar \
+              --create \
+              --verbose \
+              --file="prebuild/$(basename $d).tar" \
+              --directory=prebuild \
+              "$(basename $d)"
+          done
+          nix develop .#ci --command bash -c $'
+          gh release \
+            create "$GITHUB_REF_NAME" \
+            prebuild/*.tar \
+            --title "$GITHUB_REF_NAME-$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
+            --notes "" \
+            --prerelease \
+            --target staging \
+            --repo "$GITHUB_REPOSITORY"
+          '
+      - name: Remove `.npmrc`
+        if: success() || failure()
+        run: |
+          rm -f ./.npmrc
+
+  # Publish the release
+  tag-release:
+    name: "Tag / Release"
+    runs-on: ubuntu-latest
+    concurrency:
+      group: tag-release
+      cancel-in-progress: false
+    needs:
+      - tag-platforms
+    permissions:
+      contents: write
+    if: startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, '-')
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+      - uses: MatrixAI/.github/.github/actions/matrixai-env-setup@master
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: prebuild*
+          path: prebuild
+          merge-multiple: true
+      - name: Publishing library release
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ./.npmrc
+          nix develop .#ci --command bash -c $'
+          npm publish --access public
+          '
+          for d in prebuild/*; do
+            tar \
+              --create \
+              --verbose \
+              --file="prebuild/$(basename $d).tar" \
+              --directory=prebuild \
+              "$(basename $d)"
+          done
+          nix develop .#ci --command bash -c $'
+          gh release \
+            create "$GITHUB_REF_NAME" \
+            prebuild/*.tar \
+            --title "$GITHUB_REF_NAME-$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
+            --notes "" \
+            --target master \
+            --repo "$GITHUB_REPOSITORY"
+          '
+      - name: Remove `.npmrc`
+        if: success() || failure()
+        run: |
+          rm -f ./.npmrc
