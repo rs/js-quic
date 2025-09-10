@@ -108,9 +108,7 @@ jobs:
               mkdir -Force "$CI_PROJECT_DIR/tmp"
               Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
               ./scripts/choco-install.ps1
-              refreshenv
               npm install --ignore-scripts
-              $env:Path = "$(npm root)\.bin;" + $env:Path
               npm run prebuild --verbose
               npm test -- --ci --coverage
               npm run bench --if-present
