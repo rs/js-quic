@@ -41,7 +41,7 @@
   },
   "scripts": {
     "prepare": "tsup --tsconfig ./tsconfig.build.json",
-    "prebuild": "node --version && node ./scripts/prebuild.mjs",
+    "prebuild": "node ./scripts/prebuild.mjs",
     "build": "shx rm -rf ./dist && tsup",
     "version": "node ./scripts/version.mjs",
     "prepublishOnly": "node ./scripts/prepublishOnly.mjs",
