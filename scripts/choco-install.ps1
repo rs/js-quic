@@ -22,11 +22,7 @@ New-Item -Path "${PSScriptRoot}\..\tmp\chocolatey" -ItemType "directory" -ErrorA
 choco source add --name="cache" --source="${PSScriptRoot}\..\tmp\chocolatey" --priority=1 --no-progress
 
 # Install nodejs v20.5.1 (will use cache if exists)
-$nodejs = "nodejs"
-if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
-  choco install "$nodejs" --version="20.5.1" --require-checksums -y --no-progress
-  Save-ChocoPackage -PackageName $nodejs
-}
+choco install "$nodejs" --version="20.5.1" --require-checksums -y --no-progress --force
 
 # Install rust v1.70.0
 if (-not (Get-Command rustup -ErrorAction SilentlyContinue)) {
