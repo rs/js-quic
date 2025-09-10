@@ -18,7 +18,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import url from 'node:url';
 import childProcess from 'node:child_process';
-import packageJSON from '../package.json' with { type: 'json' };
+import packageJSON from '../package.json' assert { type: 'json' };
 
 const platform = os.platform();
 
